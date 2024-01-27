@@ -10,6 +10,13 @@ using Unity.Collections;
 
 public class ChunksManager : Singleton<ChunksManager>
 {
+    // It might be better to load by rings.
+    // Check on each ring completition asyncronously.
+    // Draw on completition.
+    // Start the next ring.
+    
+    // OnCameraMove check rings from inside to outside.
+
     public GameConfig m_GameConfig => GameConfig.Instance;
 
     #region Unity
@@ -71,7 +78,7 @@ public class ChunksManager : Singleton<ChunksManager>
             terrainJobs.Add(new TerrainGenerationJob(currentID));
             terrainJobHandler.Add(terrainJobs[i].Schedule(ChunkConfiguration.FlatChunkLenght, 64));
         }
-
+        
         JobHandle.CompleteAll(terrainJobHandler.AsArray());
 
         for (int i = 0; i < regionChunkIDs.Count; i++)

@@ -20,19 +20,19 @@ public class Pool<T> : MonoBehaviour where T : MonoBehaviour
     #region Unity
     protected virtual void Awake()
     {
-        if (m_CreateObjectsOnAwake == false)
-            return;
+        //if (m_CreateObjectsOnAwake == false)
+        //    return;
 
-        clearQueue();
+        initializeQueue();
 
-        increaseThreshold();
+        //increaseThreshold();
     }
     protected virtual void OnEnable()
     {
         s_Instance = this;
 
-        if (m_ObjectsQueue == null)
-            m_ObjectsQueue = new Queue<T>(GetComponentsInChildren<T>(true));
+        //if (m_ObjectsQueue == null)
+        //    m_ObjectsQueue = new Queue<T>(GetComponentsInChildren<T>(true));
     }
     #endregion
 
@@ -43,39 +43,47 @@ public class Pool<T> : MonoBehaviour where T : MonoBehaviour
 
     [SerializeField] protected Queue<T> m_ObjectsQueue; 
 
-    private bool m_CreateObjectsOnAwake = true;
+    //private bool m_CreateObjectsOnAwake = true;
     [SerializeField] private T m_Prefab;
     [SerializeField, Min(1)] private int m_Threshold = 5;
 
-    private void increaseThreshold()
+    private void initializeQueue()
     {
-        for(int i = 0; i < m_Threshold; i++)
-        {
-            Queue(Instantiate(m_Prefab, transform));
-        }
-    }
-    private void clearQueue()
-    {
-        if(m_ObjectsQueue == null)
-        {
-            m_ObjectsQueue = new Queue<T>();
+        if (m_ObjectsQueue != null)
             return;
-        }
 
-        foreach (T i_object in m_ObjectsQueue)
-            DestroyImmediate(i_object.gameObject);
+        m_ObjectsQueue = new Queue<T>();
 
-        if(transform.childCount != 0)
+        if (transform.childCount != 0)
         {
             T[] i_ObjectsArray = GetComponentsInChildren<T>(true);
 
             foreach (T i_object in i_ObjectsArray)
-                DestroyImmediate(i_object.gameObject);
+                m_ObjectsQueue.Enqueue(i_object);
         }
+        else return;
+    }
+    private void clearQueue()
+    {
+        initializeQueue();
+
+        if (m_ObjectsQueue == null || m_ObjectsQueue.Count == 0)
+            return;
+
+        foreach (T i_object in m_ObjectsQueue)
+            DestroyImmediate(i_object.gameObject);
 
         m_ObjectsQueue.Clear();
     }
-    
+
+    private void increaseThreshold()
+    {
+        for (int i = 0; i < m_Threshold; i++)
+        {
+            Queue(Instantiate(m_Prefab, transform));
+        }
+    }
+
     private void queue(T i_Object)
     {
         i_Object.gameObject.SetActive(false);
