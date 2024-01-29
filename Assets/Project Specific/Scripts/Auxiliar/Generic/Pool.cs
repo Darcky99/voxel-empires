@@ -20,19 +20,11 @@ public class Pool<T> : MonoBehaviour where T : MonoBehaviour
     #region Unity
     protected virtual void Awake()
     {
-        //if (m_CreateObjectsOnAwake == false)
-        //    return;
-
         initializeQueue();
-
-        //increaseThreshold();
     }
     protected virtual void OnEnable()
     {
         s_Instance = this;
-
-        //if (m_ObjectsQueue == null)
-        //    m_ObjectsQueue = new Queue<T>(GetComponentsInChildren<T>(true));
     }
     #endregion
 
@@ -43,7 +35,6 @@ public class Pool<T> : MonoBehaviour where T : MonoBehaviour
 
     [SerializeField] protected Queue<T> m_ObjectsQueue; 
 
-    //private bool m_CreateObjectsOnAwake = true;
     [SerializeField] private T m_Prefab;
     [SerializeField, Min(1)] private int m_Threshold = 5;
 

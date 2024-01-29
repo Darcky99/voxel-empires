@@ -34,6 +34,9 @@ public struct ChunkMeshJob : IJob
 
     public void Execute()
     {
+        if (m_flatChunk.Length == 1)
+            return;
+
         //I will have to run 2 or 3 algorithms to draw other LODs.
 
         for (int y = 1; y <= m_ChunkSize; y++)

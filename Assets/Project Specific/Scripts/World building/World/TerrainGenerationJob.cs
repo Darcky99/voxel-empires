@@ -35,8 +35,6 @@ public struct TerrainGenerationJob : IJobParallelFor
 
         float3 globalVoxelPositon;
 
-        //for(int i = 0; i < m_FlatChunkLenght; i++)
-        //{
         voxelLocalPosition = Voxels.XYZ(i);
 
         if (voxelLocalPosition.x <= 0 || voxelLocalPosition.x >= m_FlatChunkSize ||
@@ -49,7 +47,6 @@ public struct TerrainGenerationJob : IJobParallelFor
 
         globalVoxelPositon = globalChunkPosition + voxelLocalPosition;
 
-        //float densityNoise = noise.cnoise(globalVoxelPositon * TerrainGenerationConfiguration.NoiseScale * 0.05f);
         float heightVariationNoise = (noise.cnoise(new float2(globalVoxelPositon.x, globalVoxelPositon.z) * TerrainGenerationConfiguration.HeightNoiseScale) + 1) / 2;
 
         float maxHeight = (heightVariationNoise * 35) + 10;
@@ -57,14 +54,11 @@ public struct TerrainGenerationJob : IJobParallelFor
 
         bool heightCondition = globalVoxelPositon.y < maxHeight || globalVoxelPositon.y <= minHeight;
 
-        //if (m_ChunkID.y == 2 && voxelLocalPosition.y >= 8)
-        //    Debug.Log(heightCondition);
 
-        if (/*(*//*densityNoise > TerrainGenerationConfiguration.MinimumValue*/ /*&&*/ heightCondition)
+        if (heightCondition)
             flatVoxelMap[i] = 1;
         else
             flatVoxelMap[i] = 0;
-        //}
 
 
     }

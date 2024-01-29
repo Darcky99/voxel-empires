@@ -2,27 +2,26 @@ using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
-public struct VoxelMap
+public struct VoxelMap : IGetVoxel
 {
     public VoxelMap(byte chunkSize)
     {
         m_Layers = new IGetVoxel[chunkSize];
 
-        for (byte i = 0; i < m_Layers.Length; i++) // I wanna start with a single reference to everything.
+        for (byte i = 0; i < m_Layers.Length; i++)
             m_Layers[i] = new SingleVoxel(0);
 
     }
 
-    //So I'm planing to make this struct purely a data container, no different to VoxelLayer or SingleVoxel.
-    //I have to move the flatMap methods (construction and setting it) to Chunk.cs.
-    //
-    //
-
-    // I think I can move this to chunk?
+    private IGetVoxel[] m_Layers;
+    
     public byte[] FlatMap
     {
         get
         {
+            //byte value = GetVoxel(1, 1, 1);
+            bool isEmpty = true;
+
             int chunkSide = (byte)m_Layers.Length;
             int flatmapSize = (int)math.pow(chunkSide + 2, 3);
 
@@ -31,12 +30,21 @@ public struct VoxelMap
             for (int y = 1; y <= chunkSide; y++)
                 for (int z = 1; z <= chunkSide; z++)
                     for (int x = 1; x <= chunkSide; x++)
-                        flatMap[Voxels.Index(x, y, z)] = GetVoxel(x - 1, y - 1, z - 1);
+                    {
+                        byte voxel = GetVoxel(x - 1, y - 1, z - 1);
+
+                        if(voxel != 0)
+                            isEmpty = false;
+
+                        flatMap[Voxels.Index(x, y, z)] = voxel;
+                    }
+
+            if (isEmpty)
+                return new byte[1] { 0 };
 
             return flatMap;
         }
     }
-    //and this. From the chunk I just have to use .SetVoxel
     public void SetFlatMap(NativeArray<byte> flatVoxelMap)
     {
         int chunkSize = ChunkConfiguration.ChunkSize;
@@ -49,8 +57,6 @@ public struct VoxelMap
         flatVoxelMap.Dispose();
     }
 
-
-    private IGetVoxel[] m_Layers;
 
     public byte GetVoxel(int x, int y, int z)
     {
@@ -77,5 +83,6 @@ public struct VoxelMap
         //still, I need to check if all of the layers all the same and if so, 
     }
 
-    
+    public byte GetVoxel(int x, int z) => throw new System.NotImplementedException();
+    public void SetVoxel(int x, int z, byte b) => throw new System.NotImplementedException();
 }
