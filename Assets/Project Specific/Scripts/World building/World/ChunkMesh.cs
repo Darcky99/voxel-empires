@@ -6,6 +6,7 @@ using System.Linq;
 using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine.UIElements;
+using System.Threading.Tasks;
 
 public class ChunkMesh : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class ChunkMesh : MonoBehaviour
     [SerializeField, Sirenix.OdinInspector.ReadOnly] private Vector3[] m_VertexCount;
     [SerializeField, Sirenix.OdinInspector.ReadOnly] private int[] m_TrianglesCount;
 
-    public void SetMesh(int3 chunkID, NativeList<float3> vertices, NativeList<int> triangles, NativeList<float2> uvs)
+    public async Task SetMesh(int3 chunkID, NativeList<float3> vertices, NativeList<int> triangles, NativeList<float2> uvs)
     {
         Vector3 worldPosition = (new Vector3(chunkID.x, chunkID.y, chunkID.z) * 16) / 2f;
 

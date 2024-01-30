@@ -25,9 +25,6 @@ public struct ChunkMeshJob : IJob
     public NativeList<int> Triangles { get; private set; }
     public NativeList<float2> UVs { get; private set; }
 
-    //We will have another set generate another set of 
-
-
 
     private readonly NativeArray<byte> m_flatChunk;
     private readonly int3 m_One;

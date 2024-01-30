@@ -1,9 +1,13 @@
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -21,6 +25,17 @@ namespace Chunks.Manager
 
         public GameConfig m_GameConfig => GameConfig.Instance;
 
+        #region Editor
+        private void OnDrawGizmos()
+        {
+            if (DrawGizmos == false || m_Chunks == null)
+                return;
+
+            foreach (Chunk chunk in m_Chunks.Values)
+                chunk.OnDrawGizmos();
+        }
+        #endregion
+
         #region Unity
         protected override void OnAwakeEvent()
         {
@@ -31,6 +46,8 @@ namespace Chunks.Manager
             //buildRegion();
         }
         #endregion
+
+        [SerializeField] private bool DrawGizmos = false;
 
         [SerializeField] private Transform m_WorldCenter;
         private Dictionary<int3, Chunk> m_Chunks;
@@ -63,68 +80,95 @@ namespace Chunks.Manager
             if (regionChunkIDs.Count == 0)
                 return;
 
-            addNaturalTerrain(regionChunkIDs);
-            addMeshes(regionChunkIDs);
+            RunAsync(regionChunkIDs);
+        }
+        private async Task RunAsync(List<int3> regionChunkIDs)
+        {
+            await addNaturalTerrain(regionChunkIDs);
+            await addMeshes(regionChunkIDs);
         }
 
-        private void addNaturalTerrain(List<int3> regionChunkIDs)
+
+        private async Task addNaturalTerrain(List<int3> regionChunkIDs)
         {
             float startTimeTerrainJobs = Time.realtimeSinceStartup;
-
             NativeList<TerrainGenerationJob> terrainJobs = new NativeList<TerrainGenerationJob>(Allocator.Persistent);
             NativeList<JobHandle> terrainJobHandler = new NativeList<JobHandle>(Allocator.Persistent);
-
             for (int i = 0; i < regionChunkIDs.Count; i++)
             {
                 int3 currentID = regionChunkIDs[i];
-
                 m_Chunks.Add(currentID, new Chunk(currentID));
-
-                terrainJobs.Add(new TerrainGenerationJob(currentID));
-                terrainJobHandler.Add(terrainJobs[i].Schedule(ChunkConfiguration.FlatChunkLenght, 64));
+                terrainJobs.Add(new TerrainGenerationJob(currentID)); 
+                terrainJobHandler.Add(terrainJobs[i].Schedule(16*16*16, 64));
+                if(i % 100 == 0)
+                    await Task.Yield();
             }
-
+            await Task.Run(async () =>
+            {
+                bool allComplete;
+                while (true)
+                {
+                    allComplete = true;
+                    await Task.Delay(10);
+                    foreach (var handler in terrainJobHandler)
+                        if (!handler.IsCompleted)
+                            allComplete = false;
+                    if (allComplete)
+                        break;
+                }
+            });
             JobHandle.CompleteAll(terrainJobHandler.AsArray());
-
             for (int i = 0; i < regionChunkIDs.Count; i++)
-                m_Chunks[regionChunkIDs[i]].SetVoxelMap(terrainJobs[i].FlatVoxelMap);
-
+            {
+                await m_Chunks[regionChunkIDs[i]].SetVoxelMap(terrainJobs[i].FlatVoxelMap);
+                if (i % 10 == 0)
+                    await Task.Yield();
+            }
             terrainJobs.Dispose();
             terrainJobHandler.Dispose();
-
             Debug.Log($"Time to generate terrain: {Time.realtimeSinceStartup - startTimeTerrainJobs}");
         }
-        private void addMeshes(List<int3> regionChunkIDs)
+        private async Task addMeshes(List<int3> regionChunkIDs)
         {
             float startTimeMeshJobs = Time.realtimeSinceStartup;
-
             NativeList<ChunkMeshJob> meshJobs = new NativeList<ChunkMeshJob>(Allocator.Persistent);
             NativeList<JobHandle> meshJobHandler = new NativeList<JobHandle>(Allocator.Persistent);
-
             for (int i = 0; i < regionChunkIDs.Count; i++)
             {
                 Chunk chunk = m_Chunks[regionChunkIDs[i]];
                 meshJobs.Add(new ChunkMeshJob(chunk.GetVoxelMap()));
                 meshJobHandler.Add(meshJobs[i].Schedule());
-            }
-            JobHandle.CompleteAll(meshJobHandler.AsArray());
 
-            //This passes the mesh data into some GO. One mesh per chunk.
+                if (i % 25 == 0)
+                    await Task.Yield();
+            }
+            await Task.Run(async () =>
+            {
+                bool allComplete;
+                while (true)
+                {
+                    allComplete = true;
+                    await Task.Delay(10);
+                    foreach (var handler in meshJobHandler)
+                        if (!handler.IsCompleted)
+                            allComplete = false;
+                    if (allComplete)
+                        break;
+                }
+            });
+            JobHandle.CompleteAll(meshJobHandler.AsArray());
             for (int i = 0; i < regionChunkIDs.Count; i++)
             {
                 int3 currentID = regionChunkIDs[i];
-
-                //I don't want to do it through the chunk.
-                m_Chunks[currentID].SetMesh(meshJobs[i].Vertices, meshJobs[i].Triangles, meshJobs[i].UVs);
-
-                //Ideally I would have a chunkMesh manager?
-                //Somewhere I have to create constantly switch between max resolution and 
+                await m_Chunks[currentID].SetMesh(meshJobs[i].Vertices, meshJobs[i].Triangles, meshJobs[i].UVs);
 
                 meshJobs[i].Dispose();
+
+                if (i % 25 == 0)
+                    await Task.Yield();
             }
             meshJobs.Dispose();
             meshJobHandler.Dispose();
-
             Debug.Log($"Time to draw meshes {Time.realtimeSinceStartup - startTimeMeshJobs}");
         }
 
@@ -157,7 +201,6 @@ namespace Chunks.Manager
 
             return missingChunks;
         }
-
         private int3 worldCoordinatesToChunkIndex(Vector3 worldPosition)
         {
             Vector3 position = worldPosition + (Vector3.one * 0.25f);

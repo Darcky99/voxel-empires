@@ -13,7 +13,6 @@ public static class Voxels
 
         return x + (z * flatMapSide) + (y * flatMapSide * flatMapSide);
     }
-
     public static int3 XYZ(int i)
     {
         int flatMapSide = ChunkConfiguration.FlatChunkSize;
@@ -25,6 +24,31 @@ public static class Voxels
         i -= xyz.y * squareChunkSize;
         xyz.z = (int)math.floor(i / (float)flatMapSide);
         i -= xyz.z * flatMapSide;
+        xyz.x = i;
+
+        return xyz;
+    }
+
+    public static int IndexnoExpanded(int x, int y, int z)
+    {
+        int size = ChunkConfiguration.ChunkSize;
+
+        if (x < 0 || x >= size || y < 0 || y >= size || z < 0 || z >= size)
+            Debug.LogError($"Asking for coordinates out of range {x}, {y}, {z}");
+
+        return x + (z * size) + (y * size * size);
+    }
+    public static int3 XYZnoExpanded(int i)
+    {
+        int chunkSide = ChunkConfiguration.ChunkSize;
+        int squareChunkSize = chunkSide * chunkSide;
+
+        int3 xyz = new int3();
+
+        xyz.y = (int)math.floor(i / (float)squareChunkSize);
+        i -= xyz.y * squareChunkSize;
+        xyz.z = (int)math.floor(i / (float)chunkSide);
+        i -= xyz.z * chunkSide;
         xyz.x = i;
 
         return xyz;

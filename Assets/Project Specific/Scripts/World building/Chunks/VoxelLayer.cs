@@ -1,6 +1,9 @@
-using Unity.Collections;
 
-public struct VoxelLayer : IGetVoxel
+using Unity.Collections;
+using UnityEditor;
+using UnityEngine;
+
+public class VoxelLayer : IGetVoxel
 {
     public VoxelLayer(byte b)
     {
@@ -15,7 +18,7 @@ public struct VoxelLayer : IGetVoxel
 
     public byte[] Layer { get { return m_Layer; } }
 
-    private byte[] m_Layer; //ID: 0 to 255
+    private byte[] m_Layer;
     private readonly int m_ChunkSize;
 
     private int Index(int x, int z) => x + (z * m_ChunkSize);
@@ -31,4 +34,11 @@ public struct VoxelLayer : IGetVoxel
 
     public byte GetVoxel(int x, int z) => m_Layer[Index(x, z)];
     public void SetVoxel(int x, int z, byte b) => m_Layer[Index(x, z)] = b;
+
+    public byte GetVoxel(int x, int y, int z)
+    {
+        Debug.LogError("Trying to request a Voxel on a Layer using 'z'");
+        return 0;
+    }
+    public void SetVoxel(int x, int y, int z, byte b) => Debug.LogError("Trying to set a Voxel on a Layer using 'z'");
 }

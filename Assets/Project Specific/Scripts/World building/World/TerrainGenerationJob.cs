@@ -11,18 +11,16 @@ public struct TerrainGenerationJob : IJobParallelFor
     {
         m_ChunkID = ChunkID;
 
-        m_FlatChunkSize = ChunkConfiguration.FlatChunkSize;
-        m_FlatChunkLenght = ChunkConfiguration.FlatChunkLenght;
         m_ChunkSize = ChunkConfiguration.ChunkSize;
+        m_ChunkVoxelCount = m_ChunkSize * m_ChunkSize * m_ChunkSize;
 
-        flatVoxelMap = new NativeArray<byte>(m_FlatChunkLenght, Allocator.Persistent);
+        flatVoxelMap = new NativeArray<byte>(m_ChunkVoxelCount, Allocator.Persistent);
     }
 
     public NativeArray<byte> FlatVoxelMap => flatVoxelMap;
 
-    private readonly int m_FlatChunkSize;
-    private readonly int m_FlatChunkLenght;
     private readonly int m_ChunkSize;
+    private readonly int m_ChunkVoxelCount;
     private readonly int3 m_ChunkID;
 
     private NativeArray<byte> flatVoxelMap;
@@ -35,15 +33,15 @@ public struct TerrainGenerationJob : IJobParallelFor
 
         float3 globalVoxelPositon;
 
-        voxelLocalPosition = Voxels.XYZ(i);
+        voxelLocalPosition = Voxels.XYZnoExpanded(i);
 
-        if (voxelLocalPosition.x <= 0 || voxelLocalPosition.x >= m_FlatChunkSize ||
-            voxelLocalPosition.y <= 0 || voxelLocalPosition.y >= m_FlatChunkSize ||
-            voxelLocalPosition.z <= 0 || voxelLocalPosition.z >= m_FlatChunkSize)
-        {
-            flatVoxelMap[i] = 0;
-            return;
-        }
+        //if (voxelLocalPosition.x <= 0 || voxelLocalPosition.x >= m_ChunkSize ||
+        //    voxelLocalPosition.y <= 0 || voxelLocalPosition.y >= m_ChunkSize ||
+        //    voxelLocalPosition.z <= 0 || voxelLocalPosition.z >= m_ChunkSize)
+        //{
+        //    flatVoxelMap[i] = 0;
+        //    return;
+        //}
 
         globalVoxelPositon = globalChunkPosition + voxelLocalPosition;
 
@@ -56,10 +54,14 @@ public struct TerrainGenerationJob : IJobParallelFor
 
 
         if (heightCondition)
+        {
             flatVoxelMap[i] = 1;
+            //Debug.Log("Un cubo");
+        }
         else
+        {
             flatVoxelMap[i] = 0;
-
-
+            //Debug.Log("Nada");
+        }
     }
 }

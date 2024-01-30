@@ -1,28 +1,33 @@
+using System.Threading.Tasks;
 using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
-public struct VoxelMap : IGetVoxel
+public class VoxelMap : IGetVoxel
 {
-    public VoxelMap(byte chunkSize)
+    public VoxelMap(byte chunkSize, byte voxel)
     {
-        m_Layers = new IGetVoxel[chunkSize];
+        //m_Layers = new IGetVoxel[chunkSize];
 
-        for (byte i = 0; i < m_Layers.Length; i++)
-            m_Layers[i] = new SingleVoxel(0);
+        //for (byte i = 0; i < m_Layers.Length; i++)
+        //    m_Layers[i] = new SingleVoxel(0);
+        m_ChunkSize = chunkSize;
 
+        m_Voxels = new SingleVoxel(voxel);
     }
 
-    private IGetVoxel[] m_Layers;
+    private int m_ChunkSize;
+    private IGetVoxel m_Voxels;
+
+    //private IGetVoxel[] m_Layers;
     
     public byte[] FlatMap
     {
         get
         {
-            //byte value = GetVoxel(1, 1, 1);
             bool isEmpty = true;
 
-            int chunkSide = (byte)m_Layers.Length;
+            int chunkSide = m_ChunkSize;
             int flatmapSize = (int)math.pow(chunkSide + 2, 3);
 
             byte[] flatMap = new byte[flatmapSize];
@@ -41,48 +46,60 @@ public struct VoxelMap : IGetVoxel
 
             if (isEmpty)
                 return new byte[1] { 0 };
+            //I might need suport for chunks 1 value but != 0
 
             return flatMap;
         }
     }
-    public void SetFlatMap(NativeArray<byte> flatVoxelMap)
+    public async Task SetFlatMap(NativeArray<byte> flatVoxelMap, bool waitFlag)
     {
         int chunkSize = ChunkConfiguration.ChunkSize;
-
+        
         for (int y = 0; y < chunkSize; y++)
+        {
             for (int z = 0; z < chunkSize; z++)
                 for (int x = 0; x < chunkSize; x++)
-                    SetVoxel(x, y, z, flatVoxelMap[Voxels.Index(x + 1, y + 1, z + 1)]);
+                {
+                    int index = Voxels.IndexnoExpanded(x, y, z);
+                    SetVoxel(x, y, z, flatVoxelMap[index]);
+                }
+        }
+
 
         flatVoxelMap.Dispose();
     }
 
+    public byte GetVoxel(int3 xyz) => GetVoxel(xyz.x, xyz.y, xyz.z);
 
+    
     public byte GetVoxel(int x, int y, int z)
     {
-        if(x <  0 || x >= m_Layers.Length || y < 0 || y >= m_Layers.Length || z < 0 || z >= m_Layers.Length)
+        if(x <  0 || x >= m_ChunkSize || y < 0 || y >= m_ChunkSize || z < 0 || z >= m_ChunkSize)
             return 0;
 
-        return m_Layers[y].GetVoxel(x, z);
+        return m_Voxels.GetVoxel(x, y, z);
     }
-    public byte GetVoxel(int3 xyz) => GetVoxel(xyz.x, xyz.y, xyz.z);
-    public void SetVoxel(int x, int y, int z, byte b)
+    public async void SetVoxel(int x, int y, int z, byte b)
     {
-        byte layerValue = m_Layers[y].GetVoxel(x, z);
+        byte value = m_Voxels.GetVoxel(x, y, z);
 
-        if (m_Layers[y] is SingleVoxel && layerValue != b)
+        if (m_Voxels is SingleVoxel && value != b)
         {
-            m_Layers[y] = new VoxelLayer(layerValue);
-            m_Layers[y].SetVoxel(x,z,b);
+            m_Voxels = new VoxelLayers(value);
+            m_Voxels.SetVoxel(x, y, z, b);
+            return;
         }
-        m_Layers[y].SetVoxel(x, z, b);
 
-        if(m_Layers[y] is VoxelLayer && ((VoxelLayer)m_Layers[y]).IsOneValue())
-            m_Layers[y] = new SingleVoxel(b);
+        m_Voxels.SetVoxel(x, y, z, b);
 
-        //still, I need to check if all of the layers all the same and if so, 
+        if(m_Voxels is VoxelLayers && ((VoxelLayers)m_Voxels).IsOneValue())
+            m_Voxels = new SingleVoxel(b);
     }
 
-    public byte GetVoxel(int x, int z) => throw new System.NotImplementedException();
-    public void SetVoxel(int x, int z, byte b) => throw new System.NotImplementedException();
+    public byte GetVoxel(int x, int z)
+    {
+        Debug.LogError(" Can't return a value without 'y' ");
+        return 0;
+    }
+    public void SetVoxel(int x, int z, byte b) => Debug.LogError(" Can't set a value without 'y' ");
 }
