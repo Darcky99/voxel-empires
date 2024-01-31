@@ -3,24 +3,17 @@ using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class VoxelMap : IGetVoxel
+public class VoxelMap /*: IGetVoxel*/
 {
     public VoxelMap(byte chunkSize, byte voxel)
     {
-        //m_Layers = new IGetVoxel[chunkSize];
-
-        //for (byte i = 0; i < m_Layers.Length; i++)
-        //    m_Layers[i] = new SingleVoxel(0);
         m_ChunkSize = chunkSize;
-
-        m_Voxels = new SingleVoxel(voxel);
+        //m_Voxels = new SingleVoxel(voxel);
     }
 
     private int m_ChunkSize;
-    private IGetVoxel m_Voxels;
 
     private byte[] m_FlatMap;
-    
     public byte[] FlatMap
     {
         get
@@ -52,57 +45,44 @@ public class VoxelMap : IGetVoxel
             return flatMap;
         }
     }
+
     public async Task SetFlatMap(NativeArray<byte> flatVoxelMap, bool waitFlag)
     {
-        //int chunkSize = ChunkConfiguration.ChunkSize;
-
         m_FlatMap = flatVoxelMap.ToArray();
-
-        //for (int y = 0; y < chunkSize; y++)
-        //{
-        //    for (int z = 0; z < chunkSize; z++)
-        //        for (int x = 0; x < chunkSize; x++)
-        //        {
-        //            int index = Voxels.IndexnoExpanded(x, y, z);
-        //            SetVoxel(x, y, z, flatVoxelMap[index]);
-        //        }
-        //}
-
 
         flatVoxelMap.Dispose();
     }
 
     public byte GetVoxel(int3 xyz) => GetVoxel(xyz.x, xyz.y, xyz.z);
-
-    
     public byte GetVoxel(int x, int y, int z)
     {
         if(x <  0 || x >= m_ChunkSize || y < 0 || y >= m_ChunkSize || z < 0 || z >= m_ChunkSize)
             return 0;
 
-        return m_Voxels.GetVoxel(x, y, z);
+        return m_FlatMap[Voxels.IndexnoExpanded(x, y, z)];
     }
+
     public async void SetVoxel(int x, int y, int z, byte b)
     {
-        byte value = m_Voxels.GetVoxel(x, y, z);
+        //byte value = GetVoxel(x, y, z);
 
-        if (m_Voxels is SingleVoxel && value != b)
-        {
-            m_Voxels = new VoxelLayers(value);
-            m_Voxels.SetVoxel(x, y, z, b);
-            return;
-        }
+        //if (m_Voxels is SingleVoxel && value != b)
+        //{
+        //    m_Voxels = new VoxelLayers(value);
+        //    m_Voxels.SetVoxel(x, y, z, b);
+        //    return;
+        //}
 
-        m_Voxels.SetVoxel(x, y, z, b);
+        m_FlatMap[Voxels.IndexnoExpanded(x, y, z)] = b;
 
-        if(m_Voxels is VoxelLayers && ((VoxelLayers)m_Voxels).IsOneValue())
-            m_Voxels = new SingleVoxel(b);
+        //if(m_Voxels is VoxelLayers && ((VoxelLayers)m_Voxels).IsOneValue())
+        //    m_Voxels = new SingleVoxel(b);
     }
 
-    public byte GetVoxel(int x, int z)
-    {
-        Debug.LogError(" Can't return a value without 'y' ");
-        return 0;
-    }
-    public void SetVoxel(int x, int z, byte b) => Debug.LogError(" Can't set a value without 'y' ");
+    //public byte GetVoxel(int x, int z)
+    //{
+    //    Debug.LogError(" Can't return a value without 'y' ");
+    //    return 0;
+    //}
+    //public void SetVoxel(int x, int z, byte b) => Debug.LogError(" Can't set a value without 'y' ");
 }

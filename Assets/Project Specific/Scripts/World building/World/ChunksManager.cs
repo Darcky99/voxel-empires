@@ -100,30 +100,33 @@ namespace Chunks.Manager
                 m_Chunks.Add(currentID, new Chunk(currentID));
                 terrainJobs.Add(new TerrainGenerationJob(currentID)); 
                 terrainJobHandler.Add(terrainJobs[i].Schedule(16*16*16, 64));
-                if (i % 100 == 0)
-                    await Task.Yield();
+                //if (i % 100 == 0)
+                //    await Task.Yield();
             }
-            await Task.Run(async () =>
+            async Task Check()
             {
-                bool allComplete;
-                while (true)
+                bool allComplete = false;
+                while (!allComplete)
                 {
                     allComplete = true;
+
                     await Task.Delay(10);
                     foreach (var handler in terrainJobHandler)
                         if (!handler.IsCompleted)
                             allComplete = false;
+
                     if (allComplete)
                         break;
                 }
-            });
+            }
+            await Check();
             JobHandle.CompleteAll(terrainJobHandler.AsArray());
             Debug.Log($"Time to generate terrain: {Time.realtimeSinceStartup - startTimeTerrainJobs}");
             for (int i = 0; i < regionChunkIDs.Count; i++)
             {
                 await m_Chunks[regionChunkIDs[i]].SetVoxelMap(terrainJobs[i].FlatVoxelMap);
-                if (i % 10 == 0)
-                    await Task.Yield();
+                //if (i % 10 == 0)
+                //    await Task.Yield();
             }
             terrainJobs.Dispose();
             terrainJobHandler.Dispose();
@@ -141,24 +144,27 @@ namespace Chunks.Manager
                 meshJobs.Add(new ChunkMeshJob(chunk.GetVoxelMap()));
                 meshJobHandler.Add(meshJobs[i].Schedule());
 
-                if (i % 25 == 0)
+                if (i % 100 == 0)
                     await Task.Yield();
             }
-            await Task.Run(async () =>
+            Debug.Log($"All mesh scheduled {Time.realtimeSinceStartup - startTimeMeshJobs}");
+            async Task Check()
             {
                 bool allComplete;
                 while (true)
                 {
                     allComplete = true;
-                    await Task.Delay(10);
+                    await Task.Delay(250);
                     foreach (var handler in meshJobHandler)
                         if (!handler.IsCompleted)
                             allComplete = false;
                     if (allComplete)
                         break;
                 }
-            });
+            }
+            await Task.Run(Check);
             JobHandle.CompleteAll(meshJobHandler.AsArray());
+
             Debug.Log($"Time generate meshes {Time.realtimeSinceStartup - startTimeMeshJobs}");
             for (int i = 0; i < regionChunkIDs.Count; i++)
             {
@@ -167,7 +173,7 @@ namespace Chunks.Manager
 
                 //meshJobs[i].Dispose();
 
-                if (i % 25 == 0)
+                if (i % 50 == 0)
                     await Task.Yield();
             }
             meshJobs.Dispose();
