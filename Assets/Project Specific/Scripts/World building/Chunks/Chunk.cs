@@ -63,10 +63,7 @@ public class Chunk
 
     public async Task SetVoxelMap(NativeArray<byte> flatVoxelMap)
     {
-        if (m_ChunkID.x == -1 && m_ChunkID.y == 1 && m_ChunkID.z == 0)
-            await m_VoxelMap.SetFlatMap(flatVoxelMap, true);
-        else
-            await m_VoxelMap.SetFlatMap(flatVoxelMap, false);
+        await m_VoxelMap.SetFlatMap(flatVoxelMap, false);
     }
     public byte[] GetVoxelMap()
     {
@@ -108,7 +105,7 @@ public class Chunk
         return flatMap;
     }
 
-    public async Task SetMesh(NativeList<float3> vertices, NativeList<int> triangles, NativeList<float2> uvs) 
+    public async Task SetMesh(NativeList<Vector3> vertices, NativeList<int> triangles, NativeList<Vector2> uvs) 
     {
         ChunkMesh chunkMesh  = ChunkMeshPool.s_Instance.DeQueue();
         await chunkMesh.SetMesh(m_ChunkID, vertices, triangles, uvs);

@@ -11,9 +11,9 @@ public struct ChunkMeshJob : IJob
     {
         m_ChunkSize = ChunkConfiguration.ChunkSize;
 
-        Vertices = new NativeList<float3>(Allocator.Persistent);
+        Vertices = new NativeList<Vector3>(Allocator.Persistent);
         Triangles = new NativeList<int>(Allocator.Persistent);
-        UVs = new NativeList<float2>(Allocator.Persistent);
+        UVs = new NativeList<Vector2>(Allocator.Persistent);
 
         m_flatChunk = new NativeArray<byte>(centralChunk, Allocator.TempJob);
         m_One = new int3(1, 1, 1);
@@ -21,9 +21,9 @@ public struct ChunkMeshJob : IJob
 
     private readonly int m_ChunkSize;
 
-    public NativeList<float3> Vertices { get; private set; }
+    public NativeList<Vector3> Vertices { get; private set; }
     public NativeList<int> Triangles { get; private set; }
-    public NativeList<float2> UVs { get; private set; }
+    public NativeList<Vector2> UVs { get; private set; }
 
 
     private readonly NativeArray<byte> m_flatChunk;
@@ -76,9 +76,4 @@ public struct ChunkMeshJob : IJob
         return m_flatChunk[Voxels.Index(x, y, z)];
     }
     private byte GetValue(int3 xyz) => GetValue(xyz.x, xyz.y, xyz.z);
-
-    public void Dispose()
-    {
-        m_flatChunk.Dispose();
-    }
 }

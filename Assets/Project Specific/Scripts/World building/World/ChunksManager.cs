@@ -100,7 +100,7 @@ namespace Chunks.Manager
                 m_Chunks.Add(currentID, new Chunk(currentID));
                 terrainJobs.Add(new TerrainGenerationJob(currentID)); 
                 terrainJobHandler.Add(terrainJobs[i].Schedule(16*16*16, 64));
-                if(i % 100 == 0)
+                if (i % 100 == 0)
                     await Task.Yield();
             }
             await Task.Run(async () =>
@@ -118,6 +118,7 @@ namespace Chunks.Manager
                 }
             });
             JobHandle.CompleteAll(terrainJobHandler.AsArray());
+            Debug.Log($"Time to generate terrain: {Time.realtimeSinceStartup - startTimeTerrainJobs}");
             for (int i = 0; i < regionChunkIDs.Count; i++)
             {
                 await m_Chunks[regionChunkIDs[i]].SetVoxelMap(terrainJobs[i].FlatVoxelMap);
@@ -126,8 +127,9 @@ namespace Chunks.Manager
             }
             terrainJobs.Dispose();
             terrainJobHandler.Dispose();
-            Debug.Log($"Time to generate terrain: {Time.realtimeSinceStartup - startTimeTerrainJobs}");
+            Debug.Log($"Total time to assign terrain values: {Time.realtimeSinceStartup - startTimeTerrainJobs}");
         }
+
         private async Task addMeshes(List<int3> regionChunkIDs)
         {
             float startTimeMeshJobs = Time.realtimeSinceStartup;
@@ -157,19 +159,20 @@ namespace Chunks.Manager
                 }
             });
             JobHandle.CompleteAll(meshJobHandler.AsArray());
+            Debug.Log($"Time generate meshes {Time.realtimeSinceStartup - startTimeMeshJobs}");
             for (int i = 0; i < regionChunkIDs.Count; i++)
             {
                 int3 currentID = regionChunkIDs[i];
                 await m_Chunks[currentID].SetMesh(meshJobs[i].Vertices, meshJobs[i].Triangles, meshJobs[i].UVs);
 
-                meshJobs[i].Dispose();
+                //meshJobs[i].Dispose();
 
                 if (i % 25 == 0)
                     await Task.Yield();
             }
             meshJobs.Dispose();
             meshJobHandler.Dispose();
-            Debug.Log($"Time to draw meshes {Time.realtimeSinceStartup - startTimeMeshJobs}");
+            Debug.Log($"Total time to assign meshes {Time.realtimeSinceStartup - startTimeMeshJobs}");
         }
 
         private List<int3> getRegionChunks()

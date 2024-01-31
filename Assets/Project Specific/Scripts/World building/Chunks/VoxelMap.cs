@@ -19,7 +19,7 @@ public class VoxelMap : IGetVoxel
     private int m_ChunkSize;
     private IGetVoxel m_Voxels;
 
-    //private IGetVoxel[] m_Layers;
+    private byte[] m_FlatMap;
     
     public byte[] FlatMap
     {
@@ -32,16 +32,17 @@ public class VoxelMap : IGetVoxel
 
             byte[] flatMap = new byte[flatmapSize];
 
-            for (int y = 1; y <= chunkSide; y++)
-                for (int z = 1; z <= chunkSide; z++)
-                    for (int x = 1; x <= chunkSide; x++)
+            for (int y = 0; y < chunkSide; y++)
+                for (int z = 0; z < chunkSide; z++)
+                    for (int x = 0; x < chunkSide; x++)
                     {
-                        byte voxel = GetVoxel(x - 1, y - 1, z - 1);
+                        byte voxel = m_FlatMap[Voxels.IndexnoExpanded(x, y, z)];
 
-                        if(voxel != 0)
+                        if (voxel != 0)
                             isEmpty = false;
 
-                        flatMap[Voxels.Index(x, y, z)] = voxel;
+                        //flatMap[Voxels.Index(x, y, z)] = voxel;
+                        flatMap[Voxels.Index(x + 1, y + 1, z + 1)] = m_FlatMap[Voxels.IndexnoExpanded(x,y,z)];
                     }
 
             if (isEmpty)
@@ -53,17 +54,19 @@ public class VoxelMap : IGetVoxel
     }
     public async Task SetFlatMap(NativeArray<byte> flatVoxelMap, bool waitFlag)
     {
-        int chunkSize = ChunkConfiguration.ChunkSize;
-        
-        for (int y = 0; y < chunkSize; y++)
-        {
-            for (int z = 0; z < chunkSize; z++)
-                for (int x = 0; x < chunkSize; x++)
-                {
-                    int index = Voxels.IndexnoExpanded(x, y, z);
-                    SetVoxel(x, y, z, flatVoxelMap[index]);
-                }
-        }
+        //int chunkSize = ChunkConfiguration.ChunkSize;
+
+        m_FlatMap = flatVoxelMap.ToArray();
+
+        //for (int y = 0; y < chunkSize; y++)
+        //{
+        //    for (int z = 0; z < chunkSize; z++)
+        //        for (int x = 0; x < chunkSize; x++)
+        //        {
+        //            int index = Voxels.IndexnoExpanded(x, y, z);
+        //            SetVoxel(x, y, z, flatVoxelMap[index]);
+        //        }
+        //}
 
 
         flatVoxelMap.Dispose();

@@ -7,30 +7,31 @@ using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine.UIElements;
 using System.Threading.Tasks;
+using Unity.Collections.NotBurstCompatible;
 
 public class ChunkMesh : MonoBehaviour
 {
     [SerializeField] private MeshFilter m_MeshFilter;
-    [SerializeField, Sirenix.OdinInspector.ReadOnly] private Vector3[] m_VertexCount;
-    [SerializeField, Sirenix.OdinInspector.ReadOnly] private int[] m_TrianglesCount;
+    //[SerializeField, Sirenix.OdinInspector.ReadOnly] private Vector3[] m_VertexCount;
+    //[SerializeField, Sirenix.OdinInspector.ReadOnly] private int[] m_TrianglesCount;
 
-    public async Task SetMesh(int3 chunkID, NativeList<float3> vertices, NativeList<int> triangles, NativeList<float2> uvs)
+    public async Task SetMesh(int3 chunkID, NativeList<Vector3> vertices, NativeList<int> triangles, NativeList<Vector2> uvs)
     {
         Vector3 worldPosition = (new Vector3(chunkID.x, chunkID.y, chunkID.z) * 16) / 2f;
 
         transform.position = worldPosition;
 
         Mesh mesh = new Mesh();
-        mesh.vertices = NativeArrayFloat3ToVector3(vertices);
-        mesh.triangles = NativeArrayIntToInt(triangles);
-        mesh.uv = NativeArrayFloat2ToVector2(uvs);
+        mesh.vertices = vertices.ToArrayNBC();
+        mesh.triangles = triangles.ToArrayNBC();
+        mesh.uv = uvs.ToArrayNBC();
 
         mesh.RecalculateNormals();
 
         m_MeshFilter.mesh = mesh;
 
-        m_VertexCount = NativeArrayFloat3ToVector3(vertices);
-        m_TrianglesCount = NativeArrayIntToInt(triangles);
+        //m_VertexCount = NativeArrayFloat3ToVector3(vertices);
+        //m_TrianglesCount = NativeArrayIntToInt(triangles);
 
         vertices.Dispose();
         triangles.Dispose();

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Game Configuration
   m_EditorClassIdentifier: 
   <GraphicsConfiguration>k__BackingField:
-    RenderDistance: 64
+    RenderDistance: 32
   <VoxelConfiguration>k__BackingField:
     <SolidVoxel>k__BackingField: {fileID: 11400000, guid: 0d5e5f5c89544944bbd5c06c35e59a6b,
       type: 2}
