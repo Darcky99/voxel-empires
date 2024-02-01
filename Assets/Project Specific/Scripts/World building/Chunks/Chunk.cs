@@ -108,10 +108,10 @@ public class Chunk
         return flatMap;
     }
 
-    public async Task SetMesh(NativeList<Vector3> vertices, NativeList<int> triangles, NativeList<Vector2> uvs) 
+    public async Task SetMesh(MeshData[] meshData) 
     {
         ChunkMesh chunkMesh  = ChunkMeshPool.s_Instance.DeQueue();
-        await chunkMesh.SetMesh(m_ChunkID, vertices, triangles, uvs);
+        await chunkMesh.SetMesh(m_ChunkID, meshData);
         //m_IsDrawn = true;
     }
 }

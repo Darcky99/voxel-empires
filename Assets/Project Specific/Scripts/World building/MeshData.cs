@@ -1,25 +1,33 @@
 using UnityEngine;
-using System.Linq;
 using System.Collections.Generic;
+using Unity.Collections;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
-public struct MeshData
+public class MeshData
 {
-    public MeshData(List<Vector3> vertices, List<int> triangles, List<Vector2> uvs)
+    public MeshData(NativeList<Vector3> vertices, NativeList<int> triangles, NativeList<Vector2> uvs)
     {
         Vertices = vertices;
         Triangles = triangles;
         UVs = uvs;
     }
 
-    public List<Vector3> Vertices { get; private set; }
-    public List<int> Triangles { get; private set; }
-    public List<Vector2> UVs { get; private set; }
+    public NativeList<Vector3> Vertices { get; private set; }
+    public NativeList<int> Triangles { get; private set; }
+    public NativeList<Vector2> UVs { get; private set; }
 
-    public static MeshData operator + (MeshData left, MeshData right)
+    public void Dispose()
     {
-        left.Vertices.AddRange(right.Vertices);
-        left.Triangles.AddRange(right.Triangles);
-        left.UVs.AddRange(right.UVs);
-        return left;
+        Vertices.Dispose();
+        Triangles.Dispose();
+        UVs.Dispose();
     }
+
+    //public static MeshData operator + (MeshData left, MeshData right)
+    //{
+    //    left.Vertices.AddRange(right.Vertices);
+    //    left.Triangles.AddRange(right.Triangles);
+    //    left.UVs.AddRange(right.UVs);
+    //    return left;
+    //}
 }

@@ -186,7 +186,8 @@ namespace Chunks.Manager
             for (int i = 0; i < regionChunkIDs.Count; i++)
             {
                 int3 currentID = regionChunkIDs[i];
-                await m_LoadedChunks[currentID].SetMesh(meshJobs[i].Vertices, meshJobs[i].Triangles, meshJobs[i].UVs);
+                MeshData[] meshData = new MeshData[] { new MeshData(meshJobs[i].Vertices, meshJobs[i].Triangles, meshJobs[i].UVs) };
+                await m_LoadedChunks[currentID].SetMesh(meshData);
 
                 m_DrawnChunks.Add(currentID, m_LoadedChunks[currentID]);
                 m_LoadedChunks.Remove(currentID);
