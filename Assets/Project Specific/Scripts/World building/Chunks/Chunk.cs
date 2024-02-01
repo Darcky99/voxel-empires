@@ -45,12 +45,16 @@ public class Chunk
     public Chunk(int3 ID)
     {
         m_VoxelMap = new VoxelMap((byte)ChunkConfiguration.ChunkSize, 0);
+        //m_IsDrawn = false;
 
         m_ChunkID = ID;
     }
 
+    //public bool IsDrawn => m_IsDrawn;
+
     private int3 m_ChunkID;
     private VoxelMap m_VoxelMap;
+    //private bool m_IsDrawn;
 
     public byte GetVoxel(int3 voxelPosition)
     {
@@ -108,5 +112,6 @@ public class Chunk
     {
         ChunkMesh chunkMesh  = ChunkMeshPool.s_Instance.DeQueue();
         await chunkMesh.SetMesh(m_ChunkID, vertices, triangles, uvs);
+        //m_IsDrawn = true;
     }
 }

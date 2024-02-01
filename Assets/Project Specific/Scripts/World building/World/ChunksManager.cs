@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Playables;
+using System;
 
 namespace Chunks.Manager
 {
@@ -28,10 +26,10 @@ namespace Chunks.Manager
         #region Editor
         private void OnDrawGizmos()
         {
-            if (DrawGizmos == false || m_Chunks == null)
+            if (DrawGizmos == false || m_LoadedChunks == null)
                 return;
 
-            foreach (Chunk chunk in m_Chunks.Values)
+            foreach (Chunk chunk in m_LoadedChunks.Values)
                 chunk.OnDrawGizmos();
         }
         #endregion
@@ -39,7 +37,8 @@ namespace Chunks.Manager
         #region Unity
         protected override void OnAwakeEvent()
         {
-            m_Chunks = new Dictionary<int3, Chunk>();
+            m_LoadedChunks = new Dictionary<int3, Chunk>();
+            m_DrawnChunks = new Dictionary<int3, Chunk>();
         }
         public override void Start()
         {
@@ -50,7 +49,9 @@ namespace Chunks.Manager
         [SerializeField] private bool DrawGizmos = false;
 
         [SerializeField] private Transform m_WorldCenter;
-        private Dictionary<int3, Chunk> m_Chunks;
+
+        private Dictionary<int3, Chunk> m_LoadedChunks;
+        private Dictionary<int3, Chunk> m_DrawnChunks;
 
         //No me gusta que este relog esté aquí. 
         private Coroutine m_Clock;
@@ -75,17 +76,33 @@ namespace Chunks.Manager
         [Button]
         private void buildRegion()
         {
-            List<int3> regionChunkIDs = getRegionChunks();
-
-            if (regionChunkIDs.Count == 0)
-                return;
-
-            RunAsync(regionChunkIDs);
+            RunAsync();
         }
-        private async Task RunAsync(List<int3> regionChunkIDs)
+        private async Task RunAsync()
         {
-            await addNaturalTerrain(regionChunkIDs);
-            await addMeshes(regionChunkIDs);
+            List<int3> chunksToLoad = null;
+            List<int3> chunksToDraw = null;
+
+            while (true)
+            {
+                for (int i = 1; i <= m_GameConfig.GraphicsConfiguration.RenderDistance; i++)
+                {
+                    chunksToLoad = getRegionChunks(i + 1, (chunkID) => (!m_LoadedChunks.ContainsKey(chunkID) && !m_DrawnChunks.ContainsKey(chunkID)));
+                    chunksToDraw = getRegionChunks(i, (chunkID) => m_LoadedChunks.ContainsKey(chunkID) || chunksToLoad.Contains(chunkID));
+
+                    if (chunksToDraw.Count != 0)
+                        break;
+                    //
+                }
+                if(chunksToLoad.Count != 0)
+                {
+                    await addNaturalTerrain(chunksToLoad); // the ones to generate terrain can't be already existing, so check both lists
+                    await buidlMeshes(chunksToDraw); // the ones to build a mesh must be found inside the loaded chunk list
+                }
+                chunksToLoad.Clear();
+                chunksToDraw.Clear();
+                await Task.Delay(150);
+            }
         }
 
 
@@ -97,7 +114,7 @@ namespace Chunks.Manager
             for (int i = 0; i < regionChunkIDs.Count; i++)
             {
                 int3 currentID = regionChunkIDs[i];
-                m_Chunks.Add(currentID, new Chunk(currentID));
+                m_LoadedChunks.Add(currentID, new Chunk(currentID));
                 terrainJobs.Add(new TerrainGenerationJob(currentID)); 
                 terrainJobHandler.Add(terrainJobs[i].Schedule(16*16*16, 64));
                 //if (i % 100 == 0)
@@ -124,7 +141,7 @@ namespace Chunks.Manager
             Debug.Log($"Time to generate terrain: {Time.realtimeSinceStartup - startTimeTerrainJobs}");
             for (int i = 0; i < regionChunkIDs.Count; i++)
             {
-                await m_Chunks[regionChunkIDs[i]].SetVoxelMap(terrainJobs[i].FlatVoxelMap);
+                await m_LoadedChunks[regionChunkIDs[i]].SetVoxelMap(terrainJobs[i].FlatVoxelMap);
                 //if (i % 10 == 0)
                 //    await Task.Yield();
             }
@@ -133,14 +150,14 @@ namespace Chunks.Manager
             Debug.Log($"Total time to assign terrain values: {Time.realtimeSinceStartup - startTimeTerrainJobs}");
         }
 
-        private async Task addMeshes(List<int3> regionChunkIDs)
+        private async Task buidlMeshes(List<int3> regionChunkIDs)
         {
             float startTimeMeshJobs = Time.realtimeSinceStartup;
             NativeList<ChunkMeshJob> meshJobs = new NativeList<ChunkMeshJob>(Allocator.Persistent);
             NativeList<JobHandle> meshJobHandler = new NativeList<JobHandle>(Allocator.Persistent);
             for (int i = 0; i < regionChunkIDs.Count; i++)
             {
-                Chunk chunk = m_Chunks[regionChunkIDs[i]];
+                Chunk chunk = m_LoadedChunks[regionChunkIDs[i]];
                 meshJobs.Add(new ChunkMeshJob(chunk.GetVoxelMap()));
                 meshJobHandler.Add(meshJobs[i].Schedule());
 
@@ -169,7 +186,10 @@ namespace Chunks.Manager
             for (int i = 0; i < regionChunkIDs.Count; i++)
             {
                 int3 currentID = regionChunkIDs[i];
-                await m_Chunks[currentID].SetMesh(meshJobs[i].Vertices, meshJobs[i].Triangles, meshJobs[i].UVs);
+                await m_LoadedChunks[currentID].SetMesh(meshJobs[i].Vertices, meshJobs[i].Triangles, meshJobs[i].UVs);
+
+                m_DrawnChunks.Add(currentID, m_LoadedChunks[currentID]);
+                m_LoadedChunks.Remove(currentID);
 
                 //meshJobs[i].Dispose();
 
@@ -181,16 +201,22 @@ namespace Chunks.Manager
             Debug.Log($"Total time to assign meshes {Time.realtimeSinceStartup - startTimeMeshJobs}");
         }
 
-        private List<int3> getRegionChunks()
+        //private List<int3> unloadedRegionChunks(int renderDistance)
+        //{
+
+        //}
+        private List<int3> getRegionChunks(int renderDistance, Func<int3, bool> condition)
         {
             int3 center = worldCoordinatesToChunkIndex(m_WorldCenter.position);
 
-            int renderDistance = m_GameConfig.GraphicsConfiguration.RenderDistance;
-            int halfRenderDistance = renderDistance / 2;
+            //int renderDistance = m_GameConfig.GraphicsConfiguration.RenderDistance;
+            //int halfRenderDistance = renderDistance / 2;
 
-            int2 limitsX = new int2(center.x - halfRenderDistance, center.x + halfRenderDistance);
-            int2 limitsY = new int2(0, 6);
-            int2 limitsZ = new int2(center.z - halfRenderDistance, center.z + halfRenderDistance);
+            //instead of half render distance, pass a distance
+
+            int2 limitsX = new int2(center.x - renderDistance, center.x + renderDistance);
+            int2 limitsY = new int2(0, 4);
+            int2 limitsZ = new int2(center.z - renderDistance, center.z + renderDistance);
 
             List<int3> missingChunks = new List<int3>();
 
@@ -204,7 +230,9 @@ namespace Chunks.Manager
                     {
                         pos.x = x; pos.y = y; pos.z = z;
 
-                        if (!m_Chunks.ContainsKey(pos))
+                        //we dont care if it's in the loaded or not, we want the chunks 
+
+                        if (condition(pos))
                             missingChunks.Add(pos);
                     }
 
@@ -219,10 +247,11 @@ namespace Chunks.Manager
 
         public Chunk GetChunk(int3 chunkID)
         {
-            if (!m_Chunks.ContainsKey(chunkID))
-                return null;
-
-            return m_Chunks[chunkID];
+            if (m_LoadedChunks.ContainsKey(chunkID))
+                return m_LoadedChunks[chunkID];
+            else if(m_DrawnChunks.ContainsKey(chunkID))
+                return m_DrawnChunks[chunkID];
+            return null;
         }
 
     }
