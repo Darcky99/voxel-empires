@@ -8,7 +8,6 @@ public class VoxelMap /*: IGetVoxel*/
     public VoxelMap(byte chunkSize, byte voxel)
     {
         m_ChunkSize = chunkSize;
-        //m_Voxels = new SingleVoxel(voxel);
     }
 
     private int m_ChunkSize;
@@ -62,27 +61,8 @@ public class VoxelMap /*: IGetVoxel*/
         return m_FlatMap[Voxels.IndexnoExpanded(x, y, z)];
     }
 
-    public async void SetVoxel(int x, int y, int z, byte b)
+    public void SetVoxel(int x, int y, int z, byte b)
     {
-        //byte value = GetVoxel(x, y, z);
-
-        //if (m_Voxels is SingleVoxel && value != b)
-        //{
-        //    m_Voxels = new VoxelLayers(value);
-        //    m_Voxels.SetVoxel(x, y, z, b);
-        //    return;
-        //}
-
         m_FlatMap[Voxels.IndexnoExpanded(x, y, z)] = b;
-
-        //if(m_Voxels is VoxelLayers && ((VoxelLayers)m_Voxels).IsOneValue())
-        //    m_Voxels = new SingleVoxel(b);
     }
-
-    //public byte GetVoxel(int x, int z)
-    //{
-    //    Debug.LogError(" Can't return a value without 'y' ");
-    //    return 0;
-    //}
-    //public void SetVoxel(int x, int z, byte b) => Debug.LogError(" Can't set a value without 'y' ");
 }

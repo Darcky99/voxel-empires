@@ -13,7 +13,7 @@ public class ChunkMesh : MonoBehaviour
 {
     [SerializeField] private MeshFilter[] m_LODs;
 
-    public async Task SetMesh(int3 chunkID, MeshData[] meshData)
+    public void SetMesh(int3 chunkID, MeshData[] meshData)
     {
         Vector3 worldPosition = (new Vector3(chunkID.x, chunkID.y, chunkID.z) * 16) / 2f;
         transform.position = worldPosition;
@@ -21,13 +21,12 @@ public class ChunkMesh : MonoBehaviour
         for(int i = 0 ; i < meshData.Length; i++)
         {
             Mesh mesh = new Mesh();
-            mesh.vertices = meshData[i].Vertices.ToArrayNBC();
-            mesh.triangles = meshData[i].Triangles.ToArrayNBC();
-            mesh.uv = meshData[i].UVs.ToArrayNBC();
+            mesh.vertices = meshData[i].Vertices;
+            mesh.triangles = meshData[i].Triangles;
+            mesh.uv = meshData[i].UVs;
             mesh.RecalculateNormals();
 
             m_LODs[i].mesh = mesh;
-            meshData[i].Dispose();
         }
     }
 

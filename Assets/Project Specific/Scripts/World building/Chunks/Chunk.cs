@@ -108,10 +108,10 @@ public class Chunk
         return flatMap;
     }
 
-    public async Task SetMesh(MeshData[] meshData) 
+    public void SetMesh(MeshData[] meshData) 
     {
         ChunkMesh chunkMesh  = ChunkMeshPool.s_Instance.DeQueue();
-        await chunkMesh.SetMesh(m_ChunkID, meshData);
+        chunkMesh.SetMesh(m_ChunkID, meshData);
         //m_IsDrawn = true;
     }
 }
