@@ -46,8 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_LODs:
-  - {fileID: 8808778173757465436}
+  m_LODs: {fileID: 8808778173757465436}
 --- !u!205 &1903033437849142085
 LODGroup:
   m_ObjectHideFlags: 0

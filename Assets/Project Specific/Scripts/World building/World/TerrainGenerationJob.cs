@@ -3,13 +3,14 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
+using VoxelUtils;
 
 [BurstCompile]
 public struct TerrainGenerationJob : IJobParallelFor
 {
-    public TerrainGenerationJob(int3 ChunkID)
+    public TerrainGenerationJob(Vector3Int ChunkID)
     {
-        m_ChunkID = ChunkID;
+        m_ChunkID = new int3(ChunkID.x, ChunkID.y, ChunkID.z);
 
         m_ChunkSize = ChunkConfiguration.ChunkSize;
         m_ChunkVoxelCount = m_ChunkSize * m_ChunkSize * m_ChunkSize;
@@ -33,7 +34,7 @@ public struct TerrainGenerationJob : IJobParallelFor
 
         float3 globalVoxelPositon;
 
-        voxelLocalPosition = Voxels.XYZnoExpanded(i);
+        voxelLocalPosition = Voxels.XYZ(i);
 
         //if (voxelLocalPosition.x <= 0 || voxelLocalPosition.x >= m_ChunkSize ||
         //    voxelLocalPosition.y <= 0 || voxelLocalPosition.y >= m_ChunkSize ||

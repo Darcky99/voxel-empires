@@ -3,6 +3,7 @@ using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
+using VoxelUtils;
 
 [BurstCompile]
 public struct ChunkMeshJob : IJob
@@ -11,9 +12,9 @@ public struct ChunkMeshJob : IJob
     {
         m_ChunkSize = ChunkConfiguration.ChunkSize;
 
-        Vertices = new NativeList<Vector3>(Allocator.Persistent);
-        Triangles = new NativeList<int>(Allocator.Persistent);
-        UVs = new NativeList<Vector2>(Allocator.Persistent);
+        Vertices = new NativeList<Vector3>(Allocator.TempJob);
+        Triangles = new NativeList<int>(Allocator.TempJob);
+        UVs = new NativeList<Vector2>(Allocator.TempJob);
 
         m_flatChunk = new NativeArray<byte>(centralChunk, Allocator.TempJob);
         m_One = new int3(1, 1, 1);
@@ -25,7 +26,6 @@ public struct ChunkMeshJob : IJob
     public NativeList<int> Triangles { get; private set; }
     public NativeList<Vector2> UVs { get; private set; }
 
-
     private readonly NativeArray<byte> m_flatChunk;
     private readonly int3 m_One;
 
@@ -33,8 +33,6 @@ public struct ChunkMeshJob : IJob
     {
         if (m_flatChunk.Length == 1)
             return;
-
-        //I will have to run 2 or 3 algorithms to draw other LODs.
 
         for (int y = 1; y <= m_ChunkSize; y++)
             for (int z = 1; z <= m_ChunkSize; z++)
@@ -73,7 +71,7 @@ public struct ChunkMeshJob : IJob
         if (x < 0 || x >= flatChunkSize || y < 0 || y >= flatChunkSize || z < 0 || z >= flatChunkSize)
             Debug.LogError("Out of limits");
 
-        return m_flatChunk[Voxels.Index(x, y, z)];
+        return m_flatChunk[Voxels.Expanted_Index(x, y, z)];
     }
     private byte GetValue(int3 xyz) => GetValue(xyz.x, xyz.y, xyz.z);
 }
