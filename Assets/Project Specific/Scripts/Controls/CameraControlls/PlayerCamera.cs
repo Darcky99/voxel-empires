@@ -54,7 +54,7 @@ public class PlayerCamera : MonoBehaviour
         direction.y = 0;
         direction = direction.normalized;
         direction.y = vertical;
-        transform.position += direction * m_MovementSpeed;
+        transform.position += direction * m_MovementSpeed * Time.deltaTime;
     }
     private void rotate(Vector2 mousePath)
     {
