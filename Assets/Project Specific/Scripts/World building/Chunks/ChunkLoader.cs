@@ -19,6 +19,7 @@ namespace Chunks
         }
 
         public Dictionary<Vector3Int, Chunk> LoadedChunks => m_LoadedChunks;
+        public Transform WorldCenter => m_WorldCenter;
 
         private Dictionary<Vector3Int, Chunk> m_LoadedChunks;
         [SerializeField] private Transform m_WorldCenter;
@@ -33,8 +34,6 @@ namespace Chunks
             float startTimeTerrainJobs = Time.realtimeSinceStartup;
             NativeList<TerrainGenerationJob> generationJobs = new NativeList<TerrainGenerationJob>(Allocator.Persistent);
             NativeList<JobHandle> handlers = new NativeList<JobHandle>(Allocator.Persistent);
-
-            Debug.Log($"Started scheduling: {Time.realtimeSinceStartup - startTimeTerrainJobs}");
             for (int i = 0; i < toLoad.Count; i++)
             {
                 Vector3Int id = toLoad[i];
@@ -44,7 +43,6 @@ namespace Chunks
                 if (i % 500 == 0)
                     await Task.Yield();
             }
-            Debug.Log($"Finished scheduling");
             async Task Check()
             {
                 bool allComplete = false;
@@ -64,7 +62,6 @@ namespace Chunks
             }
             await Check();
             JobHandle.CompleteAll(handlers.AsArray());
-            Debug.Log($"Time to generate terrain: {Time.realtimeSinceStartup - startTimeTerrainJobs}");
             for (int i = 0; i < toLoad.Count; i++)
             {
                 m_LoadedChunks[toLoad[i]].SetVoxelMap(generationJobs[i].FlatVoxelMap.ToArray());
@@ -75,9 +72,9 @@ namespace Chunks
             }
             generationJobs.Dispose();
             handlers.Dispose();
-            Debug.Log($"Total time to assign terrain values: {Time.realtimeSinceStartup - startTimeTerrainJobs}");
         }
 
+        #region Auxiliar
         private List<Vector3Int> getChunksByDistance(Vector3 worldPosition, int renderDistance, Func<Vector3Int, bool> condition)
         {
             Vector3Int center = worldCoordinatesToChunkIndex(worldPosition);
@@ -119,6 +116,7 @@ namespace Chunks
             worldCoordinatesToChunkIndex(worldPosition);
         public List<Vector3Int> GetChunksByDistance(int renderDistance, Func<Vector3Int, bool> condition) =>
             getChunksByDistance(m_WorldCenter.position, renderDistance, condition);
+        #endregion
 
         public async Task Load(List<Vector3Int> toLoad) => await load(toLoad);
     }

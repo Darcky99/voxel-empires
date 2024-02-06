@@ -8,7 +8,7 @@ using VoxelUtils;
 [BurstCompile]
 public struct ChunkMeshJob : IJob
 {
-    public ChunkMeshJob(byte[] centralChunk)
+    public ChunkMeshJob(byte[] centralChunk, Vector3Int id)
     {
         m_ChunkSize = ChunkConfiguration.ChunkSize;
 
@@ -16,7 +16,8 @@ public struct ChunkMeshJob : IJob
         Triangles = new NativeList<int>(Allocator.TempJob);
         UVs = new NativeList<Vector2>(Allocator.TempJob);
 
-        m_flatChunk = new NativeArray<byte>(centralChunk, Allocator.TempJob);
+        m_Expanded_Flat_Chunk = new NativeArray<byte>(centralChunk, Allocator.TempJob);
+        m_ID = new int3(id.x, id.y, id.z);
         m_One = new int3(1, 1, 1);
     }
 
@@ -26,12 +27,13 @@ public struct ChunkMeshJob : IJob
     public NativeList<int> Triangles { get; private set; }
     public NativeList<Vector2> UVs { get; private set; }
 
-    private readonly NativeArray<byte> m_flatChunk;
+    private readonly NativeArray<byte> m_Expanded_Flat_Chunk;
     private readonly int3 m_One;
+    private readonly int3 m_ID;
 
     public void Execute()
     {
-        if (m_flatChunk.Length == 1)
+        if (m_Expanded_Flat_Chunk.Length == 1)
             return;
 
         for (int y = 1; y <= m_ChunkSize; y++)
@@ -52,7 +54,7 @@ public struct ChunkMeshJob : IJob
                     {
                         byte adjacentID = GetValue(position + Voxels.GetCheckDirection(faceIndex));
 
-                        if (adjacentID != 0)
+                        if (adjacentID != 0  || (m_ID.y == 0 && y == 1 && faceIndex == 1))
                             continue;
 
                         NativeArray<float3> faceVertices = Voxels.GetFaceVertices(faceIndex);
@@ -71,7 +73,7 @@ public struct ChunkMeshJob : IJob
         if (x < 0 || x >= flatChunkSize || y < 0 || y >= flatChunkSize || z < 0 || z >= flatChunkSize)
             Debug.LogError("Out of limits");
 
-        return m_flatChunk[Voxels.Expanted_Index(x, y, z)];
+        return m_Expanded_Flat_Chunk[Voxels.Expanted_Index(x, y, z)];
     }
     private byte GetValue(int3 xyz) => GetValue(xyz.x, xyz.y, xyz.z);
 }

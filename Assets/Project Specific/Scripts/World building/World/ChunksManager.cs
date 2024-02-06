@@ -34,10 +34,6 @@ namespace Project.Managers
             m_ChunkDrawer = new ChunkDrawer(m_ChunkLoader);
             m_DrawnChunks = new Dictionary<Vector3Int, Chunk>();
         }
-        public override void Start()
-        {
-            //buildRegion();
-        }
         #endregion
 
         [SerializeField] private bool DrawGizmos = false;
@@ -52,14 +48,14 @@ namespace Project.Managers
         [Button]
         private async void Load_and_Draw_World()
         {
-            await m_ChunkLoader.Load(GetChunksByDistance(m_GameConfig.GraphicsConfiguration.RenderDistance + 1,
+            await m_ChunkLoader.Load(GetChunksByDistance(64,
                 (chunkID) => (!LoadedChunks.ContainsKey(chunkID) && !m_DrawnChunks.ContainsKey(chunkID))));
 
             m_ChunkDrawer.CheckToDraw();
         }
 
         public Chunk GetChunk(Vector3Int chunkID) => m_ChunkLoader.GetChunk(chunkID);
-        private Vector3Int worldCoordinatesToChunkIndex(Vector3 worldPosition) =>
+        private Vector3Int WorldCoordinatesToChunkIndex(Vector3 worldPosition) =>
             m_ChunkLoader.WorldCoordinatesToChunkIndex(worldPosition);
         public List<Vector3Int> GetChunksByDistance(int renderDistance, Func<Vector3Int, bool> condition) =>
             m_ChunkLoader.GetChunksByDistance(renderDistance, condition);

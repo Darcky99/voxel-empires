@@ -14,7 +14,7 @@ public class ChunkMesh : MonoBehaviour
 
     private void updateMesh()
     {
-        ChunkMeshJob job = new ChunkMeshJob(m_Chunk.Get_Expanded_VoxelMap());
+        ChunkMeshJob job = new ChunkMeshJob(m_Chunk.Get_Expanded_VoxelMap(), m_Chunk.ChunkID);
         JobHandle jobHandle = job.Schedule();
         jobHandle.Complete();
 

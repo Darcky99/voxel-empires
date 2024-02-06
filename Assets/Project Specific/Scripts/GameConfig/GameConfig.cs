@@ -22,6 +22,8 @@ public class ChunkConfiguration
     public static readonly int FlatChunkSize = ChunkSize + 2;
     public static readonly int FlatChunkLenght = FlatChunkSize * FlatChunkSize * FlatChunkSize;
 
+    public static readonly int KeyToWorld = 16 / 2;
+
     //[SerializeField, Min(16)] private int m_ChunkSizeInVoxels;
 }
 
@@ -32,7 +34,7 @@ public class GraphicsConfiguration
 }
 
 [Serializable]
-public struct TerrainGenerationConfiguration
+public class TerrainGenerationConfiguration
 {
     public readonly static float HeightNoiseScale = 0.01f;
     public readonly static float MinimumValue = 0;
