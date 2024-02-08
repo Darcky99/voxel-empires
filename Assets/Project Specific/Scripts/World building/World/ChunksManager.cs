@@ -15,7 +15,7 @@ namespace Project.Managers
 {
     public class ChunksManager : Singleton<ChunksManager>
     {
-        public GameConfig m_GameConfig => GameConfig.Instance;
+        //public GameConfig m_GameConfig => GameConfig.Instance;
 
         #region Editor
         private void OnDrawGizmos()
@@ -31,31 +31,40 @@ namespace Project.Managers
         #region Unity
         protected override void OnAwakeEvent()
         {
+            m_ChunkLoader = new ChunkLoader();
             m_ChunkDrawer = new ChunkDrawer(m_ChunkLoader);
-            m_DrawnChunks = new Dictionary<Vector3Int, Chunk>();
+        }
+        public override void Start()
+        {
+            base.Start();
+            Load_and_Draw_World();
         }
         #endregion
 
+        [Title("Configuration")]
+        public Vector3 WorldCenter => m_WorldCenter.position;
+
         [SerializeField] private bool DrawGizmos = false;
+        [SerializeField] private Transform m_WorldCenter;
 
+        [Title("Handlers")]
         private Dictionary<Vector3Int, Chunk> LoadedChunks => m_ChunkLoader.LoadedChunks;
-        private Dictionary<Vector3Int, Chunk> m_DrawnChunks;
 
-        [SerializeField] private ChunkLoader m_ChunkLoader = new ChunkLoader();
+        private ChunkLoader m_ChunkLoader;
         private ChunkDrawer m_ChunkDrawer;
 
         
-        [Button]
+        //[Button]
         private async void Load_and_Draw_World()
         {
             await m_ChunkLoader.Load(GetChunksByDistance(64,
-                (chunkID) => (!LoadedChunks.ContainsKey(chunkID) && !m_DrawnChunks.ContainsKey(chunkID))));
+                (chunkID) => (!LoadedChunks.ContainsKey(chunkID))));
 
             m_ChunkDrawer.CheckToDraw();
         }
 
         public Chunk GetChunk(Vector3Int chunkID) => m_ChunkLoader.GetChunk(chunkID);
-        private Vector3Int WorldCoordinatesToChunkIndex(Vector3 worldPosition) =>
+        public Vector3Int WorldCoordinatesToChunkIndex(Vector3 worldPosition) =>
             m_ChunkLoader.WorldCoordinatesToChunkIndex(worldPosition);
         public List<Vector3Int> GetChunksByDistance(int renderDistance, Func<Vector3Int, bool> condition) =>
             m_ChunkLoader.GetChunksByDistance(renderDistance, condition);

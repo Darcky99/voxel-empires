@@ -30,7 +30,7 @@ public class ChunkConfiguration
 [Serializable]
 public class GraphicsConfiguration
 {
-    public int RenderDistance = 16;
+    public static int RenderDistance = 16;
 }
 
 [Serializable]

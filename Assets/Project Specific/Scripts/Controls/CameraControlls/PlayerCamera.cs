@@ -1,16 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
+using Project.Managers;
+using System;
 using UnityEngine;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class PlayerCamera : MonoBehaviour
 {
+    private ChunksManager m_ChunkManager => ChunksManager.Instance;
+
+    public static event Action OnCameraMove;
+
     [SerializeField] private float m_MovementSpeed = 2.5f;
     [SerializeField] private float m_RotationSensibility = 0.15f;
 
+    private Vector3Int m_CurrentChunkPosition;
+
     private Vector3 m_InitialRotation;
     private Vector2 m_InitialMousePosition;
-    //private Vector2 m_FinalMousePosition;
+
+    private void Start()
+    {
+        m_CurrentChunkPosition = m_ChunkManager.WorldCoordinatesToChunkIndex(transform.position);
+    }
 
     private void Update()
     {
@@ -55,6 +64,14 @@ public class PlayerCamera : MonoBehaviour
         direction = direction.normalized;
         direction.y = vertical;
         transform.position += direction * m_MovementSpeed * Time.deltaTime;
+
+        Vector3Int currentChunk = m_ChunkManager.WorldCoordinatesToChunkIndex(transform.position);
+
+        if (currentChunk != m_CurrentChunkPosition) {
+            m_CurrentChunkPosition = currentChunk;
+            OnCameraMove?.Invoke();
+        }
+        
     }
     private void rotate(Vector2 mousePath)
     {

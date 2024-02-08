@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 363039939384885866}
   - component: {fileID: 4001090224927273711}
-  - component: {fileID: 1903033437849142085}
   m_Layer: 0
   m_Name: ChunkMesh
   m_TagString: Untagged
@@ -47,25 +46,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_LODs: {fileID: 8808778173757465436}
---- !u!205 &1903033437849142085
-LODGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3239351085541624570}
-  serializedVersion: 2
-  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
-  m_Size: 1
-  m_FadeMode: 0
-  m_AnimateCrossFading: 0
-  m_LastLODIsBillboard: 0
-  m_LODs:
-  - screenRelativeHeight: 0.0067565646
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 2298150669213839662}
-  m_Enabled: 1
 --- !u!1 &9160094407418228846
 GameObject:
   m_ObjectHideFlags: 0

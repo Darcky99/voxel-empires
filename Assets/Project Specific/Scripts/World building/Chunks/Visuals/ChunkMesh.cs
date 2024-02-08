@@ -2,7 +2,6 @@ using UnityEngine;
 using Unity.Collections;
 using Unity.Mathematics;
 using Chunks;
-using static UnityEngine.Mesh;
 using Unity.Jobs;
 using Unity.Collections.NotBurstCompatible;
 
@@ -14,7 +13,7 @@ public class ChunkMesh : MonoBehaviour
 
     private void updateMesh()
     {
-        ChunkMeshJob job = new ChunkMeshJob(m_Chunk.Get_Expanded_VoxelMap(), m_Chunk.ChunkID);
+        IChunkMesh job = new IChunkMesh(m_Chunk.Get_Expanded_VoxelMap(), m_Chunk.ChunkID);
         JobHandle jobHandle = job.Schedule();
         jobHandle.Complete();
 
@@ -22,6 +21,7 @@ public class ChunkMesh : MonoBehaviour
         mesh.vertices = job.Vertices.ToArrayNBC();
         mesh.triangles = job.Triangles.ToArrayNBC();
         mesh.uv = job.UVs.ToArrayNBC();
+        job.Dispose();
         mesh.RecalculateNormals();
         m_LODs.mesh = mesh;
     }
@@ -33,8 +33,6 @@ public class ChunkMesh : MonoBehaviour
         Vector3 worldPosition = (new Vector3(chunkID.x, chunkID.y, chunkID.z) * 16) / 2f;
         transform.position = worldPosition;
 
-        float time = Time.realtimeSinceStartup;
         updateMesh();
-        Debug.Log($"Updating mesh time {Time.realtimeSinceStartup - time}");
     }
 }

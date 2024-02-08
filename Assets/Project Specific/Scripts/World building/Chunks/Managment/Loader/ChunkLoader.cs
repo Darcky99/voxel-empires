@@ -19,10 +19,10 @@ namespace Chunks
         }
 
         public Dictionary<Vector3Int, Chunk> LoadedChunks => m_LoadedChunks;
-        public Transform WorldCenter => m_WorldCenter;
+        public Vector3 WorldCenter => ChunksManager.Instance.WorldCenter;
 
-        private Dictionary<Vector3Int, Chunk> m_LoadedChunks;
-        [SerializeField] private Transform m_WorldCenter;
+        private Dictionary<Vector3Int, Chunk> m_LoadedChunks = new Dictionary<Vector3Int, Chunk>();
+        
 
         private async Task load(List<Vector3Int> toLoad)
         {
@@ -115,7 +115,7 @@ namespace Chunks
         public Vector3Int WorldCoordinatesToChunkIndex(Vector3 worldPosition) =>
             worldCoordinatesToChunkIndex(worldPosition);
         public List<Vector3Int> GetChunksByDistance(int renderDistance, Func<Vector3Int, bool> condition) =>
-            getChunksByDistance(m_WorldCenter.position, renderDistance, condition);
+            getChunksByDistance(WorldCenter, renderDistance, condition);
         #endregion
 
         public async Task Load(List<Vector3Int> toLoad) => await load(toLoad);
