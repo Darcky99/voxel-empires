@@ -1,15 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Chunks
 {
     public class ChunkDrawer
     {
-        //public GameConfig m_GameConfig => GameConfig.Instance;
+        public GameConfig m_GameConfig => GameConfig.Instance;
 
         public ChunkDrawer(ChunkLoader chunkLoader)
         {
@@ -28,7 +25,9 @@ namespace Chunks
 
         private async Task checkToDraw()
         {
-            for (int i = 1; i <= GraphicsConfiguration.RenderDistance; i++)
+            int renderDistance = m_GameConfig.GraphicsConfiguration.RenderDistance;
+
+            for (int i = 1; i <= renderDistance; i++)
             {
                 m_ChunksToDraw = m_ChunkLoader.GetChunksByDistance(i, (chunkID) => {
                     bool exist = m_ChunkLoader.LoadedChunks.TryGetValue(chunkID, out Chunk chunk);
@@ -44,12 +43,13 @@ namespace Chunks
                     Vector3Int key = m_ChunksToDraw[j];
                     m_ChunkLoader.GetChunk(key).DrawMesh();
                     
-                    if (j != 0 && j % 10 == 0)
+                    if (j != 0 && j % 15 == 0)
                         await Task.Yield();
                 }
                 m_ChunksToDraw.Clear();
 
-                if (m_StarOverFlag) {
+                if (m_StarOverFlag)
+                {
                     i = 1;
                     m_StarOverFlag = false;
                 }

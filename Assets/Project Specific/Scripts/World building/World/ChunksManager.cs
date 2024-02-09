@@ -15,7 +15,7 @@ namespace Project.Managers
 {
     public class ChunksManager : Singleton<ChunksManager>
     {
-        //public GameConfig m_GameConfig => GameConfig.Instance;
+        public GameConfig m_GameConfig => GameConfig.Instance;
 
         #region Editor
         private void OnDrawGizmos()
@@ -57,7 +57,7 @@ namespace Project.Managers
         //[Button]
         private async void Load_and_Draw_World()
         {
-            await m_ChunkLoader.Load(GetChunksByDistance(64,
+            await m_ChunkLoader.Load(GetChunksByDistance(m_GameConfig.WorldConfig.WorldSize,
                 (chunkID) => (!LoadedChunks.ContainsKey(chunkID))));
 
             m_ChunkDrawer.CheckToDraw();

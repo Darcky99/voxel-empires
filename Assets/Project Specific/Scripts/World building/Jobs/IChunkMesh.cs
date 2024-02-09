@@ -10,7 +10,8 @@ public struct IChunkMesh : IJob
 {
     public IChunkMesh(byte[] centralChunk, Vector3Int id)
     {
-        m_ChunkSize = ChunkConfiguration.ChunkSize;
+        m_ChunkSize = GameConfig.Instance.ChunkConfiguration.ChunkSize;
+        m_Expanded_ChunkSize = GameConfig.Instance.ChunkConfiguration.Expanded_ChunkSize;
 
         Vertices = new NativeList<Vector3>(Allocator.Persistent);
         Triangles = new NativeList<int>(Allocator.Persistent);
@@ -22,6 +23,7 @@ public struct IChunkMesh : IJob
     }
 
     private readonly int m_ChunkSize;
+    private readonly int m_Expanded_ChunkSize;
 
     public NativeList<Vector3> Vertices { get; private set; }
     public NativeList<int> Triangles { get; private set; }
@@ -68,9 +70,7 @@ public struct IChunkMesh : IJob
 
     private byte GetValue(int x, int y, int z)
     {
-        int flatChunkSize = ChunkConfiguration.FlatChunkSize;
-
-        if (x < 0 || x >= flatChunkSize || y < 0 || y >= flatChunkSize || z < 0 || z >= flatChunkSize)
+        if (x < 0 || x >= m_Expanded_ChunkSize || y < 0 || y >= m_Expanded_ChunkSize || z < 0 || z >= m_Expanded_ChunkSize)
             Debug.LogError("Out of limits");
 
         return m_Expanded_Flat_Chunk[Voxels.Expanted_Index(x, y, z)];

@@ -13,6 +13,8 @@ namespace Chunks
     [Serializable]
     public class ChunkLoader
     {
+        private GameConfig m_GameConfig => GameConfig.Instance;
+
         public ChunkLoader()
         {
             m_LoadedChunks = new Dictionary<Vector3Int, Chunk>();
@@ -31,7 +33,6 @@ namespace Chunks
 
         private async Task addNaturalTerrain(List<Vector3Int> toLoad)
         {
-            float startTimeTerrainJobs = Time.realtimeSinceStartup;
             NativeList<ITerrainGeneration> generationJobs = new NativeList<ITerrainGeneration>(Allocator.Persistent);
             NativeList<JobHandle> handlers = new NativeList<JobHandle>(Allocator.Persistent);
             for (int i = 0; i < toLoad.Count; i++)
@@ -80,7 +81,7 @@ namespace Chunks
             Vector3Int center = worldCoordinatesToChunkIndex(worldPosition);
 
             int2 limitsX = new int2(center.x - renderDistance, center.x + renderDistance);
-            int2 limitsY = new int2(0, 4);
+            int2 limitsY = new int2(0, m_GameConfig.WorldConfig.WorldHeight);
             int2 limitsZ = new int2(center.z - renderDistance, center.z + renderDistance);
 
             List<Vector3Int> missingChunks = new List<Vector3Int>();

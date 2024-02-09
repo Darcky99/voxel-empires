@@ -12,39 +12,36 @@ public struct ITerrainGeneration : IJobParallelFor
     {
         m_ChunkID = new int3(ChunkID.x, ChunkID.y, ChunkID.z);
 
-        m_ChunkSize = ChunkConfiguration.ChunkSize;
-        m_ChunkVoxelCount = m_ChunkSize * m_ChunkSize * m_ChunkSize;
+        m_ChunkSize = GameConfig.Instance.ChunkConfiguration.ChunkSize;
+        m_ChunkVoxelCount = GameConfig.Instance.ChunkConfiguration.ChunkVoxelCount;
+        m_HeightNoiseScale = GameConfig.Instance.WorldConfig.HeightNoiseScale;
 
-        flatVoxelMap = new NativeArray<byte>(m_ChunkVoxelCount, Allocator.Persistent);
+        m_FlatVoxelMap = new NativeArray<byte>(m_ChunkVoxelCount, Allocator.Persistent);
     }
 
-    public NativeArray<byte> FlatVoxelMap => flatVoxelMap;
+    public NativeArray<byte> FlatVoxelMap => m_FlatVoxelMap;
 
     private readonly int m_ChunkSize;
     private readonly int m_ChunkVoxelCount;
+    private readonly float m_HeightNoiseScale;
     private readonly int3 m_ChunkID;
 
-    private NativeArray<byte> flatVoxelMap;
+    private NativeArray<byte> m_FlatVoxelMap;
 
     public void Execute(int i)
     {
         int3
             globalChunkPosition = m_ChunkID * m_ChunkSize,
-            voxelLocalPosition = default;
+            voxelLocalPosition = Voxels.XYZ(i);
 
         float3 globalVoxelPositon;
 
-        voxelLocalPosition = Voxels.XYZ(i);
-
         globalVoxelPositon = globalChunkPosition + voxelLocalPosition;
 
-        float heightVariationNoise = (noise.cnoise(new float2(globalVoxelPositon.x, globalVoxelPositon.z) * TerrainGenerationConfiguration.HeightNoiseScale) + 1) / 2;
+        float heightValue = (noise.cnoise(new float2(globalVoxelPositon.x, globalVoxelPositon.z) * m_HeightNoiseScale) + 1f) / 2f;
 
-        float maxHeight = (heightVariationNoise * 35) + 10;
-        float minHeight = (heightVariationNoise * 25) + 10;
+        bool heightCondition = globalVoxelPositon.y <= heightValue * 180f;
 
-        bool heightCondition = globalVoxelPositon.y < maxHeight || globalVoxelPositon.y <= minHeight;
-
-        flatVoxelMap[i] = (byte) (heightCondition ? 1 : 0);
+        m_FlatVoxelMap[i] = (byte) (heightCondition ? 1 : 0);
     }
 }

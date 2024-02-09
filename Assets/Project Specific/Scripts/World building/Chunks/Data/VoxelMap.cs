@@ -5,9 +5,9 @@ namespace VoxelUtils
 {
     public class VoxelMap
     {
-        public VoxelMap(byte chunkSize)
+        public VoxelMap()
         {
-            m_ChunkSize = chunkSize;
+            m_ChunkSize = GameConfig.Instance.ChunkConfiguration.ChunkSize;
         }
 
         public byte[] Expanded_FlatMap

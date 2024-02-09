@@ -12,8 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7c72d24a1d76ba42aac346ed1917799, type: 3}
   m_Name: Game Configuration
   m_EditorClassIdentifier: 
+  <ChunkConfiguration>k__BackingField:
+    m_ChunkSize: 16
   <GraphicsConfiguration>k__BackingField:
-    RenderDistance: 32
+    m_RenderDistance: 8
+  <WorldConfig>k__BackingField:
+    <WorldSize>k__BackingField: 16
+    <WorldHeight>k__BackingField: 12
+    m_HeightNoiseScale: 0.005
   <VoxelConfiguration>k__BackingField:
     <SolidVoxel>k__BackingField: {fileID: 11400000, guid: 0d5e5f5c89544944bbd5c06c35e59a6b,
       type: 2}

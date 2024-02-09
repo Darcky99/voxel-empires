@@ -7,55 +7,53 @@ namespace VoxelUtils
 {
     public static class Voxels
     {
-        public static int Expanted_Index(int x, int y, int z)
-        {
-            int flatMapSide = ChunkConfiguration.ChunkSize + 2;
-
-            if (x < 0 || x >= flatMapSide || y < 0 || y >= flatMapSide || z < 0 || z >= flatMapSide)
-                Debug.LogError($"Asking for coordinates out of range");
-
-            return x + (z * flatMapSide) + (y * flatMapSide * flatMapSide);
-        }
-        public static int3 Expanded_XYZ(int i)
-        {
-            int flatMapSide = ChunkConfiguration.FlatChunkSize;
-            int squareChunkSize = flatMapSide * flatMapSide;
-
-            int3 xyz = new int3();
-
-            xyz.y = (int)math.floor(i / (float)squareChunkSize);
-            i -= xyz.y * squareChunkSize;
-            xyz.z = (int)math.floor(i / (float)flatMapSide);
-            i -= xyz.z * flatMapSide;
-            xyz.x = i;
-
-            return xyz;
-        }
+        private static readonly int s_ChunkSize = 16;
+        private static int s_Expanded_ChunkSize => s_ChunkSize + 2;
 
         public static int Index(int x, int y, int z)
         {
-            int size = ChunkConfiguration.ChunkSize;
-
-            if (x < 0 || x >= size || y < 0 || y >= size || z < 0 || z >= size)
+            if (x < 0 || x >= s_ChunkSize || y < 0 || y >= s_ChunkSize || z < 0 || z >= s_ChunkSize)
                 Debug.LogError($"Asking for coordinates out of range {x}, {y}, {z}");
 
-            return x + (z * size) + (y * size * size);
+            return x + (z * s_ChunkSize) + (y * s_ChunkSize * s_ChunkSize);
         }
         public static int3 XYZ(int i)
         {
-            int chunkSide = ChunkConfiguration.ChunkSize;
-            int squareChunkSize = chunkSide * chunkSide;
+            int squareChunkSize = s_ChunkSize * s_ChunkSize;
 
             int3 xyz = new int3();
 
             xyz.y = (int)math.floor(i / (float)squareChunkSize);
             i -= xyz.y * squareChunkSize;
-            xyz.z = (int)math.floor(i / (float)chunkSide);
-            i -= xyz.z * chunkSide;
+            xyz.z = (int)math.floor(i / (float)s_ChunkSize);
+            i -= xyz.z * s_ChunkSize;
             xyz.x = i;
 
             return xyz;
         }
+
+        public static int Expanted_Index(int x, int y, int z)
+        {
+            if (x < 0 || x >= s_Expanded_ChunkSize || y < 0 || y >= s_Expanded_ChunkSize || z < 0 || z >= s_Expanded_ChunkSize)
+                Debug.LogError($"Asking for coordinates out of range");
+
+            return x + (z * s_Expanded_ChunkSize) + (y * s_Expanded_ChunkSize * s_Expanded_ChunkSize);
+        }
+        public static int3 Expanded_XYZ(int i)
+        {
+            int squareChunkSize = s_Expanded_ChunkSize * s_Expanded_ChunkSize;
+
+            int3 xyz = new int3();
+
+            xyz.y = (int)math.floor(i / (float)squareChunkSize);
+            i -= xyz.y * squareChunkSize;
+            xyz.z = (int)math.floor(i / (float)s_Expanded_ChunkSize);
+            i -= xyz.z * s_Expanded_ChunkSize;
+            xyz.x = i;
+
+            return xyz;
+        }
+
 
         public static float3 GetVoxelVertice(int vertexIndex)
         {

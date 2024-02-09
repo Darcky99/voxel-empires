@@ -1,9 +1,9 @@
-using System.Threading.Tasks;
-using Unity.Collections;
-using Unity.Mathematics;
 using UnityEngine;
 using VoxelUtils;
 using Project.Managers;
+using Unity.Jobs;
+using Unity.Collections.NotBurstCompatible;
+
 
 namespace Chunks
 {
@@ -14,14 +14,14 @@ namespace Chunks
         public Chunk(Vector3Int ID)
         {
             m_ChunkID = ID;
-            m_VoxelMap = new VoxelMap((byte)ChunkConfiguration.ChunkSize);
+            m_VoxelMap = new VoxelMap();
             m_ChunkState = eChunkState.Active;
         }
 
         #region Editor
         public void OnDrawGizmos()
         {
-            int chunkSize = ChunkConfiguration.ChunkSize;
+            int chunkSize = GameConfig.Instance.ChunkConfiguration.ChunkSize;
             Vector3 offset = new Vector3(m_ChunkID.x, m_ChunkID.y, m_ChunkID.z) * chunkSize * .5f;
 
             for (int y = 0; y < chunkSize; y++)
@@ -57,18 +57,18 @@ namespace Chunks
         public void SetVoxelMap(byte[] flatVoxelMap) => m_VoxelMap.SetFlatMap(flatVoxelMap);
         public byte[] Get_Expanded_VoxelMap()
         {
-            int flatChunkSizeMaxIndex = ChunkConfiguration.FlatChunkSize - 1;
+            int expanded_ChunkSizeMaxIndex = GameConfig.Instance.ChunkConfiguration.Expanded_ChunkSize - 1;
 
             byte[] flatMap = m_VoxelMap.Expanded_FlatMap;
 
             if (flatMap.Length == 1)
                 return flatMap;
 
-            for (int y = 0; y <= flatChunkSizeMaxIndex; y++)
-                for (int z = 0; z <= flatChunkSizeMaxIndex; z++)
-                    for (int x = 0; x <= flatChunkSizeMaxIndex; x++)
+            for (int y = 0; y <= expanded_ChunkSizeMaxIndex; y++)
+                for (int z = 0; z <= expanded_ChunkSizeMaxIndex; z++)
+                    for (int x = 0; x <= expanded_ChunkSizeMaxIndex; x++)
                     {
-                        if (!(x == 0 || x == flatChunkSizeMaxIndex || y == 0 || y == flatChunkSizeMaxIndex || z == 0 || z == flatChunkSizeMaxIndex))
+                        if (!(x == 0 || x == expanded_ChunkSizeMaxIndex || y == 0 || y == expanded_ChunkSizeMaxIndex || z == 0 || z == expanded_ChunkSizeMaxIndex))
                             continue;
 
                         Vector3Int adjacentChunkID = default, adjacentVoxel = default;
@@ -97,10 +97,27 @@ namespace Chunks
 
         public void DrawMesh()
         {
+            IChunkMesh job = new IChunkMesh(Get_Expanded_VoxelMap(), ChunkID);
+            JobHandle jobHandle = job.Schedule();
+            jobHandle.Complete();
+
+            if (job.Vertices.Length == 0)
+            {
+                job.Dispose();
+                return;
+            }
+
             if(m_ChunkMesh == null)
                 m_ChunkMesh = ChunkMeshPool.s_Instance.DeQueue();
 
-            m_ChunkMesh.Initialize(this);
+            Mesh mesh = new Mesh();
+            mesh.vertices = job.Vertices.ToArrayNBC();
+            mesh.triangles = job.Triangles.ToArrayNBC();
+            mesh.uv = job.UVs.ToArrayNBC();
+            job.Dispose();
+            mesh.RecalculateNormals();
+
+            m_ChunkMesh.Initialize(this, mesh);
             m_ChunkState = eChunkState.Drawn;
         }
     }

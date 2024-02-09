@@ -1,18 +1,22 @@
-using System.Collections;
+using Chunks;
 using System.Collections.Generic;
+using Unity.Burst;
+using Unity.Collections;
+using Unity.Jobs;
 using UnityEngine;
 
-public class IGetChunks : MonoBehaviour
+[BurstCompile]
+public struct IGetChunks : IJob
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    //public IGetChunks(Dictionary<Vector3Int, Chunk> chunks)
+    //{
+    //    m_Chunks = new NativeHashMap<Vector3Int, Chunk>(chunks.Count, Allocator.TempJob);
+    //}
 
-    // Update is called once per frame
-    void Update()
+    //private NativeHashMap<Vector3Int, Chunk> m_Chunks;
+
+    public void Execute()
     {
-        
+        throw new System.NotImplementedException();
     }
 }
