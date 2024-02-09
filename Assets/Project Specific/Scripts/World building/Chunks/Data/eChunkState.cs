@@ -7,7 +7,8 @@ namespace Chunks
     public enum eChunkState
     {
         Active,
-        Requested_Draw,
+       //Requested_Draw,
         Drawn,
+        //Drawn_NoMesh
     }
 }

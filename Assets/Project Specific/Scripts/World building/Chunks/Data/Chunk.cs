@@ -97,6 +97,8 @@ namespace Chunks
 
         public void DrawMesh()
         {
+            m_ChunkState = eChunkState.Drawn;
+
             IChunkMesh job = new IChunkMesh(Get_Expanded_VoxelMap(), ChunkID);
             JobHandle jobHandle = job.Schedule();
             jobHandle.Complete();
@@ -118,7 +120,7 @@ namespace Chunks
             mesh.RecalculateNormals();
 
             m_ChunkMesh.Initialize(this, mesh);
-            m_ChunkState = eChunkState.Drawn;
+            
         }
     }
 }

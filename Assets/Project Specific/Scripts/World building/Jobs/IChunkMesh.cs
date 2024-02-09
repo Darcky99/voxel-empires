@@ -57,9 +57,7 @@ public struct IChunkMesh : IJob
 
                     for (int faceIndex = 0; faceIndex <= 5; faceIndex++)
                     {
-                        //byte adjacentID = getValue(position + Voxels.GetCheckDirection(faceIndex));
-
-                        if (!canDrawFace(position, faceIndex)  /*|| (m_ID.y == 0 && y == 1 && faceIndex == 1) disabled last face cooling*/)
+                        if (!canDrawFace(position, faceIndex) || (m_ID.y == 0 && y == 1 && faceIndex == 1))
                             continue;
 
                         if (faceIndex == 0 || faceIndex == 1)
@@ -96,7 +94,6 @@ public struct IChunkMesh : IJob
                             Triangles.AddRange(new NativeArray<int>(Voxels.GetFaceTriangles(vertexIndex), Allocator.Temp));
                             continue;
                         }
-
 
                         Triangles.AddRange(new NativeArray<int>(Voxels.GetFaceTriangles(Vertices.Length), Allocator.Temp));
                         

@@ -7,6 +7,7 @@ using UnityEngine;
 using Project.Managers;
 using Unity.Mathematics;
 using System;
+using static UnityEditor.PlayerSettings;
 
 namespace Chunks
 {
@@ -76,20 +77,22 @@ namespace Chunks
         }
 
         #region Auxiliar
-        private List<Vector3Int> getChunksByDistance(Vector3 worldPosition, int renderDistance, Func<Vector3Int, bool> condition)
+        private List<Vector3Int> getChunksByDistance(Vector3 worldPosition, int distance, Func<Vector3Int, bool> condition)
         {
             Vector3Int center = worldCoordinatesToChunkIndex(worldPosition);
 
-            int2 limitsX = new int2(center.x - renderDistance, center.x + renderDistance);
-            int2 limitsY = new int2(0, m_GameConfig.WorldConfig.WorldHeight);
-            int2 limitsZ = new int2(center.z - renderDistance, center.z + renderDistance);
+            int2 x_limits = new int2(center.x - distance, center.x + distance);
+            int2 y_limits = new int2(0, m_GameConfig.WorldConfig.WorldHeight);
+            int2 z_limits = new int2(center.z - distance, center.z + distance);
 
             List<Vector3Int> missingChunks = new List<Vector3Int>();
             Vector3Int pos = default;
 
-            for (int x = limitsX.x; x <= limitsX.y; x++)
-                for (int y = limitsY.x; y <= limitsY.y; y++)
-                    for (int z = limitsZ.x; z <= limitsZ.y; z++)
+            int totalDistance = distance * 2 - 1;
+
+            for (int x = x_limits.x; x <= x_limits.y; x++)
+                for (int z = z_limits.x; z <= z_limits.y; z++)
+                    for (int y = y_limits.x; y <= y_limits.y; y++)
                     {
                         pos.x = x; pos.y = y; pos.z = z;
 
@@ -99,6 +102,29 @@ namespace Chunks
 
             return missingChunks;
         }
+        private List<Vector3Int> getChunkByRing(Vector3 worldPosition, int ring, Func<Vector3Int, bool> condition)
+        {
+            List<Vector3Int> missingChunks = new List<Vector3Int>();
+            Vector3Int center = worldCoordinatesToChunkIndex(worldPosition);
+            Vector3Int pos = default;
+
+            int2 x_limits = new int2(center.x - ring, center.x + ring);
+            int2 z_limits = new int2(center.z - ring, center.z + ring);
+            int2 y_limits = new int2(0, m_GameConfig.WorldConfig.WorldHeight);
+
+            for (int x = x_limits.x; x <= x_limits.y; x++)
+                for (int z = z_limits.x; z <= z_limits.y; z++)
+                    for (int y = y_limits.x; y <= y_limits.y; y++)
+                    {
+                        if ((x == x_limits.x || x == x_limits.y || y == y_limits.x || y == y_limits.y || z == z_limits.x || z == z_limits.y) == false)
+                            continue;
+                        pos.x = x; pos.y = y; pos.z = z;
+                        if (condition(pos))
+                            missingChunks.Add(pos);
+                    }
+            return missingChunks;
+        }
+
         private Vector3Int worldCoordinatesToChunkIndex(Vector3 worldPosition)
         {
             Vector3 position = worldPosition + (Vector3.one * 0.25f);
@@ -117,6 +143,8 @@ namespace Chunks
             worldCoordinatesToChunkIndex(worldPosition);
         public List<Vector3Int> GetChunksByDistance(int renderDistance, Func<Vector3Int, bool> condition) =>
             getChunksByDistance(WorldCenter, renderDistance, condition);
+        public List<Vector3Int> GetChunkByRing(int ring, Func<Vector3Int, bool> condition) =>
+            getChunkByRing(WorldCenter, ring, condition);
         #endregion
 
         public async Task Load(List<Vector3Int> toLoad) => await load(toLoad);
