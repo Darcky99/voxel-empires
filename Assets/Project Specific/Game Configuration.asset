@@ -15,11 +15,11 @@ MonoBehaviour:
   <ChunkConfiguration>k__BackingField:
     m_ChunkSize: 16
   <GraphicsConfiguration>k__BackingField:
-    m_RenderDistance: 8
+    m_RenderDistance: 3
   <WorldConfig>k__BackingField:
-    <WorldSize>k__BackingField: 16
-    <WorldHeight>k__BackingField: 12
-    m_HeightNoiseScale: 0.005
+    <WorldSize>k__BackingField: 0
+    <WorldHeight>k__BackingField: 0
+    m_HeightNoiseScale: 0.01
   <VoxelConfiguration>k__BackingField:
     <SolidVoxel>k__BackingField: {fileID: 11400000, guid: 0d5e5f5c89544944bbd5c06c35e59a6b,
       type: 2}

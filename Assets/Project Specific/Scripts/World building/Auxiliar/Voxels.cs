@@ -87,31 +87,32 @@ namespace VoxelUtils
         {
             switch (faceIndex, faceVertexIndex)
             {
+                //Up
                 case (0, 0): return 0;
                 case (0, 1): return 1;
                 case (0, 2): return 3;
                 case (0, 3): return 2;
-
+                //Down
                 case (1, 0): return 7;
                 case (1, 1): return 6;
                 case (1, 2): return 4;
                 case (1, 3): return 5;
-
+                //Right
                 case (2, 0): return 2;
                 case (2, 1): return 1;
                 case (2, 2): return 6;
                 case (2, 3): return 5;
-
+                //Left
                 case (3, 0): return 0;
                 case (3, 1): return 3;
                 case (3, 2): return 4;
                 case (3, 3): return 7;
-
+                //Front
                 case (4, 0): return 1;
                 case (4, 1): return 0;
                 case (4, 2): return 5;
                 case (4, 3): return 4;
-
+                //Behind
                 case (5, 0): return 3;
                 case (5, 1): return 2;
                 case (5, 2): return 7;

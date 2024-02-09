@@ -40,7 +40,7 @@ public struct ITerrainGeneration : IJobParallelFor
 
         float heightValue = (noise.cnoise(new float2(globalVoxelPositon.x, globalVoxelPositon.z) * m_HeightNoiseScale) + 1f) / 2f;
 
-        bool heightCondition = globalVoxelPositon.y <= heightValue * 180f;
+        bool heightCondition = globalVoxelPositon.y <= heightValue * 16;
 
         m_FlatVoxelMap[i] = (byte) (heightCondition ? 1 : 0);
     }
