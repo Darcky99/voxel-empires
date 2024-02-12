@@ -7,7 +7,7 @@ using UnityEngine;
 using Project.Managers;
 using Unity.Mathematics;
 using System;
-using static UnityEditor.PlayerSettings;
+using System.Linq;
 
 namespace Chunks
 {
@@ -112,16 +112,32 @@ namespace Chunks
             int2 z_limits = new int2(center.z - ring, center.z + ring);
             int2 y_limits = new int2(0, m_GameConfig.WorldConfig.WorldHeight);
 
+            Vector3Int pos1 = default;
+            Vector3Int pos2 = default;
+
             for (int x = x_limits.x; x <= x_limits.y; x++)
-                for (int z = z_limits.x; z <= z_limits.y; z++)
-                    for (int y = y_limits.x; y <= y_limits.y; y++)
-                    {
-                        if ((x == x_limits.x || x == x_limits.y || y == y_limits.x || y == y_limits.y || z == z_limits.x || z == z_limits.y) == false)
-                            continue;
-                        pos.x = x; pos.y = y; pos.z = z;
-                        if (condition(pos))
-                            missingChunks.Add(pos);
-                    }
+                for (int y = y_limits.x; y <= y_limits.y; y++)
+                {
+                    pos1.x = x ; pos1.y = y; pos1.z = z_limits.x;
+                    pos2.x = x ; pos2.y = y ; pos2.z = z_limits.y;
+
+                    if (condition(pos1) && !missingChunks.Contains(pos1))
+                        missingChunks.Add(pos1);
+                    if (condition(pos2) && !missingChunks.Contains(pos2))
+                        missingChunks.Add(pos2);
+                }
+            for (int z = z_limits.x + 1; z < z_limits.y; z++)
+                for (int y = y_limits.x; y <= y_limits.y; y++)
+                {
+                    pos1.x = x_limits.x; pos1.y = y; pos1.z = z;
+                    pos2.x = x_limits.y; pos2.y = y; pos2.z = z;
+
+                    if (condition(pos1) && !missingChunks.Contains(pos1))
+                        missingChunks.Add(pos1);
+                    if (condition(pos2) && !missingChunks.Contains(pos2))
+                        missingChunks.Add(pos2);
+                }
+
             return missingChunks;
         }
 

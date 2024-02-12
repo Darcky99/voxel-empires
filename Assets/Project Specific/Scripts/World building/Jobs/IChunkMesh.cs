@@ -47,7 +47,7 @@ public struct IChunkMesh : IJob
 
         int a, b;
 
-        for(int p = 0; p <= 2; p++) //the plane
+        for(int p = 0; p <= 2; p++)
         {
             a = (p + 1) % 3;
             b = (p + 2) % 3;
