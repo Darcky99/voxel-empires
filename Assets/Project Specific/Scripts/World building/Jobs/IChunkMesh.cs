@@ -3,6 +3,7 @@ using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UIElements;
 using VoxelUtils;
 
 [BurstCompile]
@@ -41,67 +42,118 @@ public struct IChunkMesh : IJob
             return;
         int3 one = new int3(1, 1, 1);
 
-        for (int y = 1; y <= m_ChunkSize; y++)
-            for (int z = 1; z <= m_ChunkSize; z++)
-                for (int x = 1; x <= m_ChunkSize; x++)
-                {
-                    int3 position = new int3(x, y, z);
-                    byte blockID = getValue(position);
+        //the 3 dimensions
+        NativeArray<int> d = new NativeArray<int>(3, Allocator.Temp);
+        //a grows at last
+        //all inside a d loop, which controlls the faces that we draw
+        //in this scenario, we can draw up to two faces per block
+        //
+        int a, b;
 
-                    if (blockID == 0)
-                        continue;
+        for(int p = 0; p <= 2; p++) //the plane
+        {
+            a = (p + 1) % 3;
+            b = (p + 2) % 3;
 
-                    position -= one;
-                    float3 voxelCenter = new float3(position.x * 0.5f, position.y * 0.5f, position.z * 0.5f);
-                    position += one;
-
-                    for (int faceIndex = 0; faceIndex <= 5; faceIndex++)
+            //increase on the main axis
+            for (d[p] = 1; d[p] <= m_ChunkSize; d[p]++)
+            {
+                for (d[a] = 1; d[a] <= m_ChunkSize; d[a]++)
+                    for (d[b] = 1; d[b] <= m_ChunkSize; d[b]++)
                     {
-                        if (!canDrawFace(position, faceIndex) || (m_ID.y == 0 && y == 1 && faceIndex == 1))
+                        //we can use p[b] & p[c] to draw meshes by plane
+                        int3 abs_position = new int3(d[0], d[1], d[2]);
+                        byte blockID = getValue(abs_position);
+                        if (blockID == 0)
                             continue;
 
-                        if (faceIndex == 0 || faceIndex == 1)
+                        abs_position -= one;
+                        float3 voxelCenter = new float3(abs_position.x * 0.5f, abs_position.y * 0.5f, abs_position.z * 0.5f);
+                        abs_position += one;
+
+                        for (int faceIndex = 0; faceIndex <= 5; faceIndex++)
                         {
+                            if (!canDrawFace(abs_position, faceIndex) || (m_ID.y == 0 && abs_position.y == 1 && faceIndex == 1))
+                                continue;
+
                             int vertexIndex = Vertices.Length;
 
-                            int2 x_limits = new int2(x, x);
-                            for (int gx = x + 1; gx <= m_ChunkSize; gx++)
-                            {
-                                if (canDrawFace(new int3(gx, y, z), faceIndex))
-                                    x_limits.y = gx;
-                                else break;
-                            }
-                            int2 z_limits = new int2(z, z);
-                            for (int gz = z + 1; gz <= m_ChunkSize; gz++)
-                            {
-                                if (canDrawFace(new int3(x_limits.x, y, gz), new int3(x_limits.y, y, gz), faceIndex))
-                                    z_limits.y = gz;
-                                else break;
-                            }
-
-                            setAsDrawn(x_limits, y, z_limits, faceIndex);
-
-                            NativeArray<float3> fv = Voxels.GetFaceVertices(faceIndex);
-                            float3 meshCenter = getMeshCenter(x_limits, position.y, z_limits);
-
-                            foreach (float3 vertex in fv)
-                            {
-                                float2 size = getMeshSize(x_limits, z_limits);
-                                float3 v = new float3(vertex.x * size.x, vertex.y, vertex.z * size.y);
-                                Vertices.Add(meshCenter + v);
-                            }
+                            NativeArray<float3> faceVertices = Voxels.GetFaceVertices(faceIndex);
+                            foreach (float3 vertex in faceVertices)
+                                Vertices.Add(voxelCenter + vertex);
 
                             Triangles.AddRange(new NativeArray<int>(Voxels.GetFaceTriangles(vertexIndex), Allocator.Temp));
-                            continue;
                         }
-
-                        Triangles.AddRange(new NativeArray<int>(Voxels.GetFaceTriangles(Vertices.Length), Allocator.Temp));
-                        
-                        NativeArray<float3> faceVertices = Voxels.GetFaceVertices(faceIndex);
-                        foreach (float3 vertex in faceVertices)
-                            Vertices.Add(voxelCenter + vertex);
                     }
-                }
+            }
+            break;
+        }
+
+
+
+        //for (int y = 1; y <= m_ChunkSize; y++)
+        //    for (int z = 1; z <= m_ChunkSize; z++)
+        //        for (int x = 1; x <= m_ChunkSize; x++)
+        //        {
+        //            int3 position = new int3(x, y, z);
+        //            byte blockID = getValue(position);
+
+        //            if (blockID == 0)
+        //                continue;
+
+        //            position -= one;
+        //            float3 voxelCenter = new float3(position.x * 0.5f, position.y * 0.5f, position.z * 0.5f);
+        //            position += one;
+
+        //            for (int faceIndex = 0; faceIndex <= 5; faceIndex++)
+        //            {
+        //                if (!canDrawFace(position, faceIndex) || (m_ID.y == 0 && y == 1 && faceIndex == 1))
+        //                    continue;
+                        
+        //                int vertexIndex = Vertices.Length;
+
+        //                if (!(faceIndex == 0 || faceIndex == 1))
+        //                {
+        //                    Triangles.AddRange(new NativeArray<int>(Voxels.GetFaceTriangles(Vertices.Length), Allocator.Temp));
+
+        //                    NativeArray<float3> faceVertices = Voxels.GetFaceVertices(faceIndex);
+        //                    foreach (float3 vertex in faceVertices)
+        //                        Vertices.Add(voxelCenter + vertex);
+
+        //                    continue;
+        //                }
+
+        //                int2 x_limits = new int2(x, x);
+        //                for (int gx = x + 1; gx <= m_ChunkSize; gx++)
+        //                {
+        //                    if (canDrawFace(new int3(gx, y, z), faceIndex))
+        //                        x_limits.y = gx;
+        //                    else break;
+        //                }
+        //                int2 z_limits = new int2(z, z);
+        //                for (int gz = z + 1; gz <= m_ChunkSize; gz++)
+        //                {
+        //                    if (canDrawFace(new int3(x_limits.x, y, gz), new int3(x_limits.y, y, gz), faceIndex))
+        //                        z_limits.y = gz;
+        //                    else break;
+        //                }
+
+        //                setAsDrawn(x_limits, y, z_limits, faceIndex);
+
+        //                NativeArray<float3> fv = Voxels.GetFaceVertices(faceIndex);
+        //                float3 meshCenter = getMeshCenter(x_limits, position.y, z_limits);
+
+        //                foreach (float3 vertex in fv)
+        //                {
+        //                    float2 size = getMeshSize(x_limits, z_limits);
+        //                    float3 v = new float3(vertex.x * size.x, vertex.y, vertex.z * size.y);
+        //                    Vertices.Add(meshCenter + v);
+        //                }
+
+        //                Triangles.AddRange(new NativeArray<int>(Voxels.GetFaceTriangles(vertexIndex), Allocator.Temp));
+        //                continue;
+        //            }
+        //        }
         
     }
 
