@@ -43,6 +43,7 @@ namespace Chunks
         }
         private async Task drawAll()
         {
+            float time = Time.realtimeSinceStartup;
             int renderDistance = m_GameConfig.GraphicsConfiguration.RenderDistance;
 
             for (int i = 0; i <= renderDistance; i++)
@@ -60,9 +61,9 @@ namespace Chunks
                     Vector3Int key = m_ChunksToDraw[j];
                     bool exists = m_ChunksManager.TryGetChunk(key, out Chunk chunk);
                     if (exists)
-                        chunk.DrawMesh();
-                    if (j != 0 && j % 60 == 0)
-                        await Task.Yield();
+                        chunk.RequestMesh();
+                    //if (j != 0 && j % 120 == 0)
+                    //    await Task.Yield();
                 }
                 m_ChunksToDraw.Clear();
 
@@ -72,6 +73,7 @@ namespace Chunks
                     m_StarOverFlag = false;
                 }
             }
+            Debug.Log($"Time to load everything: {Time.realtimeSinceStartup -  time}");
         }
 
         public void CheckToDraw()

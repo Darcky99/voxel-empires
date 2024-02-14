@@ -5,7 +5,8 @@ using Unity.Jobs;
 using Unity.Collections.NotBurstCompatible;
 using System;
 using UnityEngine.Profiling;
-
+using System.Threading.Tasks;
+using System.Collections;
 
 namespace Chunks
 {
@@ -17,10 +18,13 @@ namespace Chunks
         public Chunk(Vector3Int ID)
         {
             m_ChunkID = ID;
-            m_VoxelMap = new VoxelMap();
+            m_VoxelMap = new VoxelMap(GameConfig.Instance.ChunkConfiguration.ChunkSize);
             m_ChunkState = eChunkState.Active;
 
             m_ChunkMesh = null;
+            m_Job = default;
+            m_JobHandle = default;
+
         }
 
         #region Editor
@@ -55,7 +59,30 @@ namespace Chunks
                 return;
             float distanceToCamera = Vector3.Distance(cameraPosition, WorldPosition);
             if (distanceToCamera < maxDistance)
-                DrawMesh();
+                RequestMesh();
+        }
+        private void onMeshReady()
+        {
+            m_JobHandle.Complete();
+
+            //Debug.Log($"done {m_Job.Vertices.Length} ");
+
+            if (m_Job.Vertices.Length == 0) {
+                m_Job.Dispose();
+                return;
+            }
+
+            if (m_ChunkMesh == null)
+                m_ChunkMesh = ChunkMeshPool.s_Instance.DeQueue();
+
+            Mesh mesh = new Mesh();
+            mesh.vertices = m_Job.Vertices.ToArrayNBC();
+            mesh.triangles = m_Job.Triangles.ToArrayNBC();
+            mesh.uv = m_Job.UVs.ToArrayNBC();
+            m_Job.Dispose();
+            mesh.RecalculateNormals();
+
+            m_ChunkMesh.Initialize(this, mesh);
         }
         #endregion
 
@@ -118,31 +145,60 @@ namespace Chunks
             return flatMap;
         }
 
-        public void DrawMesh()
+        IChunkMesh m_Job;
+        JobHandle m_JobHandle;
+
+        async void check()
+        {
+            do
+            {
+                await Task.Yield();
+            }
+            while (!m_JobHandle.IsCompleted);
+            onMeshReady();
+        }
+
+        public void RequestMesh()
         {
             m_ChunkState = eChunkState.Drawn;
 
-            byte[] expanded_voxelmap = Get_Expanded_VoxelMap();
-            IChunkMesh job = new IChunkMesh(expanded_voxelmap, ChunkID);
-            JobHandle jobHandle = job.Schedule();
-            jobHandle.Complete();
-            if (job.Vertices.Length == 0) {
-                job.Dispose();
-                return;
-            }
+            m_ChunksManager.TryGetChunk(m_ChunkID + Vector3Int.up, out Chunk topChunk);
+            m_ChunksManager.TryGetChunk(m_ChunkID + Vector3Int.down, out Chunk downChunk);
+            m_ChunksManager.TryGetChunk(m_ChunkID + Vector3Int.right, out Chunk rightChunk);
+            m_ChunksManager.TryGetChunk(m_ChunkID + Vector3Int.left, out Chunk leftChunk);
+            m_ChunksManager.TryGetChunk(m_ChunkID + Vector3Int.forward, out Chunk frontChunk);
+            m_ChunksManager.TryGetChunk(m_ChunkID + Vector3Int.back, out Chunk backChunk);
 
-            if(m_ChunkMesh == null)
-                m_ChunkMesh = ChunkMeshPool.s_Instance.DeQueue();
+            m_Job = new IChunkMesh(ChunkID, m_VoxelMap.FlatMap, 
+                topChunk.m_VoxelMap.FlatMap, 
+                downChunk.m_VoxelMap.FlatMap,
+                rightChunk.m_VoxelMap.FlatMap,
+                leftChunk.m_VoxelMap.FlatMap,
+                frontChunk.m_VoxelMap.FlatMap,
+                backChunk.m_VoxelMap.FlatMap);
 
-            Mesh mesh = new Mesh();
-            mesh.vertices = job.Vertices.ToArrayNBC();
-            mesh.triangles = job.Triangles.ToArrayNBC();
-            mesh.uv = job.UVs.ToArrayNBC();
-            job.Dispose();
-            mesh.RecalculateNormals();
+            m_JobHandle = m_Job.Schedule();
+            check();
+            //Task.Run(check);
 
-            m_ChunkMesh.Initialize(this, mesh);
-            
+            //jobHandle.Complete();
+            //if (job.Vertices.Length == 0) {
+            //    job.Dispose();
+            //    return;
+            //}
+
+            //if(m_ChunkMesh == null)
+            //    m_ChunkMesh = ChunkMeshPool.s_Instance.DeQueue();
+
+            //Mesh mesh = new Mesh();
+            //mesh.vertices = job.Vertices.ToArrayNBC();
+            //mesh.triangles = job.Triangles.ToArrayNBC();
+            //mesh.uv = job.UVs.ToArrayNBC();
+            //job.Dispose();
+            //mesh.RecalculateNormals();
+
+            //m_ChunkMesh.Initialize(this, mesh);
+
         }
     }
 }

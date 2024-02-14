@@ -1,3 +1,4 @@
+using System;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
@@ -9,33 +10,48 @@ using VoxelUtils;
 [BurstCompile]
 public struct IChunkMesh : IJob
 {
-    public IChunkMesh(byte[] centralChunk, Vector3Int id)
+    public IChunkMesh(Vector3Int id, byte[] centralChunk, byte[] topChunk, byte[] botChunk, byte[] rightChunk, byte[] leftChunk, byte[] frontChunk, byte[] backChunk)
     {
-        m_ID = new int3(id.y, id.y, id.z);
         m_ChunkSize = GameConfig.Instance.ChunkConfiguration.ChunkSize;
+        m_ID = new int3(id.y, id.y, id.z);
 
         Vertices = new NativeList<Vector3>(Allocator.Persistent);
         Triangles = new NativeList<int>(Allocator.Persistent);
         UVs = new NativeList<Vector2>(Allocator.Persistent);
 
-        m_Expanded_Flat_Chunk = new NativeArray<byte>(centralChunk, Allocator.Persistent);
         m_DrawnFaces = new NativeHashMap<int3, FacesDrawn>(6000,Allocator.Persistent);
+        m_Central_Chunk = new NativeArray<byte>(centralChunk, Allocator.Persistent);
+
+        m_Top_Chunk = new NativeArray<byte>(topChunk, Allocator.Persistent);
+        m_Bot_Chunk = new NativeArray<byte>(botChunk, Allocator.Persistent);
+        m_Right_Chunk = new NativeArray<byte>(rightChunk, Allocator.Persistent);
+        m_Left_Chunk = new NativeArray<byte>(leftChunk, Allocator.Persistent);
+        m_Front_Chunk = new NativeArray<byte>(frontChunk, Allocator.Persistent);
+        m_Back_Chunk = new NativeArray<byte>(backChunk, Allocator.Persistent);
+
+        //Debug.
     }
-
-    private readonly int m_ChunkSize;
-
+    
     public NativeList<Vector3> Vertices { get; private set; }
     public NativeList<int> Triangles { get; private set; }
     public NativeList<Vector2> UVs { get; private set; }
 
-    private readonly NativeArray<byte> m_Expanded_Flat_Chunk;
-    private readonly NativeHashMap<int3, FacesDrawn> m_DrawnFaces;
-
+    private readonly int m_ChunkSize;
     private readonly int3 m_ID;
+    private readonly NativeArray<byte> m_Central_Chunk;
+
+    private readonly NativeArray<byte> m_Top_Chunk;
+    private readonly NativeArray<byte> m_Bot_Chunk;
+    private readonly NativeArray<byte> m_Right_Chunk;
+    private readonly NativeArray<byte> m_Left_Chunk;
+    private readonly NativeArray<byte> m_Front_Chunk;
+    private readonly NativeArray<byte> m_Back_Chunk;
+
+    private readonly NativeHashMap<int3, FacesDrawn> m_DrawnFaces;
 
     public void Execute()
     {
-        if (m_Expanded_Flat_Chunk.Length == 1)
+        if (m_Central_Chunk.Length == 1)
             return;
 
         NativeArray<int> d = new NativeArray<int>(3, Allocator.Temp);
@@ -48,10 +64,10 @@ public struct IChunkMesh : IJob
             a = (p + 1) % 3;
             b = (p + 2) % 3;
 
-            for (d[p] = 1; d[p] <= m_ChunkSize; d[p]++)
+            for (d[p] = 0; d[p] < m_ChunkSize; d[p]++)
             {
-                for (d[a] = 1; d[a] <= m_ChunkSize; d[a]++)
-                    for (d[b] = 1; d[b] <= m_ChunkSize; d[b]++)
+                for (d[a] = 0; d[a] < m_ChunkSize; d[a]++)
+                    for (d[b] = 0; d[b] < m_ChunkSize; d[b]++)
                     {
                         int3 abs_position = new int3(d[0], d[1], d[2]);
                         byte blockID = getValue(abs_position);
@@ -74,7 +90,7 @@ public struct IChunkMesh : IJob
                             int3 min_limit = new int3(v[0], v[1], v[2]);
 
                             int2 a_limits = new int2(d[a], d[a]);
-                            for (int al = v[a] + 1; al <= m_ChunkSize; al++)
+                            for (int al = v[a] + 1; al < m_ChunkSize; al++)
                             {
                                 v[a] = al;
                                 if (canDrawFace(new int3(v[0], v[1], v[2]), faceIndex))
@@ -84,7 +100,7 @@ public struct IChunkMesh : IJob
 
                             int2 b_limits = new int2(d[b], d[b]);
                             v[a] = a_limits.y;
-                            for (int bl = d[b] + 1; bl <= m_ChunkSize; bl++)
+                            for (int bl = d[b] + 1; bl < m_ChunkSize; bl++)
                             {
                                 v[b] = bl;
                                 int3 greater_b = new int3(v[0], v[1], v[2]);
@@ -129,7 +145,16 @@ public struct IChunkMesh : IJob
         }
     }
 
-    private byte getValue(int x, int y, int z) => m_Expanded_Flat_Chunk[Voxels.Expanted_Index(x, y, z)];
+    private byte getValue(int x, int y, int z)
+    {
+        if (x < 0 || x >= m_ChunkSize || y < 0 || y >= m_ChunkSize || z < 0 || z >= m_ChunkSize)
+        {
+            //calculate which chunk we are going to use.
+            //Voxel.Index translates coords out of bounds
+            return 0;
+        }
+        return m_Central_Chunk[Voxels.Index(x, y, z)];
+    }
     private byte getValue(int3 xyz) => getValue(xyz.x, xyz.y, xyz.z);
 
     private void setAsDrawn(int3 xyz, int faceIndex)
@@ -148,7 +173,6 @@ public struct IChunkMesh : IJob
             m_DrawnFaces.Add(xyz, faces);
         }
     }
-    
     private void setAsDrawn(int3 min, int3 max, int faceIndex)
     {
         int3 position = min;
@@ -213,7 +237,7 @@ public struct IChunkMesh : IJob
         Vertices.Dispose();
         Triangles.Dispose();
         UVs.Dispose();
-        m_Expanded_Flat_Chunk.Dispose();
+        m_Central_Chunk.Dispose();
         m_DrawnFaces.Dispose();
     }
 }

@@ -123,7 +123,10 @@ namespace Chunks
         }
         private bool tryGetChunk(Vector3Int chunkID, out Chunk chunk)
         {
-            return LoadedChunks.TryGetValue(chunkID, out chunk);
+            bool exists = LoadedChunks.TryGetValue(chunkID, out chunk);
+            if (!exists)
+                chunk = new Chunk(chunkID);
+            return exists;
         }
 
         public bool TryGetChunk(Vector3Int chunkID, out Chunk chunk) => tryGetChunk(chunkID, out chunk);
