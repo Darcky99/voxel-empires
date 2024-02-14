@@ -53,7 +53,6 @@ namespace Project.Managers
         private ChunkLoader m_ChunkLoader;
         private ChunkDrawer m_ChunkDrawer;
 
-        
         //[Button]
         private async void Load_and_Draw_World()
         {
@@ -63,11 +62,12 @@ namespace Project.Managers
             m_ChunkDrawer.CheckToDraw();
         }
 
-        public Chunk GetChunk(Vector3Int chunkID) => m_ChunkLoader.GetChunk(chunkID);
+        public bool TryGetChunk(Vector3Int chunkID, out Chunk chunk) => m_ChunkLoader.TryGetChunk(chunkID, out chunk);
         public Vector3Int WorldCoordinatesToChunkIndex(Vector3 worldPosition) =>
             m_ChunkLoader.WorldCoordinatesToChunkIndex(worldPosition);
         public List<Vector3Int> GetChunksByDistance(int renderDistance, Func<Vector3Int, bool> condition) =>
             m_ChunkLoader.GetChunksByDistance(renderDistance, condition);
-
+        public List<Vector3Int> GetChunkByRing(int ring, Func<Vector3Int, bool> condition) =>
+            m_ChunkLoader.GetChunkByRing(ring, condition);
     }
 }

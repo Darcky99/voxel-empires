@@ -197,7 +197,7 @@ public struct IChunkMesh : IJob
         return true;
     }
 
-    private float3 getMeshCenter(int3 min, int3 max)
+    private float3 meshCenter(int3 min, int3 max)
     {
         int3 one = new int3(1,1,1);
         min -= one;

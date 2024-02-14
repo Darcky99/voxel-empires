@@ -3,19 +3,24 @@ using VoxelUtils;
 using Project.Managers;
 using Unity.Jobs;
 using Unity.Collections.NotBurstCompatible;
+using System;
+using UnityEngine.Profiling;
 
 
 namespace Chunks
 {
-    public class Chunk
+    public struct Chunk
     {
         private ChunksManager m_ChunksManager => ChunksManager.Instance;
+        private GameConfig m_GameConfig => GameConfig.Instance;
 
         public Chunk(Vector3Int ID)
         {
             m_ChunkID = ID;
             m_VoxelMap = new VoxelMap();
             m_ChunkState = eChunkState.Active;
+
+            m_ChunkMesh = null;
         }
 
         #region Editor
@@ -43,6 +48,18 @@ namespace Chunks
         }
         #endregion
 
+        #region Callbacks
+        private void onDraw(Vector3 cameraPosition, float maxDistance)
+        {
+            if (m_ChunkState == eChunkState.Drawn)
+                return;
+            float distanceToCamera = Vector3.Distance(cameraPosition, WorldPosition);
+            if (distanceToCamera < maxDistance)
+                DrawMesh();
+        }
+        #endregion
+
+        public Vector3 WorldPosition => m_ChunkID * ChunkConfiguration.KeyToWorld;
         public Vector3Int ChunkID => m_ChunkID;
         public eChunkState ChunkState => m_ChunkState;
 
@@ -54,16 +71,22 @@ namespace Chunks
         public byte GetVoxel(Vector3Int voxelPosition) => m_VoxelMap.GetVoxel(voxelPosition);
         public void SetVoxel(Vector3Int voxelPosition) => m_VoxelMap.SetVoxel(voxelPosition.x, voxelPosition.y, voxelPosition.z, 1);
 
-        public void SetVoxelMap(byte[] flatVoxelMap) => m_VoxelMap.SetFlatMap(flatVoxelMap);
+        public void EnableSimulation(bool state)
+        {
+            //in the future I will use this to enable simulation
+            ChunkDrawer.OnDraw += onDraw;
+        }
+        public void SetVoxelMap(byte[] flatVoxelMap)
+        {
+            m_VoxelMap.SetFlatMap(flatVoxelMap);
+        }
+
         public byte[] Get_Expanded_VoxelMap()
         {
             int expanded_ChunkSizeMaxIndex = GameConfig.Instance.ChunkConfiguration.Expanded_ChunkSize - 1;
-
             byte[] flatMap = m_VoxelMap.Expanded_FlatMap;
-
             if (flatMap.Length == 1)
                 return flatMap;
-
             for (int y = 0; y <= expanded_ChunkSizeMaxIndex; y++)
                 for (int z = 0; z <= expanded_ChunkSizeMaxIndex; z++)
                     for (int x = 0; x <= expanded_ChunkSizeMaxIndex; x++)
@@ -77,9 +100,9 @@ namespace Chunks
                         adjacentChunkID.y = y == 0 ? m_ChunkID.y - 1 : y == 17 ? m_ChunkID.y + 1 : m_ChunkID.y;
                         adjacentChunkID.z = z == 0 ? m_ChunkID.z - 1 : z == 17 ? m_ChunkID.z + 1 : m_ChunkID.z;
 
-                        Chunk adjacentChunk = m_ChunksManager.GetChunk(adjacentChunkID);
+                        bool exists = m_ChunksManager.TryGetChunk(adjacentChunkID, out Chunk adjacentChunk);
 
-                        if (adjacentChunk == null)
+                        if (!exists)
                         {
                             flatMap[Voxels.Expanted_Index(x, y, z)] = 0;
                             continue;
@@ -99,12 +122,11 @@ namespace Chunks
         {
             m_ChunkState = eChunkState.Drawn;
 
-            IChunkMesh job = new IChunkMesh(Get_Expanded_VoxelMap(), ChunkID);
+            byte[] expanded_voxelmap = Get_Expanded_VoxelMap();
+            IChunkMesh job = new IChunkMesh(expanded_voxelmap, ChunkID);
             JobHandle jobHandle = job.Schedule();
             jobHandle.Complete();
-
-            if (job.Vertices.Length == 0)
-            {
+            if (job.Vertices.Length == 0) {
                 job.Dispose();
                 return;
             }

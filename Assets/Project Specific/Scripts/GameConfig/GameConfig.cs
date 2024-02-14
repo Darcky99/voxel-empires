@@ -18,6 +18,8 @@ public class GameConfig : ScriptableObjectSingleton<GameConfig>
 public class ChunkConfiguration
 {
     public static readonly int KeyToWorld = 16 / 2;
+    public static readonly float ChunkToWorldDistance = 8f;
+    public static readonly float VoxelToWorldDistance = 0.5f;
 
     public int ChunkVoxelCount => m_ChunkSize * m_ChunkSize * m_ChunkSize;
     public int ChunkSize => m_ChunkSize;
@@ -31,6 +33,7 @@ public class ChunkConfiguration
 [Serializable]
 public class GraphicsConfiguration
 {
+    public float WorldRenderDistance => m_RenderDistance * ChunkConfiguration.ChunkToWorldDistance;
     public int RenderDistance => m_RenderDistance;
 
     [SerializeField] private int m_RenderDistance = 16;
