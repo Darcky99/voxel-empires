@@ -11,21 +11,18 @@ public struct IChunkMesh : IJob
 {
     public IChunkMesh(byte[] centralChunk, Vector3Int id)
     {
+        m_ID = new int3(id.y, id.y, id.z);
         m_ChunkSize = GameConfig.Instance.ChunkConfiguration.ChunkSize;
-        m_Expanded_ChunkSize = GameConfig.Instance.ChunkConfiguration.Expanded_ChunkSize;
 
         Vertices = new NativeList<Vector3>(Allocator.Persistent);
         Triangles = new NativeList<int>(Allocator.Persistent);
         UVs = new NativeList<Vector2>(Allocator.Persistent);
 
         m_Expanded_Flat_Chunk = new NativeArray<byte>(centralChunk, Allocator.Persistent);
-        m_ID = new int3(id.y, id.y, id.z);
-
         m_DrawnFaces = new NativeHashMap<int3, FacesDrawn>(6000,Allocator.Persistent);
     }
 
     private readonly int m_ChunkSize;
-    private readonly int m_Expanded_ChunkSize;
 
     public NativeList<Vector3> Vertices { get; private set; }
     public NativeList<int> Triangles { get; private set; }
@@ -40,7 +37,6 @@ public struct IChunkMesh : IJob
     {
         if (m_Expanded_Flat_Chunk.Length == 1)
             return;
-        int3 one = new int3(1, 1, 1);
 
         NativeArray<int> d = new NativeArray<int>(3, Allocator.Temp);
         NativeArray<int> v = new NativeArray<int>(3, Allocator.Temp);
@@ -197,7 +193,7 @@ public struct IChunkMesh : IJob
         return true;
     }
 
-    private float3 meshCenter(int3 min, int3 max)
+    private float3 getMeshCenter(int3 min, int3 max)
     {
         int3 one = new int3(1,1,1);
         min -= one;
