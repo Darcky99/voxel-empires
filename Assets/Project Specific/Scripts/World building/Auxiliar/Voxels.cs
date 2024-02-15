@@ -14,10 +14,10 @@ namespace VoxelUtils
         {
             if (x < 0 || x >= s_ChunkSize || y < 0 || y >= s_ChunkSize || z < 0 || z >= s_ChunkSize)
             {
-                //Debug.LogError($"Asking for coordinates out of range {x}, {y}, {z}");
+                x = x < 0 ? 15 : x >= s_ChunkSize ? 0 : x;
+                y = y < 0 ? 15 : y >= s_ChunkSize ? 0 : y;
+                z = z < 0 ? 15 : z >= s_ChunkSize ? 0 : z;
             }
-                
-
             return x + (z * s_ChunkSize) + (y * s_ChunkSize * s_ChunkSize);
         }
         public static int3 XYZ(int i)

@@ -78,7 +78,7 @@ public struct IChunkMesh : IJob
                         {
                             int faceIndex = getFaceIndex(p, i);
 
-                            if (!canDrawFace(abs_position, faceIndex) || (m_ID.y == 0 && abs_position.y == 1 && faceIndex == 1))
+                            if (!canDrawFace(abs_position, faceIndex) || (m_ID.y == 0 && abs_position.y == 0 && faceIndex == 1))
                                 continue;
 
                             int vertexIndex = Vertices.Length;
@@ -147,13 +147,25 @@ public struct IChunkMesh : IJob
 
     private byte getValue(int x, int y, int z)
     {
-        if (x < 0 || x >= m_ChunkSize || y < 0 || y >= m_ChunkSize || z < 0 || z >= m_ChunkSize)
-        {
-            //calculate which chunk we are going to use.
-            //Voxel.Index translates coords out of bounds
-            return 0;
-        }
-        return m_Central_Chunk[Voxels.Index(x, y, z)];
+        NativeArray<byte> targetChunk = m_Central_Chunk;
+
+        targetChunk = x < 0 ? m_Left_Chunk : x == m_ChunkSize ? m_Right_Chunk : targetChunk;
+        targetChunk = y < 0 ? m_Bot_Chunk  : y == m_ChunkSize ? m_Top_Chunk : targetChunk;
+        targetChunk = z < 0 ? m_Back_Chunk : z == m_ChunkSize ? m_Front_Chunk : targetChunk;
+
+        //if (x < 0 || x >= m_ChunkSize || y < 0 || y >= m_ChunkSize || z < 0 || z >= m_ChunkSize)
+        //{
+        //    switch (x, y, z)
+        //    {
+        //        case (0, 0, 0):
+        //                return 0;
+        //    }
+        //    //calculate which chunk we are going to use.
+        //    //Voxel.Index translates coords out of bounds
+        //    return 0;
+        //}
+
+        return targetChunk[Voxels.Index(x, y, z)];
     }
     private byte getValue(int3 xyz) => getValue(xyz.x, xyz.y, xyz.z);
 

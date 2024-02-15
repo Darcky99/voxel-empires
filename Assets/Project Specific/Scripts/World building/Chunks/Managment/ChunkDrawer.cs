@@ -62,8 +62,8 @@ namespace Chunks
                     bool exists = m_ChunksManager.TryGetChunk(key, out Chunk chunk);
                     if (exists)
                         chunk.RequestMesh();
-                    //if (j != 0 && j % 120 == 0)
-                    //    await Task.Yield();
+                    if (j != 0 && j % 120 == 0)
+                        await Task.Yield();
                 }
                 m_ChunksToDraw.Clear();
 
