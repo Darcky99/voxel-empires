@@ -12,12 +12,13 @@ public struct IChunkMesh : IJob
 {
     public IChunkMesh(Vector3Int id, byte[] centralChunk, byte[] topChunk, byte[] botChunk, byte[] rightChunk, byte[] leftChunk, byte[] frontChunk, byte[] backChunk)
     {
+        m_VoxelsConfig = new NativeArray<VoxelConfig>(GameConfig.Instance.VoxelConfiguration.GetVoxelsData(), Allocator.Persistent);
         m_ChunkSize = GameConfig.Instance.ChunkConfiguration.ChunkSize;
         m_ID = new int3(id.y, id.y, id.z);
 
         Vertices = new NativeList<Vector3>(Allocator.Persistent);
         Triangles = new NativeList<int>(Allocator.Persistent);
-        UVs = new NativeList<Vector2>(Allocator.Persistent);
+        UVs = new NativeList<Vector3>(Allocator.Persistent);
 
         m_DrawnFaces = new NativeHashMap<int3, FacesDrawn>(6000,Allocator.Persistent);
         m_Central_Chunk = new NativeArray<byte>(centralChunk, Allocator.Persistent);
@@ -28,13 +29,13 @@ public struct IChunkMesh : IJob
         m_Left_Chunk = new NativeArray<byte>(leftChunk, Allocator.Persistent);
         m_Front_Chunk = new NativeArray<byte>(frontChunk, Allocator.Persistent);
         m_Back_Chunk = new NativeArray<byte>(backChunk, Allocator.Persistent);
-
-        //Debug.
     }
+
+    private NativeArray<VoxelConfig> m_VoxelsConfig;
     
     public NativeList<Vector3> Vertices { get; private set; }
     public NativeList<int> Triangles { get; private set; }
-    public NativeList<Vector2> UVs { get; private set; }
+    public NativeList<Vector3> UVs { get; private set; }
 
     private readonly int m_ChunkSize;
     private readonly int3 m_ID;
@@ -78,7 +79,7 @@ public struct IChunkMesh : IJob
                         {
                             int faceIndex = getFaceIndex(p, i);
 
-                            if (!canDrawFace(abs_position, faceIndex) || (m_ID.y == 0 && abs_position.y == 0 && faceIndex == 1))
+                            if (!isDrawFace(blockID, abs_position, faceIndex) || (m_ID.y == 0 && abs_position.y == 0 && faceIndex == 1))
                                 continue;
 
                             int vertexIndex = Vertices.Length;
@@ -93,7 +94,7 @@ public struct IChunkMesh : IJob
                             for (int al = v[a] + 1; al < m_ChunkSize; al++)
                             {
                                 v[a] = al;
-                                if (canDrawFace(new int3(v[0], v[1], v[2]), faceIndex))
+                                if (isDrawFace(blockID, new int3(v[0], v[1], v[2]), faceIndex))
                                     a_limits.y = al;
                                 else break;
                             }
@@ -104,7 +105,7 @@ public struct IChunkMesh : IJob
                             {
                                 v[b] = bl;
                                 int3 greater_b = new int3(v[0], v[1], v[2]);
-                                if (canDrawFace(min_limit, greater_b, faceIndex))
+                                if (canDrawFace(blockID, min_limit, greater_b, faceIndex))
                                     b_limits.y = bl;
                                 else break;
                             }
@@ -115,15 +116,25 @@ public struct IChunkMesh : IJob
 
                             NativeArray<float3> fv = Voxels.GetFaceVertices(faceIndex);
                             float3 meshCenter = getMeshCenter(min_limit, max_limit);
+                            float2 meshSize = new float2(a_limits.y - a_limits.x + 1, b_limits.y - b_limits.x + 1);
                             foreach (float3 vertex in fv)
                             {
                                 float3 global_vertex = vertex;
-                                global_vertex[a] *= (a_limits.y - a_limits.x + 1);
-                                global_vertex[b] *= (b_limits.y - b_limits.x + 1);
+                                global_vertex[a] *= meshSize.x;
+                                global_vertex[b] *= meshSize.y;
                                 global_vertex += meshCenter;
                                 Vertices.Add(global_vertex);
                             }
                             Triangles.AddRange(new NativeArray<int>(Voxels.GetFaceTriangles(vertexIndex), Allocator.Temp));
+                            NativeArray<Vector3> uvs = Voxels.GetUVs();
+                            foreach(Vector3 uv in uvs)
+                            {
+                                Vector3 u = uv;
+                                u[a == 2 ? a - 1 - b : a] *= meshSize.x;
+                                u[b == 2 ? b - 1 - a : b] *= meshSize.y; 
+                                u.z = m_VoxelsConfig[blockID - 1].TextureIndex(faceIndex);
+                                UVs.Add(u);
+                            }
                             continue;
                         }
                     }
@@ -153,37 +164,19 @@ public struct IChunkMesh : IJob
         targetChunk = y < 0 ? m_Bot_Chunk  : y == m_ChunkSize ? m_Top_Chunk : targetChunk;
         targetChunk = z < 0 ? m_Back_Chunk : z == m_ChunkSize ? m_Front_Chunk : targetChunk;
 
-        //if (x < 0 || x >= m_ChunkSize || y < 0 || y >= m_ChunkSize || z < 0 || z >= m_ChunkSize)
-        //{
-        //    switch (x, y, z)
-        //    {
-        //        case (0, 0, 0):
-        //                return 0;
-        //    }
-        //    //calculate which chunk we are going to use.
-        //    //Voxel.Index translates coords out of bounds
-        //    return 0;
-        //}
-
         return targetChunk[Voxels.Index(x, y, z)];
     }
     private byte getValue(int3 xyz) => getValue(xyz.x, xyz.y, xyz.z);
 
     private void setAsDrawn(int3 xyz, int faceIndex)
     {
-        if (m_DrawnFaces.ContainsKey(xyz))
-        {
-            FacesDrawn faces = m_DrawnFaces[xyz];
-            faces.SetByIndex(faceIndex);
+        bool keyExists = m_DrawnFaces.ContainsKey(xyz);
+
+        FacesDrawn faces = keyExists ? m_DrawnFaces[xyz] : new FacesDrawn();
+        faces.SetByIndex(faceIndex);
+        if (keyExists)
             m_DrawnFaces.Remove(xyz);
-            m_DrawnFaces.Add(xyz, faces);
-        }
-        else
-        {
-            FacesDrawn faces = new FacesDrawn();
-            faces.SetByIndex(faceIndex);
-            m_DrawnFaces.Add(xyz, faces);
-        }
+        m_DrawnFaces.Add(xyz, faces);
     }
     private void setAsDrawn(int3 min, int3 max, int faceIndex)
     {
@@ -205,12 +198,12 @@ public struct IChunkMesh : IJob
         return !isInDictionary ? false : m_DrawnFaces[xyz].IsFaceDrawn(faceIndex);
     }
 
-    private bool canDrawFace(int3 xyz, int faceIndex)
+    private bool isDrawFace(byte value, int3 xyz, int faceIndex)
     {
         int3 direction = Voxels.GetCheckDirection(faceIndex);
-        return getValue(xyz) != 0 && getValue(xyz + direction) == 0 && !isFaceDrawn(xyz, faceIndex);
+        return getValue(xyz) == value && getValue(xyz + direction) == 0 && !isFaceDrawn(xyz, faceIndex);
     }
-    private bool canDrawFace(int3 min, int3 max, int faceIndex)
+    private bool canDrawFace(byte value, int3 min, int3 max, int faceIndex)
     {
         if (!(min.x == max.x || min.y == max.y || min.z == max.z))
             Debug.LogError("At least one axis needs to be flat");
@@ -223,7 +216,7 @@ public struct IChunkMesh : IJob
                     position.x = x;
                     position.y = y;
                     position.z = z;
-                    if (!canDrawFace(position, faceIndex))
+                    if (!isDrawFace(value, position, faceIndex))
                         return false;
                 }
         return true;
@@ -246,11 +239,18 @@ public struct IChunkMesh : IJob
 
     public void Dispose()
     {
+        m_Top_Chunk.Dispose();
+        m_Bot_Chunk.Dispose();
+        m_Right_Chunk.Dispose();
+        m_Left_Chunk.Dispose();
+        m_Front_Chunk.Dispose();
+        m_Back_Chunk.Dispose();
+        m_Central_Chunk.Dispose();
         Vertices.Dispose();
         Triangles.Dispose();
         UVs.Dispose();
-        m_Central_Chunk.Dispose();
         m_DrawnFaces.Dispose();
+        m_VoxelsConfig.Dispose();
     }
 }
 

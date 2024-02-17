@@ -4,6 +4,7 @@ using System.Collections;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using VoxelUtils;
+using Unity.Collections;
 
 [CreateAssetMenu(fileName = "Game Configuration")]
 public class GameConfig : ScriptableObjectSingleton<GameConfig>
@@ -52,5 +53,13 @@ public class WorldGenerationConfiguration
 [Serializable]
 public class VoxelConfiguration
 {
-    [field: SerializeField] public SolidVoxel_SO SolidVoxel { get; private set; }
+    [field: SerializeField] public VoxelBaseSO[] Voxels { get; private set; }
+
+    public VoxelConfig[] GetVoxelsData()
+    {
+        VoxelConfig[] nativeArray = new VoxelConfig[Voxels.Length];
+        for(int i = 0; i < Voxels.Length; i++)
+            nativeArray[i] = Voxels[i].GetConfig();
+        return nativeArray;
+    }
 }

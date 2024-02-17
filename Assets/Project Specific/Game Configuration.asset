@@ -18,8 +18,10 @@ MonoBehaviour:
     m_RenderDistance: 144
   <WorldConfig>k__BackingField:
     <WorldSize>k__BackingField: 144
-    <WorldHeight>k__BackingField: 5
-    m_HeightNoiseScale: 0.005
+    <WorldHeight>k__BackingField: 32
+    m_HeightNoiseScale: 0.0085
   <VoxelConfiguration>k__BackingField:
-    <SolidVoxel>k__BackingField: {fileID: 11400000, guid: 0d5e5f5c89544944bbd5c06c35e59a6b,
-      type: 2}
+    <Voxels>k__BackingField:
+    - {fileID: 11400000, guid: f8d23665b38332f40a8d230749ee657f, type: 2}
+    - {fileID: 11400000, guid: dc0fd598c51556b4bb7f35edac0a330e, type: 2}
+    - {fileID: 11400000, guid: 05983e296e003504ba9f43ee25f56642, type: 2}

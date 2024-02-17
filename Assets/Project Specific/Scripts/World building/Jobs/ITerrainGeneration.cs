@@ -26,23 +26,27 @@ public struct ITerrainGeneration : IJobParallelFor
     private readonly float m_HeightNoiseScale;
     private readonly int3 m_ChunkID;
 
-    //private NativeArray<byte> m_FlatVoxelMap;
-
     public void Execute(int i)
     {
         int3
             globalChunkPosition = m_ChunkID * m_ChunkSize,
             voxelLocalPosition = Voxels.XYZ(i),
             globalVoxelPositon = globalChunkPosition + voxelLocalPosition;
-
         float2 XZ;
         XZ.x = globalVoxelPositon.x;
         XZ.y = globalVoxelPositon.z;
 
-        float heightValue = (noise.cnoise(XZ * m_HeightNoiseScale) + 1f) / 2f;
+        float noiseValue = (noise.cnoise(XZ * m_HeightNoiseScale) + 1f) / 2f;
+        float maxHeight = noiseValue * (512);
+        float minGrass = noiseValue * (510f);
 
-        bool heightCondition = globalVoxelPositon.y <= heightValue * 5 * 16;
-        FlatVoxelMap[i] = (byte)(heightCondition ? 1 : 0);
+        if (globalVoxelPositon.y > maxHeight)
+            return;
+
+        if (globalVoxelPositon.y >= minGrass)
+            FlatVoxelMap[i] = 3;
+        else
+            FlatVoxelMap[i] = 2;
     }
 
     public void Dispose()

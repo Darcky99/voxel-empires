@@ -78,7 +78,7 @@ namespace Chunks
             Mesh mesh = new Mesh();
             mesh.vertices = m_Job.Vertices.ToArrayNBC();
             mesh.triangles = m_Job.Triangles.ToArrayNBC();
-            mesh.uv = m_Job.UVs.ToArrayNBC();
+            mesh.SetUVs(0, m_Job.UVs.ToArrayNBC());
             m_Job.Dispose();
             mesh.RecalculateNormals();
 
@@ -179,26 +179,6 @@ namespace Chunks
 
             m_JobHandle = m_Job.Schedule();
             check();
-            //Task.Run(check);
-
-            //jobHandle.Complete();
-            //if (job.Vertices.Length == 0) {
-            //    job.Dispose();
-            //    return;
-            //}
-
-            //if(m_ChunkMesh == null)
-            //    m_ChunkMesh = ChunkMeshPool.s_Instance.DeQueue();
-
-            //Mesh mesh = new Mesh();
-            //mesh.vertices = job.Vertices.ToArrayNBC();
-            //mesh.triangles = job.Triangles.ToArrayNBC();
-            //mesh.uv = job.UVs.ToArrayNBC();
-            //job.Dispose();
-            //mesh.RecalculateNormals();
-
-            //m_ChunkMesh.Initialize(this, mesh);
-
         }
     }
 }

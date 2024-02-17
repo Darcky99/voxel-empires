@@ -58,7 +58,7 @@ namespace VoxelUtils
         }
 
 
-        public static float3 GetVoxelVertice(int vertexIndex)
+        private static float3 getVoxelVertice(int vertexIndex)
         {
             switch (vertexIndex)
             {
@@ -73,20 +73,7 @@ namespace VoxelUtils
                 default: return default;
             }
         }
-        public static int3 GetCheckDirection(int directionIndex)
-        {
-            switch (directionIndex)
-            {
-                case 0: return new int3(0, 1, 0);
-                case 1: return new int3(0, -1, 0);
-                case 2: return new int3(1, 0, 0);
-                case 3: return new int3(-1, 0, 0);
-                case 4: return new int3(0, 0, 1);
-                case 5: return new int3(0, 0, -1);
-                default: return default;
-            }
-        }
-        public static int GetFaceVertexByIndex(int faceIndex, int faceVertexIndex)
+        private static int getFaceVertexByIndex(int faceIndex, int faceVertexIndex)
         {
             switch (faceIndex, faceVertexIndex)
             {
@@ -124,14 +111,28 @@ namespace VoxelUtils
                 default: return default;
             }
         }
+
+        public static int3 GetCheckDirection(int directionIndex)
+        {
+            switch (directionIndex)
+            {
+                case 0: return new int3(0, 1, 0);
+                case 1: return new int3(0, -1, 0);
+                case 2: return new int3(1, 0, 0);
+                case 3: return new int3(-1, 0, 0);
+                case 4: return new int3(0, 0, 1);
+                case 5: return new int3(0, 0, -1);
+                default: return default;
+            }
+        }
         public static NativeArray<float3> GetFaceVertices(int faceIndex)
         {
             NativeArray<float3> i_vertexArray = new NativeArray<float3>(4, Allocator.Temp);
 
-            i_vertexArray[0] = GetVoxelVertice(GetFaceVertexByIndex(faceIndex, 0));
-            i_vertexArray[1] = GetVoxelVertice(GetFaceVertexByIndex(faceIndex, 1));
-            i_vertexArray[2] = GetVoxelVertice(GetFaceVertexByIndex(faceIndex, 2));
-            i_vertexArray[3] = GetVoxelVertice(GetFaceVertexByIndex(faceIndex, 3));
+            i_vertexArray[0] = getVoxelVertice(getFaceVertexByIndex(faceIndex, 0));
+            i_vertexArray[1] = getVoxelVertice(getFaceVertexByIndex(faceIndex, 1));
+            i_vertexArray[2] = getVoxelVertice(getFaceVertexByIndex(faceIndex, 2));
+            i_vertexArray[3] = getVoxelVertice(getFaceVertexByIndex(faceIndex, 3));
 
             return i_vertexArray;
         }
@@ -146,6 +147,15 @@ namespace VoxelUtils
             i_triangleIndexList[4] = vertexCount + 3;
             i_triangleIndexList[5] = vertexCount + 2;
             return i_triangleIndexList;
+        }
+        public static NativeArray<Vector3> GetUVs()
+        {
+            NativeArray<Vector3> i_uvs = new NativeArray<Vector3>(4, Allocator.Temp);
+            i_uvs[0] = new Vector3(0, 1,0);
+            i_uvs[1] = new Vector3(1, 1, 0);
+            i_uvs[2] = new Vector3(0, 0, 0);
+            i_uvs[3] = new Vector3(1, 0, 0);
+            return i_uvs;
         }
     }
 }

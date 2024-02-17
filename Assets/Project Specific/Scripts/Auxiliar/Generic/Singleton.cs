@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Singleton<T> : SingletonBase<Singleton<T>> where T : MonoBehaviour
 {
     private static T s_Instance;
-    public bool DontDestroyOnLoad;
+    public bool DontDestroyOnLoad_;
     protected bool m_IsDestroyed = false;
 
     protected virtual void OnAwakeEvent() { }
@@ -20,14 +20,14 @@ public abstract class Singleton<T> : SingletonBase<Singleton<T>> where T : MonoB
         if (s_Instance == null)
         {
             s_Instance = gameObject.GetComponent<T>();
-            if (DontDestroyOnLoad) setDontDestroyOnLoad();
+            if (DontDestroyOnLoad_) setDontDestroyOnLoad();
             OnAwakeEvent();
         }
         else
         {
             if (this == s_Instance)
             {
-                if (DontDestroyOnLoad) setDontDestroyOnLoad();
+                if (DontDestroyOnLoad_) setDontDestroyOnLoad();
                 OnAwakeEvent();
             }
             else
@@ -72,8 +72,8 @@ public abstract class Singleton<T> : SingletonBase<Singleton<T>> where T : MonoB
 
     private void setDontDestroyOnLoad()
     {
-        DontDestroyOnLoad = true;
-        if (DontDestroyOnLoad)
+        DontDestroyOnLoad_ = true;
+        if (DontDestroyOnLoad_)
         {
             if (transform.parent != null) transform.parent = null;
             DontDestroyOnLoad(gameObject);
