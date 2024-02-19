@@ -46,13 +46,20 @@ namespace Chunks
             float time = Time.realtimeSinceStartup;
             int renderDistance = m_GameConfig.GraphicsConfiguration.RenderDistance;
 
-            for (int i = 0; i <= renderDistance; i++)
+            for (int i = renderDistance; i <= renderDistance; i++)
             {
-                m_ChunksToDraw = m_ChunksManager.GetChunkByRing(i, (chunkID) =>
+                float time_b = Time.realtimeSinceStartup;
+                m_ChunksToDraw = m_ChunksManager.GetChunksByDistance(i, (chunkID) =>
                 {
                     bool exist = m_ChunkLoader.LoadedChunks.TryGetValue(chunkID, out Chunk chunk);
                     return exist && chunk.ChunkState != eChunkState.Drawn;
                 });
+                Debug.Log(Time.realtimeSinceStartup - time_b);
+                //m_ChunksToDraw = m_ChunksManager.GetChunkByRing(i, (chunkID) =>
+                //{
+                //    bool exist = m_ChunkLoader.LoadedChunks.TryGetValue(chunkID, out Chunk chunk);
+                //    return exist && chunk.ChunkState != eChunkState.Drawn;
+                //});
                 if (m_ChunksToDraw.Count == 0)
                     continue;
 
@@ -62,7 +69,7 @@ namespace Chunks
                     bool exists = m_ChunksManager.TryGetChunk(key, out Chunk chunk);
                     if (exists)
                         chunk.RequestMesh();
-                    if (j != 0 && j % 120 == 0)
+                    if (j != 0 && j % 300 == 0)
                         await Task.Yield();
                 }
                 m_ChunksToDraw.Clear();

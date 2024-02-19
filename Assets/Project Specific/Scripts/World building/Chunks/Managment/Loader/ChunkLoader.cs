@@ -28,8 +28,8 @@ namespace Chunks
 
         private async Task load(List<Vector3Int> toLoad)
         {
-            foreach (Vector3Int ID in toLoad)
-                m_LoadedChunks.Add(ID, new Chunk(ID));
+            //foreach (Vector3Int ID in toLoad)
+            //    m_LoadedChunks.Add(ID, new Chunk(ID));
             await addNaturalTerrain(toLoad);
         }
 
@@ -42,7 +42,7 @@ namespace Chunks
                 handler.Complete();
 
                 Vector3Int id = toLoad[i];
-                Chunk chunk = m_LoadedChunks[id];
+                Chunk chunk = new Chunk(id);
                 chunk.SetVoxelMap(terrainJob.FlatVoxelMap.ToArray());
                 m_LoadedChunks[id] = chunk;
                 terrainJob.Dispose();
