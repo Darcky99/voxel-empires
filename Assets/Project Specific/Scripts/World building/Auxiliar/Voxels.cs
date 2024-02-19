@@ -57,6 +57,7 @@ namespace VoxelUtils
             return xyz;
         }
 
+
         private static float3 getVoxelVertice(int vertexIndex)
         {
             switch (vertexIndex)

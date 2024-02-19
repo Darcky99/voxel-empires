@@ -48,18 +48,11 @@ namespace Chunks
 
             for (int i = 0; i <= renderDistance; i++)
             {
-                float time_b = Time.realtimeSinceStartup;
-                //m_ChunksToDraw = m_ChunksManager.GetChunksByDistance(i, (chunkID) =>
-                //{
-                //    bool exist = m_ChunkLoader.LoadedChunks.TryGetValue(chunkID, out Chunk chunk);
-                //    return exist && chunk.ChunkState != eChunkState.Drawn;
-                //});
-                //m_ChunksToDraw = m_ChunksManager.GetChunkByRing(i, (chunkID) =>
-                //{
-                //    bool exist = m_ChunkLoader.LoadedChunks.TryGetValue(chunkID, out Chunk chunk);
-                //    return exist && chunk.ChunkState != eChunkState.Drawn;
-                //});
-                Debug.Log($"Time to get all chunk list {Time.realtimeSinceStartup - time_b}");
+                m_ChunksToDraw = m_ChunksManager.GetChunkByRing(i, (chunkID) =>
+                {
+                    bool exist = m_ChunkLoader.LoadedChunks.TryGetValue(chunkID, out Chunk chunk);
+                    return exist && chunk.ChunkState != eChunkState.Drawn;
+                });
                 if (m_ChunksToDraw.Count == 0)
                     continue;
 
@@ -69,7 +62,7 @@ namespace Chunks
                     bool exists = m_ChunksManager.TryGetChunk(key, out Chunk chunk);
                     if (exists)
                         chunk.RequestMesh();
-                    if (j != 0 && j % 300 == 0)
+                    if (j != 0 && j % 120 == 0)
                         await Task.Yield();
                 }
                 m_ChunksToDraw.Clear();
@@ -80,7 +73,7 @@ namespace Chunks
                     m_StarOverFlag = false;
                 }
             }
-            Debug.Log($"Time to draw everything: {Time.realtimeSinceStartup -  time}");
+            Debug.Log($"Time to load everything: {Time.realtimeSinceStartup -  time}");
         }
 
         public void CheckToDraw()

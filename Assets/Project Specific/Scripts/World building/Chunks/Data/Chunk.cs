@@ -7,11 +7,10 @@ using System;
 using UnityEngine.Profiling;
 using System.Threading.Tasks;
 using System.Collections;
-using Sirenix.OdinInspector;
 
 namespace Chunks
 {
-    public class Chunk
+    public struct Chunk
     {
         private ChunksManager m_ChunksManager => ChunksManager.Instance;
         private GameConfig m_GameConfig => GameConfig.Instance;
@@ -25,6 +24,7 @@ namespace Chunks
             m_ChunkMesh = null;
             m_Job = default;
             m_JobHandle = default;
+
         }
 
         #region Editor
@@ -64,6 +64,9 @@ namespace Chunks
         private void onMeshReady()
         {
             m_JobHandle.Complete();
+
+            //Debug.Log($"done {m_Job.Vertices.Length} ");
+
             if (m_Job.Vertices.Length == 0) {
                 m_Job.Dispose();
                 return;
@@ -87,14 +90,10 @@ namespace Chunks
         public Vector3Int ChunkID => m_ChunkID;
         public eChunkState ChunkState => m_ChunkState;
 
-        [Title("Data")]
         private Vector3Int m_ChunkID;
         private VoxelMap m_VoxelMap;
-        private eChunkState m_ChunkState;
         private ChunkMesh m_ChunkMesh;
-        [Title("Jobs")]
-        private IChunkMesh m_Job;
-        private JobHandle m_JobHandle;
+        private eChunkState m_ChunkState;
 
         public byte GetVoxel(Vector3Int voxelPosition) => m_VoxelMap.GetVoxel(voxelPosition);
         public void SetVoxel(Vector3Int voxelPosition) => m_VoxelMap.SetVoxel(voxelPosition.x, voxelPosition.y, voxelPosition.z, 1);
@@ -109,10 +108,53 @@ namespace Chunks
             m_VoxelMap.SetFlatMap(flatVoxelMap);
         }
 
-        private async void waitForMesh()
+        public byte[] Get_Expanded_VoxelMap()
         {
-            while (!m_JobHandle.IsCompleted)
+            int expanded_ChunkSizeMaxIndex = GameConfig.Instance.ChunkConfiguration.Expanded_ChunkSize - 1;
+            byte[] flatMap = m_VoxelMap.Expanded_FlatMap;
+            if (flatMap.Length == 1)
+                return flatMap;
+            for (int y = 0; y <= expanded_ChunkSizeMaxIndex; y++)
+                for (int z = 0; z <= expanded_ChunkSizeMaxIndex; z++)
+                    for (int x = 0; x <= expanded_ChunkSizeMaxIndex; x++)
+                    {
+                        if (!(x == 0 || x == expanded_ChunkSizeMaxIndex || y == 0 || y == expanded_ChunkSizeMaxIndex || z == 0 || z == expanded_ChunkSizeMaxIndex))
+                            continue;
+
+                        Vector3Int adjacentChunkID = default, adjacentVoxel = default;
+
+                        adjacentChunkID.x = x == 0 ? m_ChunkID.x - 1 : x == 17 ? m_ChunkID.x + 1 : m_ChunkID.x;
+                        adjacentChunkID.y = y == 0 ? m_ChunkID.y - 1 : y == 17 ? m_ChunkID.y + 1 : m_ChunkID.y;
+                        adjacentChunkID.z = z == 0 ? m_ChunkID.z - 1 : z == 17 ? m_ChunkID.z + 1 : m_ChunkID.z;
+
+                        bool exists = m_ChunksManager.TryGetChunk(adjacentChunkID, out Chunk adjacentChunk);
+
+                        if (!exists)
+                        {
+                            flatMap[Voxels.Expanted_Index(x, y, z)] = 0;
+                            continue;
+                        }
+
+                        adjacentVoxel.x = x == 0 ? 15 : x == 17 ? 0 : x - 1;
+                        adjacentVoxel.y = y == 0 ? 15 : y == 17 ? 0 : y - 1;
+                        adjacentVoxel.z = z == 0 ? 15 : z == 17 ? 0 : z - 1;
+
+                        flatMap[Voxels.Expanted_Index(x, y, z)] = adjacentChunk.GetVoxel(adjacentVoxel);
+                    }
+
+            return flatMap;
+        }
+
+        IChunkMesh m_Job;
+        JobHandle m_JobHandle;
+
+        async void check()
+        {
+            do
+            {
                 await Task.Yield();
+            }
+            while (!m_JobHandle.IsCompleted);
             onMeshReady();
         }
 
@@ -136,7 +178,7 @@ namespace Chunks
                 backChunk.m_VoxelMap.FlatMap);
 
             m_JobHandle = m_Job.Schedule();
-            waitForMesh();
+            check();
         }
     }
 }

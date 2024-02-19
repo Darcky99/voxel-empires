@@ -78,12 +78,18 @@ public struct IChunkMesh : IJob
                         for(int i = -1; i <= 1; i += 2)
                         {
                             int faceIndex = getFaceIndex(p, i);
+
                             if (!isDrawFace(blockID, abs_position, faceIndex) || (m_ID.y == 0 && abs_position.y == 0 && faceIndex == 1))
                                 continue;
+
+                            int vertexIndex = Vertices.Length;
+
                             v[p] = d[p];
                             v[a] = d[a];
                             v[b] = d[b];
+
                             int3 min_limit = new int3(v[0], v[1], v[2]);
+
                             int2 a_limits = new int2(d[a], d[a]);
                             for (int al = v[a] + 1; al < m_ChunkSize; al++)
                             {
@@ -92,6 +98,7 @@ public struct IChunkMesh : IJob
                                     a_limits.y = al;
                                 else break;
                             }
+
                             int2 b_limits = new int2(d[b], d[b]);
                             v[a] = a_limits.y;
                             for (int bl = d[b] + 1; bl < m_ChunkSize; bl++)
@@ -105,11 +112,11 @@ public struct IChunkMesh : IJob
                             v[a] = a_limits.y;
                             v[b] = b_limits.y;
                             int3 max_limit = new int3(v[0], v[1], v[2]);
+                            setAsDrawn(min_limit, max_limit, faceIndex);
+
+                            NativeArray<float3> fv = Voxels.GetFaceVertices(faceIndex);
                             float3 meshCenter = getMeshCenter(min_limit, max_limit);
                             float2 meshSize = new float2(a_limits.y - a_limits.x + 1, b_limits.y - b_limits.x + 1);
-
-                            int vertexIndex = Vertices.Length;
-                            NativeArray<float3> fv = Voxels.GetFaceVertices(faceIndex);
                             foreach (float3 vertex in fv)
                             {
                                 float3 global_vertex = vertex;
@@ -128,7 +135,7 @@ public struct IChunkMesh : IJob
                                 u.z = m_VoxelsConfig[blockID - 1].TextureIndex(faceIndex);
                                 UVs.Add(u);
                             }
-                            setAsDrawn(min_limit, max_limit, faceIndex);
+                            continue;
                         }
                     }
             }
