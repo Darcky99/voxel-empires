@@ -48,7 +48,7 @@ namespace Project.Managers
         [SerializeField] private Transform m_WorldCenter;
 
         [Title("Handlers")]
-        private Dictionary<Vector3Int, Chunk> LoadedChunks => m_ChunkLoader.LoadedChunks;
+        private Chunk[,,] LoadedChunks => m_ChunkLoader.LoadedChunks;
 
         private ChunkLoader m_ChunkLoader;
         private ChunkDrawer m_ChunkDrawer;
@@ -57,7 +57,7 @@ namespace Project.Managers
         private async void Load_and_Draw_World()
         {
             await m_ChunkLoader.Load(GetChunksByDistance(m_GameConfig.WorldConfig.WorldSize,
-                (chunkID) => (!LoadedChunks.ContainsKey(chunkID))));
+                (chunkID) => LoadedChunks[chunkID.x, chunkID.y, chunkID.z] != null));
 
             m_ChunkDrawer.CheckToDraw();
         }

@@ -17,19 +17,29 @@ namespace Chunks
 
         public ChunkLoader()
         {
-            m_LoadedChunks = new Dictionary<Vector3Int, Chunk>();
+            //m_LoadedChunks = new Dictionary<Vector3Int, Chunk>();
+            int worldSize = m_GameConfig.WorldConfig.WorldSize;
+            m_LoadedChunks = new Chunk[worldSize, m_GameConfig.WorldConfig.WorldHeight, worldSize];
         }
 
-        public Dictionary<Vector3Int, Chunk> LoadedChunks => m_LoadedChunks;
+        //public Dictionary<Vector3Int, Chunk> LoadedChunks => m_LoadedChunks;
         public Vector3 WorldCenter => ChunksManager.Instance.WorldCenter;
+        public Chunk[,,] LoadedChunks => m_LoadedChunks;
 
-        private Dictionary<Vector3Int, Chunk> m_LoadedChunks = new Dictionary<Vector3Int, Chunk>();
-        
+        //private Dictionary<Vector3Int, Chunk> m_LoadedChunks = new Dictionary<Vector3Int, Chunk>();
+        private Chunk[,,] m_LoadedChunks;
 
         private async Task load(List<Vector3Int> toLoad)
         {
-            foreach (Vector3Int ID in toLoad)
-                m_LoadedChunks.Add(ID, new Chunk(ID));
+            float time = Time.realtimeSinceStartup;
+            for(int i = 0; i < toLoad.Count; i++)
+            {
+                Vector3Int ID = toLoad[i];
+                m_LoadedChunks[ID.x, ID.y, ID.z] = new Chunk(ID);
+                if(i % 25000 == 0)
+                    await Task.Yield();
+            }
+            Debug.Log($"Time to add chunks{Time.realtimeSinceStartup - time}");
             await addNaturalTerrain(toLoad);
         }
 
@@ -42,13 +52,16 @@ namespace Chunks
                 handler.Complete();
 
                 Vector3Int id = toLoad[i];
-                Chunk chunk = m_LoadedChunks[id];
+                Chunk chunk = m_LoadedChunks[id.x, id.y, id.z];
                 chunk.SetVoxelMap(terrainJob.FlatVoxelMap.ToArray());
-                m_LoadedChunks[id] = chunk;
+                m_LoadedChunks[id.x, id.y, id.z] = chunk;
                 terrainJob.Dispose();
 
                 if (i % 500 == 0 && i != 0)
+                {
                     await Task.Yield();
+                    Debug.Log($"Loaded: {i} / {toLoad.Count}");
+                }
             }
         }
 
@@ -123,10 +136,8 @@ namespace Chunks
         }
         private bool tryGetChunk(Vector3Int chunkID, out Chunk chunk)
         {
-            bool exists = LoadedChunks.TryGetValue(chunkID, out chunk);
-            if (!exists)
-                chunk = new Chunk(chunkID);
-            return exists;
+            chunk = LoadedChunks[chunkID.x, chunkID.y, chunkID.z];
+            return chunk != null;
         }
 
         public bool TryGetChunk(Vector3Int chunkID, out Chunk chunk) => tryGetChunk(chunkID, out chunk);
