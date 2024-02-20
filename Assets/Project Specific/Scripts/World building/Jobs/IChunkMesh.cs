@@ -159,7 +159,7 @@ public struct IChunkMesh : IJob
         targetChunk = y < 0 ? m_Bot_Chunk  : y == m_ChunkSize ? m_Top_Chunk : targetChunk;
         targetChunk = z < 0 ? m_Back_Chunk : z == m_ChunkSize ? m_Front_Chunk : targetChunk;
 
-        return targetChunk[Voxels.Index(x, y, z)];
+        return targetChunk.Length == 1 ? (byte)0 : targetChunk[Voxels.Index(x, y, z)];
     }
     private byte getValue(int3 xyz) => getValue(xyz.x, xyz.y, xyz.z);
 

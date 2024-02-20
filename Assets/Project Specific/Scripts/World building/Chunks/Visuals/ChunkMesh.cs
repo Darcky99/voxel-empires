@@ -10,10 +10,12 @@ public class ChunkMesh : MonoBehaviour
 {
     private Chunk m_Chunk;
     [SerializeField] private MeshFilter m_LODs;
+    [SerializeField] private MeshCollider m_MeshCollider;
 
     private void setMesh(Mesh mesh)
     {
         m_LODs.mesh = mesh;
+        m_MeshCollider.sharedMesh = mesh;
     }
 
     public void Initialize(Chunk chunk, Mesh mesh)

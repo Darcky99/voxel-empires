@@ -28,8 +28,6 @@ namespace Chunks
 
         private async Task load(List<Vector3Int> toLoad)
         {
-            //foreach (Vector3Int ID in toLoad)
-            //    m_LoadedChunks.Add(ID, new Chunk(ID));
             await addNaturalTerrain(toLoad);
         }
 
@@ -76,12 +74,10 @@ namespace Chunks
 
             return missingChunks;
         }
-        private List<Vector3Int> getChunkByRing(Vector3 worldPosition, int ring/*, Func<Vector3Int, bool> condition*/)
+        private List<Vector3Int> getChunkByRing(Vector3 worldPosition, int ring)
         {
-            List<Vector3Int> missingChunks = new List<Vector3Int>();
-
             Vector3Int center = worldCoordinatesToChunkIndex(worldPosition);
-
+            List<Vector3Int> chunksInRing = new List<Vector3Int>();
             int2 x_limits = new int2(center.x - ring, center.x + ring);
             int2 z_limits = new int2(center.z - ring, center.z + ring);
             int2 y_limits = new int2(0, m_GameConfig.WorldConfig.WorldHeight);
@@ -94,11 +90,8 @@ namespace Chunks
                 {
                     pos1.x = x; pos1.y = y; pos1.z = z_limits.x;
                     pos2.x = x; pos2.y = y; pos2.z = z_limits.y;
-
-                    //if (condition(pos1) && !missingChunks.Contains(pos1))
-                        missingChunks.Add(pos1);
-                    //if (condition(pos2) && !missingChunks.Contains(pos2))
-                        missingChunks.Add(pos2);
+                    chunksInRing.Add(pos1);
+                    chunksInRing.Add(pos2);
                 }
             for (int z = z_limits.x + 1; z < z_limits.y; z++)
                 for (int y = y_limits.x; y <= y_limits.y; y++)
@@ -106,13 +99,10 @@ namespace Chunks
                     pos1.x = x_limits.x; pos1.y = y; pos1.z = z;
                     pos2.x = x_limits.y; pos2.y = y; pos2.z = z;
 
-                    //if (condition(pos1) && !missingChunks.Contains(pos1))
-                        missingChunks.Add(pos1);
-                    //if (condition(pos2) && !missingChunks.Contains(pos2))
-                        missingChunks.Add(pos2);
+                    chunksInRing.Add(pos1);
+                    chunksInRing.Add(pos2);
                 }
-
-            return missingChunks;
+            return chunksInRing;
         }
 
         private Vector3Int worldCoordinatesToChunkIndex(Vector3 worldPosition)

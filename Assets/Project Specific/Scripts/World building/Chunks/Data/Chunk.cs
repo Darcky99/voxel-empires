@@ -63,9 +63,8 @@ namespace Chunks
         }
         private void onMeshReady()
         {
+            Profiler.BeginSample("onMeshReady");
             m_JobHandle.Complete();
-
-            //Debug.Log($"done {m_Job.Vertices.Length} ");
 
             if (m_Job.Vertices.Length == 0) {
                 m_Job.Dispose();
@@ -83,6 +82,7 @@ namespace Chunks
             mesh.RecalculateNormals();
 
             m_ChunkMesh.Initialize(this, mesh);
+            Profiler.EndSample();
         }
         #endregion
 
@@ -92,29 +92,23 @@ namespace Chunks
 
         private Vector3Int m_ChunkID;
         private VoxelMap m_VoxelMap;
-        private ChunkMesh m_ChunkMesh;
         private eChunkState m_ChunkState;
+
+        private ChunkMesh m_ChunkMesh;
 
         public byte GetVoxel(Vector3Int voxelPosition) => m_VoxelMap.GetVoxel(voxelPosition);
         public void SetVoxel(Vector3Int voxelPosition) => m_VoxelMap.SetVoxel(voxelPosition.x, voxelPosition.y, voxelPosition.z, 1);
 
-        public void EnableSimulation(bool state)
-        {
-            //in the future I will use this to enable simulation
-            ChunkDrawer.OnDraw += onDraw;
-        }
-        public void SetVoxelMap(byte[] flatVoxelMap)
-        {
-            m_VoxelMap.SetFlatMap(flatVoxelMap);
-        }
+        public void SetVoxelMap(byte[] flatVoxelMap) => m_VoxelMap.SetFlatMap(flatVoxelMap);
 
-        IChunkMesh m_Job;
-        JobHandle m_JobHandle;
+        private IChunkMesh m_Job;
+        private JobHandle m_JobHandle;
 
-        async void check()
+        private async void checkMeshCompletition()
         {
-            while (!m_JobHandle.IsCompleted);
+            do
                 await Task.Yield();
+            while (!m_JobHandle.IsCompleted);
             onMeshReady();
         }
 
@@ -136,9 +130,10 @@ namespace Chunks
                 leftChunk.m_VoxelMap.FlatMap,
                 frontChunk.m_VoxelMap.FlatMap,
                 backChunk.m_VoxelMap.FlatMap);
-
+            
             m_JobHandle = m_Job.Schedule();
-            check();
+            checkMeshCompletition();
+            //onMeshReady();
         }
     }
 }
