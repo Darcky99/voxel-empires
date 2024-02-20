@@ -46,20 +46,19 @@ namespace Chunks
             float time = Time.realtimeSinceStartup;
             int renderDistance = m_GameConfig.GraphicsConfiguration.RenderDistance;
 
-            for (int i = renderDistance; i <= renderDistance; i++)
+            for (int i = 0; i <= renderDistance; i++)
             {
                 float time_b = Time.realtimeSinceStartup;
-                m_ChunksToDraw = m_ChunksManager.GetChunksByDistance(i, (chunkID) =>
-                {
-                    bool exist = m_ChunkLoader.LoadedChunks.TryGetValue(chunkID, out Chunk chunk);
-                    return exist && chunk.ChunkState != eChunkState.Drawn;
-                });
-                Debug.Log(Time.realtimeSinceStartup - time_b);
-                //m_ChunksToDraw = m_ChunksManager.GetChunkByRing(i, (chunkID) =>
+                //m_ChunksToDraw = m_ChunksManager.GetChunksByDistance(i, (chunkID) =>
                 //{
                 //    bool exist = m_ChunkLoader.LoadedChunks.TryGetValue(chunkID, out Chunk chunk);
                 //    return exist && chunk.ChunkState != eChunkState.Drawn;
                 //});
+                m_ChunksToDraw = m_ChunksManager.GetChunkByRing(i/*, (chunkID) => {
+                    bool exist = m_ChunkLoader.LoadedChunks.TryGetValue(chunkID, out Chunk chunk);
+                    return exist && chunk.ChunkState != eChunkState.Drawn;
+                }*/);
+                Debug.Log(Time.realtimeSinceStartup - time_b);
                 if (m_ChunksToDraw.Count == 0)
                     continue;
 
@@ -67,7 +66,7 @@ namespace Chunks
                 {
                     Vector3Int key = m_ChunksToDraw[j];
                     bool exists = m_ChunksManager.TryGetChunk(key, out Chunk chunk);
-                    if (exists)
+                    if (exists && chunk.ChunkState != eChunkState.Drawn)
                         chunk.RequestMesh();
                     if (j != 0 && j % 300 == 0)
                         await Task.Yield();
@@ -79,6 +78,7 @@ namespace Chunks
                     i = -1;
                     m_StarOverFlag = false;
                 }
+                Debug.Log("new loop");
             }
             Debug.Log($"Time to load everything: {Time.realtimeSinceStartup -  time}");
         }

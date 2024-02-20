@@ -108,53 +108,13 @@ namespace Chunks
             m_VoxelMap.SetFlatMap(flatVoxelMap);
         }
 
-        public byte[] Get_Expanded_VoxelMap()
-        {
-            int expanded_ChunkSizeMaxIndex = GameConfig.Instance.ChunkConfiguration.Expanded_ChunkSize - 1;
-            byte[] flatMap = m_VoxelMap.Expanded_FlatMap;
-            if (flatMap.Length == 1)
-                return flatMap;
-            for (int y = 0; y <= expanded_ChunkSizeMaxIndex; y++)
-                for (int z = 0; z <= expanded_ChunkSizeMaxIndex; z++)
-                    for (int x = 0; x <= expanded_ChunkSizeMaxIndex; x++)
-                    {
-                        if (!(x == 0 || x == expanded_ChunkSizeMaxIndex || y == 0 || y == expanded_ChunkSizeMaxIndex || z == 0 || z == expanded_ChunkSizeMaxIndex))
-                            continue;
-
-                        Vector3Int adjacentChunkID = default, adjacentVoxel = default;
-
-                        adjacentChunkID.x = x == 0 ? m_ChunkID.x - 1 : x == 17 ? m_ChunkID.x + 1 : m_ChunkID.x;
-                        adjacentChunkID.y = y == 0 ? m_ChunkID.y - 1 : y == 17 ? m_ChunkID.y + 1 : m_ChunkID.y;
-                        adjacentChunkID.z = z == 0 ? m_ChunkID.z - 1 : z == 17 ? m_ChunkID.z + 1 : m_ChunkID.z;
-
-                        bool exists = m_ChunksManager.TryGetChunk(adjacentChunkID, out Chunk adjacentChunk);
-
-                        if (!exists)
-                        {
-                            flatMap[Voxels.Expanted_Index(x, y, z)] = 0;
-                            continue;
-                        }
-
-                        adjacentVoxel.x = x == 0 ? 15 : x == 17 ? 0 : x - 1;
-                        adjacentVoxel.y = y == 0 ? 15 : y == 17 ? 0 : y - 1;
-                        adjacentVoxel.z = z == 0 ? 15 : z == 17 ? 0 : z - 1;
-
-                        flatMap[Voxels.Expanted_Index(x, y, z)] = adjacentChunk.GetVoxel(adjacentVoxel);
-                    }
-
-            return flatMap;
-        }
-
         IChunkMesh m_Job;
         JobHandle m_JobHandle;
 
         async void check()
         {
-            do
-            {
-                await Task.Yield();
-            }
             while (!m_JobHandle.IsCompleted);
+                await Task.Yield();
             onMeshReady();
         }
 

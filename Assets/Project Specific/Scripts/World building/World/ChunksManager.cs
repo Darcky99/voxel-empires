@@ -67,7 +67,7 @@ namespace Project.Managers
             m_ChunkLoader.WorldCoordinatesToChunkIndex(worldPosition);
         public List<Vector3Int> GetChunksByDistance(int renderDistance, Func<Vector3Int, bool> condition) =>
             m_ChunkLoader.GetChunksByDistance(renderDistance, condition);
-        public List<Vector3Int> GetChunkByRing(int ring, Func<Vector3Int, bool> condition) =>
-            m_ChunkLoader.GetChunkByRing(ring, condition);
+        public List<Vector3Int> GetChunkByRing(int ring/*, Func<Vector3Int, bool> condition*/) =>
+            m_ChunkLoader.GetChunkByRing(ring/*, condition*/);
     }
 }

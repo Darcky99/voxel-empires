@@ -76,7 +76,7 @@ namespace Chunks
 
             return missingChunks;
         }
-        private List<Vector3Int> getChunkByRing(Vector3 worldPosition, int ring, Func<Vector3Int, bool> condition)
+        private List<Vector3Int> getChunkByRing(Vector3 worldPosition, int ring/*, Func<Vector3Int, bool> condition*/)
         {
             List<Vector3Int> missingChunks = new List<Vector3Int>();
 
@@ -95,9 +95,9 @@ namespace Chunks
                     pos1.x = x; pos1.y = y; pos1.z = z_limits.x;
                     pos2.x = x; pos2.y = y; pos2.z = z_limits.y;
 
-                    if (condition(pos1) && !missingChunks.Contains(pos1))
+                    //if (condition(pos1) && !missingChunks.Contains(pos1))
                         missingChunks.Add(pos1);
-                    if (condition(pos2) && !missingChunks.Contains(pos2))
+                    //if (condition(pos2) && !missingChunks.Contains(pos2))
                         missingChunks.Add(pos2);
                 }
             for (int z = z_limits.x + 1; z < z_limits.y; z++)
@@ -106,9 +106,9 @@ namespace Chunks
                     pos1.x = x_limits.x; pos1.y = y; pos1.z = z;
                     pos2.x = x_limits.y; pos2.y = y; pos2.z = z;
 
-                    if (condition(pos1) && !missingChunks.Contains(pos1))
+                    //if (condition(pos1) && !missingChunks.Contains(pos1))
                         missingChunks.Add(pos1);
-                    if (condition(pos2) && !missingChunks.Contains(pos2))
+                    //if (condition(pos2) && !missingChunks.Contains(pos2))
                         missingChunks.Add(pos2);
                 }
 
@@ -134,8 +134,8 @@ namespace Chunks
             worldCoordinatesToChunkIndex(worldPosition);
         public List<Vector3Int> GetChunksByDistance(int renderDistance, Func<Vector3Int, bool> condition) =>
             getChunksByDistance(WorldCenter, renderDistance, condition);
-        public List<Vector3Int> GetChunkByRing(int ring, Func<Vector3Int, bool> condition) =>
-            getChunkByRing(Vector3.zero, ring, condition);
+        public List<Vector3Int> GetChunkByRing(int ring/*, Func<Vector3Int, bool> condition*/) =>
+            getChunkByRing(Vector3.zero, ring/*, condition*/);
         #endregion
 
         public async Task Load(List<Vector3Int> toLoad) => await load(toLoad);
