@@ -22,13 +22,12 @@ public class ChunkConfiguration
     public static readonly float ChunkToWorldDistance = 8f;
     public static readonly float VoxelToWorldDistance = 0.5f;
 
-    public int ChunkVoxelCount => m_ChunkSize * m_ChunkSize * m_ChunkSize;
+    public int ChunkVoxelCount => m_ChunkSize * m_ChunkSize * ChunkHeight;
     public int ChunkSize => m_ChunkSize;
-    public int Expanded_ChunkSize => ChunkSize + 2;
-    //public int Expanded_ChunkLenght => Expanded_ChunkSize * Expanded_ChunkSize * Expanded_ChunkSize;
-
+    public int ChunkHeight => m_ChunkHeight;
 
     [SerializeField] private int m_ChunkSize = 16;
+    [SerializeField] private int m_ChunkHeight = 512;
 }
 
 [Serializable]
@@ -43,8 +42,8 @@ public class GraphicsConfiguration
 [Serializable]
 public class WorldGenerationConfiguration
 {
-    [field: SerializeField] public int WorldSize { get; private set; }
-    [field: SerializeField] public int WorldHeight { get; private set; }
+    [field: SerializeField] public int WorldSizeInChunks { get; private set; }
+    [field: SerializeField] public int WorldHeightInChunks { get; private set; }
     public float HeightNoiseScale => m_HeightNoiseScale;
 
     [SerializeField] private float m_HeightNoiseScale = 0.01f;

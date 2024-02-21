@@ -12,7 +12,7 @@ public struct ITerrainGeneration : IJob
     {
         m_ChunkID = new int3(ChunkID.x, ChunkID.y, ChunkID.z);
 
-        m_ChunkSize = GameConfig.Instance.ChunkConfiguration.ChunkSize;
+        //m_ChunkSize = GameConfig.Instance.ChunkConfiguration.ChunkSize;
         m_HeightNoiseScale = GameConfig.Instance.WorldConfig.HeightNoiseScale;
 
         FlatVoxelMap = new NativeArray<byte>(GameConfig.Instance.ChunkConfiguration.ChunkVoxelCount, Allocator.Persistent);
@@ -22,19 +22,20 @@ public struct ITerrainGeneration : IJob
     public NativeArray<byte> FlatVoxelMap;
     public NativeArray<bool> IsEmpty;
 
-    private readonly int m_ChunkSize;
     private readonly float m_HeightNoiseScale;
     private readonly int3 m_ChunkID;
 
     public void Execute()
     {
-        int3
-                globalChunkPosition = m_ChunkID * m_ChunkSize,
-                voxelLocalPosition = 0,
-                globalVoxelPositon = globalChunkPosition + voxelLocalPosition;
+        int chunkSize = Voxels.s_ChunkSize;
 
-        for (voxelLocalPosition.x = 0; voxelLocalPosition.x < m_ChunkSize; voxelLocalPosition.x++)
-            for (voxelLocalPosition.z = 0; voxelLocalPosition.z < m_ChunkSize; voxelLocalPosition.z++)
+        int3
+            globalChunkPosition = m_ChunkID * chunkSize,
+            voxelLocalPosition = 0,
+            globalVoxelPositon = globalChunkPosition + voxelLocalPosition;
+
+        for (voxelLocalPosition.x = 0; voxelLocalPosition.x < chunkSize; voxelLocalPosition.x++)
+            for (voxelLocalPosition.z = 0; voxelLocalPosition.z < chunkSize; voxelLocalPosition.z++)
             {
                 float2 XZ;
                 XZ.x = globalChunkPosition.x + voxelLocalPosition.x;
@@ -43,7 +44,7 @@ public struct ITerrainGeneration : IJob
                 float noiseValue = (noise.cnoise(XZ * m_HeightNoiseScale) + 1f) / 2f;
                 int maxHeight = (int)math.round(noiseValue * 256);
                 int minGrass = maxHeight - 1;
-                int height = (int)math.clamp(math.round(maxHeight - globalChunkPosition.y), -1, 15);
+                int height = (int)math.clamp(math.round(maxHeight - globalChunkPosition.y), -1, Voxels.s_ChunkHeight - 1);
 
                 for (voxelLocalPosition.y = height; voxelLocalPosition.y >= 0; voxelLocalPosition.y--)
                 {

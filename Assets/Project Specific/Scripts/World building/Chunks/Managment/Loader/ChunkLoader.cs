@@ -61,7 +61,7 @@ namespace Chunks
             Vector3Int center = worldCoordinatesToChunkIndex(worldPosition);
 
             int2 x_limits = new int2(center.x - distance, center.x + distance);
-            int2 y_limits = new int2(0, m_GameConfig.WorldConfig.WorldHeight);
+            int2 y_limits = new int2(0, m_GameConfig.WorldConfig.WorldHeightInChunks);
             int2 z_limits = new int2(center.z - distance, center.z + distance);
 
             List<Vector3Int> missingChunks = new List<Vector3Int>();
@@ -85,7 +85,7 @@ namespace Chunks
             List<Vector3Int> chunksInRing = new List<Vector3Int>();
             int2 x_limits = new int2(center.x - ring, center.x + ring);
             int2 z_limits = new int2(center.z - ring, center.z + ring);
-            int2 y_limits = new int2(0, m_GameConfig.WorldConfig.WorldHeight);
+            int2 y_limits = new int2(0, m_GameConfig.WorldConfig.WorldHeightInChunks);
 
             Vector3Int pos1 = default;
             Vector3Int pos2 = default;
@@ -120,7 +120,10 @@ namespace Chunks
         {
             bool exists = LoadedChunks.TryGetValue(chunkID, out chunk);
             if (!exists)
+            {
                 chunk = new Chunk(chunkID);
+                chunk.SetVoxelMap(new byte[] { 0 });
+            }
             return exists;
         }
 

@@ -18,7 +18,7 @@ namespace Chunks
         public Chunk(Vector3Int ID)
         {
             m_ChunkID = ID;
-            m_VoxelMap = new VoxelMap(GameConfig.Instance.ChunkConfiguration.ChunkSize);
+            m_VoxelMap = new VoxelMap();
             m_ChunkState = eChunkState.Active;
 
             m_ChunkMesh = null;
@@ -53,17 +53,8 @@ namespace Chunks
         #endregion
 
         #region Callbacks
-        private void onDraw(Vector3 cameraPosition, float maxDistance)
-        {
-            if (m_ChunkState == eChunkState.Drawn)
-                return;
-            float distanceToCamera = Vector3.Distance(cameraPosition, WorldPosition);
-            if (distanceToCamera < maxDistance)
-                RequestMesh();
-        }
         private void onMeshReady()
         {
-            Profiler.BeginSample("onMeshReady");
             m_JobHandle.Complete();
 
             if (m_Job.Vertices.Length == 0) {
@@ -82,7 +73,6 @@ namespace Chunks
             mesh.RecalculateNormals();
 
             m_ChunkMesh.Initialize(this, mesh);
-            Profiler.EndSample();
         }
         #endregion
 
