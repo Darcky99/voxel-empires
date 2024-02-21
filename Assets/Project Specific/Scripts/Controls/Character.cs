@@ -13,7 +13,8 @@ public class Character : MonoBehaviour
     }
     private void OnDisable()
     {
-        m_InputManager.OnMove -= onMove;
+        if(m_InputManager)
+            m_InputManager.OnMove -= onMove;
     }
 
     [SerializeField] private CharacterController m_CharacterController;

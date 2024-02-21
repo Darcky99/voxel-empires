@@ -6,7 +6,7 @@ using UnityEngine;
 public class InputManager : Singleton<InputManager>
 {
     public event Action<Vector2> OnMove;
-
+    
     private void Update()
     {
         float w = Input.GetKey(KeyCode.W) ?  1 : 0;

@@ -15,9 +15,9 @@ MonoBehaviour:
   <ChunkConfiguration>k__BackingField:
     m_ChunkSize: 16
   <GraphicsConfiguration>k__BackingField:
-    m_RenderDistance: 32
+    m_RenderDistance: 16
   <WorldConfig>k__BackingField:
-    <WorldSize>k__BackingField: 32
+    <WorldSize>k__BackingField: 16
     <WorldHeight>k__BackingField: 16
     m_HeightNoiseScale: 0.0025
   <VoxelConfiguration>k__BackingField:

@@ -5,8 +5,6 @@ using UnityEngine;
 public abstract class Singleton<T> : SingletonBase<Singleton<T>> where T : MonoBehaviour
 {
     private static T s_Instance;
-    public bool DontDestroyOnLoad_;
-    protected bool m_IsDestroyed = false;
 
     protected virtual void OnAwakeEvent() { }
     public virtual void Start() { }
@@ -20,21 +18,14 @@ public abstract class Singleton<T> : SingletonBase<Singleton<T>> where T : MonoB
         if (s_Instance == null)
         {
             s_Instance = gameObject.GetComponent<T>();
-            if (DontDestroyOnLoad_) setDontDestroyOnLoad();
             OnAwakeEvent();
         }
         else
         {
             if (this == s_Instance)
-            {
-                if (DontDestroyOnLoad_) setDontDestroyOnLoad();
                 OnAwakeEvent();
-            }
             else
-            {
-                m_IsDestroyed = true;
                 Destroy(this.gameObject);
-            }
         }
     }
 
@@ -48,7 +39,7 @@ public abstract class Singleton<T> : SingletonBase<Singleton<T>> where T : MonoB
 
                 if (s_Instance == null)
                 {
-                    if (applicationIsQuitting && Application.isPlaying)
+                    if (Application.isPlaying)
                     {
                         Debug.LogWarning("[Singleton] IsQuitting Instance '" + typeof(T) + "' is null, returning.");
                         return s_Instance;
@@ -67,16 +58,4 @@ public abstract class Singleton<T> : SingletonBase<Singleton<T>> where T : MonoB
         }
     }
 
-    protected static bool applicationIsQuittingFlag = false;
-    protected static bool applicationIsQuitting = false;
-
-    private void setDontDestroyOnLoad()
-    {
-        DontDestroyOnLoad_ = true;
-        if (DontDestroyOnLoad_)
-        {
-            if (transform.parent != null) transform.parent = null;
-            DontDestroyOnLoad(gameObject);
-        }
-    }
 }

@@ -37,18 +37,15 @@ public struct ITerrainGeneration : IJob
             for (voxelLocalPosition.z = 0; voxelLocalPosition.z < m_ChunkSize; voxelLocalPosition.z++)
             {
                 float2 XZ;
-                XZ.x = globalVoxelPositon.x;
-                XZ.y = globalVoxelPositon.z;
+                XZ.x = globalChunkPosition.x + voxelLocalPosition.x;
+                XZ.y = globalChunkPosition.z + voxelLocalPosition.z;
+
                 float noiseValue = (noise.cnoise(XZ * m_HeightNoiseScale) + 1f) / 2f;
-                float maxHeight = noiseValue * (256);
-                float minGrass = maxHeight - 1;
+                int maxHeight = (int)math.round(noiseValue * 256);
+                int minGrass = maxHeight - 1;
+                int height = (int)math.clamp(math.round(maxHeight - globalChunkPosition.y), -1, 15);
 
-                voxelLocalPosition.y = (int)maxHeight - globalChunkPosition.y;
-
-                if (voxelLocalPosition.y < 0)
-                    continue;
-                IsEmpty[0] = false;
-                for (; voxelLocalPosition.y >= 0; voxelLocalPosition.y--)
+                for (voxelLocalPosition.y = height; voxelLocalPosition.y >= 0; voxelLocalPosition.y--)
                 {
                     globalVoxelPositon = globalChunkPosition + voxelLocalPosition;
 
@@ -57,6 +54,7 @@ public struct ITerrainGeneration : IJob
                         FlatVoxelMap[index] = 3;
                     else
                         FlatVoxelMap[index] = 2;
+                    IsEmpty[0] = false;
                 }
             }
     }
