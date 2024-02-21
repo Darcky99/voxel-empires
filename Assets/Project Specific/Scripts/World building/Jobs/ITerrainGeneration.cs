@@ -6,7 +6,7 @@ using UnityEngine;
 using VoxelUtils;
 
 [BurstCompile]
-public struct ITerrainGeneration : IJobParallelFor
+public struct ITerrainGeneration : IJob
 {
     public ITerrainGeneration(Vector3Int ChunkID)
     {
@@ -16,39 +16,57 @@ public struct ITerrainGeneration : IJobParallelFor
         m_HeightNoiseScale = GameConfig.Instance.WorldConfig.HeightNoiseScale;
 
         FlatVoxelMap = new NativeArray<byte>(GameConfig.Instance.ChunkConfiguration.ChunkVoxelCount, Allocator.Persistent);
+        IsEmpty = new NativeArray<bool>(new bool[]{ true }, Allocator.Persistent);
     }
 
     public NativeArray<byte> FlatVoxelMap;
+    public NativeArray<bool> IsEmpty;
 
     private readonly int m_ChunkSize;
     private readonly float m_HeightNoiseScale;
     private readonly int3 m_ChunkID;
 
-    public void Execute(int i)
+    public void Execute()
     {
         int3
-            globalChunkPosition = m_ChunkID * m_ChunkSize,
-            voxelLocalPosition = Voxels.XYZ(i),
-            globalVoxelPositon = globalChunkPosition + voxelLocalPosition;
-        float2 XZ;
-        XZ.x = globalVoxelPositon.x;
-        XZ.y = globalVoxelPositon.z;
+                globalChunkPosition = m_ChunkID * m_ChunkSize,
+                voxelLocalPosition = 0,
+                globalVoxelPositon = globalChunkPosition + voxelLocalPosition;
 
-        float noiseValue = (noise.cnoise(XZ * m_HeightNoiseScale) + 1f) / 2f;
-        float maxHeight = noiseValue * (256);
-        float minGrass = noiseValue * (242);
+        for (voxelLocalPosition.x = 0; voxelLocalPosition.x < m_ChunkSize; voxelLocalPosition.x++)
+            for (voxelLocalPosition.z = 0; voxelLocalPosition.z < m_ChunkSize; voxelLocalPosition.z++)
+            {
+                float2 XZ;
+                XZ.x = globalVoxelPositon.x;
+                XZ.y = globalVoxelPositon.z;
+                float noiseValue = (noise.cnoise(XZ * m_HeightNoiseScale) + 1f) / 2f;
+                float maxHeight = noiseValue * (256);
+                float minGrass = maxHeight - 1;
 
-        if (globalVoxelPositon.y > maxHeight)
-            return;
+                voxelLocalPosition.y = (int)maxHeight - globalChunkPosition.y;
 
-        if (globalVoxelPositon.y >= minGrass)
-            FlatVoxelMap[i] = 3;
-        else
-            FlatVoxelMap[i] = 2;
+                if (voxelLocalPosition.y < 0)
+                    continue;
+                IsEmpty[0] = false;
+                for (; voxelLocalPosition.y >= 0; voxelLocalPosition.y--)
+                {
+                    globalVoxelPositon = globalChunkPosition + voxelLocalPosition;
+
+                    int index = Index(voxelLocalPosition);
+                    if (globalVoxelPositon.y >= minGrass)
+                        FlatVoxelMap[index] = 3;
+                    else
+                        FlatVoxelMap[index] = 2;
+                }
+            }
     }
+    
 
     public void Dispose()
     {
         FlatVoxelMap.Dispose();
     }
+
+    private int Index(int3 position) => Voxels.Index(position.x, position.y, position.z);
+
 }

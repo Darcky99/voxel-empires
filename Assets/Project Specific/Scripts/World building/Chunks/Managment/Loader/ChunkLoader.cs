@@ -36,12 +36,17 @@ namespace Chunks
             for (int i = 0; i < toLoad.Count; i++)
             {
                 ITerrainGeneration terrainJob = new ITerrainGeneration(toLoad[i]);
-                JobHandle handler = (terrainJob.Schedule(16 * 16 * 16, 64));
+                JobHandle handler = terrainJob.Schedule();
                 handler.Complete();
 
                 Vector3Int id = toLoad[i];
                 Chunk chunk = new Chunk(id);
-                chunk.SetVoxelMap(terrainJob.FlatVoxelMap.ToArray());
+
+                if (terrainJob.IsEmpty[0])
+                    chunk.SetVoxelMap(new byte[] { 0 });
+                else
+                    chunk.SetVoxelMap(terrainJob.FlatVoxelMap.ToArray());
+
                 m_LoadedChunks[id] = chunk;
                 terrainJob.Dispose();
 

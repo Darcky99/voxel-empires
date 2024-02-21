@@ -114,6 +114,9 @@ namespace Chunks
 
         public void RequestMesh()
         {
+            if (m_VoxelMap.FlatMap.Length == 1)
+                return;
+
             m_ChunkState = eChunkState.Drawn;
 
             m_ChunksManager.TryGetChunk(m_ChunkID + Vector3Int.up, out Chunk topChunk);

@@ -23,15 +23,12 @@ namespace VoxelUtils
         public static int3 XYZ(int i)
         {
             int squareChunkSize = s_ChunkSize * s_ChunkSize;
-
             int3 xyz = new int3();
-
             xyz.y = (int)math.floor(i / (float)squareChunkSize);
             i -= xyz.y * squareChunkSize;
             xyz.z = (int)math.floor(i / (float)s_ChunkSize);
             i -= xyz.z * s_ChunkSize;
             xyz.x = i;
-
             return xyz;
         }
 
