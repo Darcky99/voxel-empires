@@ -10,7 +10,7 @@ using VoxelUtils;
 [BurstCompile]
 public struct IChunkMesh : IJob
 {
-    public IChunkMesh(Vector3Int id, byte[] centralChunk, byte[] topChunk, byte[] botChunk, byte[] rightChunk, byte[] leftChunk, byte[] frontChunk, byte[] backChunk)
+    public IChunkMesh(Vector3Int id, byte[] centralChunk, byte[] rightChunk, byte[] leftChunk, byte[] frontChunk, byte[] backChunk)
     {
         m_VoxelsConfig = new NativeArray<VoxelConfig>(GameConfig.Instance.VoxelConfiguration.GetVoxelsData(), Allocator.Persistent);
         m_ID = new int3(id.y, id.y, id.z);
@@ -22,8 +22,6 @@ public struct IChunkMesh : IJob
         m_DrawnFaces = new NativeHashMap<int3, FacesDrawn>(6000,Allocator.Persistent);
         m_Central_Chunk = new NativeArray<byte>(centralChunk, Allocator.Persistent);
 
-        m_Top_Chunk = new NativeArray<byte>(topChunk, Allocator.Persistent);
-        m_Bot_Chunk = new NativeArray<byte>(botChunk, Allocator.Persistent);
         m_Right_Chunk = new NativeArray<byte>(rightChunk, Allocator.Persistent);
         m_Left_Chunk = new NativeArray<byte>(leftChunk, Allocator.Persistent);
         m_Front_Chunk = new NativeArray<byte>(frontChunk, Allocator.Persistent);
@@ -39,8 +37,6 @@ public struct IChunkMesh : IJob
     private readonly int3 m_ID;
     private readonly NativeArray<byte> m_Central_Chunk;
 
-    private readonly NativeArray<byte> m_Top_Chunk;
-    private readonly NativeArray<byte> m_Bot_Chunk;
     private readonly NativeArray<byte> m_Right_Chunk;
     private readonly NativeArray<byte> m_Left_Chunk;
     private readonly NativeArray<byte> m_Front_Chunk;
@@ -153,9 +149,9 @@ public struct IChunkMesh : IJob
     private byte getValue(int x, int y, int z)
     {
         NativeArray<byte> targetChunk = m_Central_Chunk;
-
+        if (y < 0 && y >= Voxels.s_ChunkHeight)
+            return 0;
         targetChunk = x < 0 ? m_Left_Chunk : x == Voxels.s_ChunkSize ? m_Right_Chunk : targetChunk;
-        targetChunk = y < 0 ? m_Bot_Chunk  : y == Voxels.s_ChunkHeight ? m_Top_Chunk : targetChunk;
         targetChunk = z < 0 ? m_Back_Chunk : z == Voxels.s_ChunkSize ? m_Front_Chunk : targetChunk;
 
         return targetChunk.Length == 1 ? (byte)0 : targetChunk[Voxels.Index(x, y, z)];
@@ -233,8 +229,6 @@ public struct IChunkMesh : IJob
 
     public void Dispose()
     {
-        m_Top_Chunk.Dispose();
-        m_Bot_Chunk.Dispose();
         m_Right_Chunk.Dispose();
         m_Left_Chunk.Dispose();
         m_Front_Chunk.Dispose();

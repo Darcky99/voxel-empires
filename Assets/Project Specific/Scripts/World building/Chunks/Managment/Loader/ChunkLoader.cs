@@ -50,7 +50,7 @@ namespace Chunks
                 m_LoadedChunks[id] = chunk;
                 terrainJob.Dispose();
 
-                if (i % 500 == 0 && i != 0)
+                if (i % 60 == 0 && i != 0)
                     await Task.Yield();
             }
         }

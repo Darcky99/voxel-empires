@@ -109,16 +109,12 @@ namespace Chunks
 
             m_ChunkState = eChunkState.Drawn;
 
-            m_ChunksManager.TryGetChunk(m_ChunkID + Vector3Int.up, out Chunk topChunk);
-            m_ChunksManager.TryGetChunk(m_ChunkID + Vector3Int.down, out Chunk downChunk);
             m_ChunksManager.TryGetChunk(m_ChunkID + Vector3Int.right, out Chunk rightChunk);
             m_ChunksManager.TryGetChunk(m_ChunkID + Vector3Int.left, out Chunk leftChunk);
             m_ChunksManager.TryGetChunk(m_ChunkID + Vector3Int.forward, out Chunk frontChunk);
             m_ChunksManager.TryGetChunk(m_ChunkID + Vector3Int.back, out Chunk backChunk);
 
-            m_Job = new IChunkMesh(ChunkID, m_VoxelMap.FlatMap, 
-                topChunk.m_VoxelMap.FlatMap, 
-                downChunk.m_VoxelMap.FlatMap,
+            m_Job = new IChunkMesh(ChunkID, m_VoxelMap.FlatMap,
                 rightChunk.m_VoxelMap.FlatMap,
                 leftChunk.m_VoxelMap.FlatMap,
                 frontChunk.m_VoxelMap.FlatMap,

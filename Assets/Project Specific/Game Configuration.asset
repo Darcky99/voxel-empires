@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ChunkConfiguration>k__BackingField:
     m_ChunkSize: 16
-    m_ChunkHeight: 512
+    m_ChunkHeight: 256
   <GraphicsConfiguration>k__BackingField:
-    m_RenderDistance: 144
+    m_RenderDistance: 32
   <WorldConfig>k__BackingField:
-    <WorldSizeInChunks>k__BackingField: 144
+    <WorldSizeInChunks>k__BackingField: 32
     <WorldHeightInChunks>k__BackingField: 0
     m_HeightNoiseScale: 0.0025
   <VoxelConfiguration>k__BackingField:

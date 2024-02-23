@@ -38,7 +38,7 @@ namespace Chunks
                     bool exists = m_ChunksManager.TryGetChunk(key, out Chunk chunk);
                     if (exists && chunk.ChunkState != eChunkState.Drawn)
                         chunk.RequestMesh();
-                    if (j != 0 && j % 500 == 0)
+                    if (j != 0 && j % 30 == 0)
                         await Task.Yield();
                 }
                 m_ChunksToDraw.Clear();
@@ -49,7 +49,7 @@ namespace Chunks
                     m_StarOverFlag = false;
                 }
             }
-            Debug.Log($"Time to load everything: {Time.realtimeSinceStartup -  time}");
+            Debug.Log($"Time to draw everything: {Time.realtimeSinceStartup -  time}");
         }
 
         public void CheckToDraw()
