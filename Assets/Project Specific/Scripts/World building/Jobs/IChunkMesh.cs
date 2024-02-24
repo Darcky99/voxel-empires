@@ -121,7 +121,7 @@ public struct IChunkMesh : IJob
                             {
                                 Vector3 u = uv;
                                 u[a == 2 ? a - 1 - b : a] *= meshSize.x;
-                                u[b == 2 ? b - 1 - a : b] *= meshSize.y; 
+                                u[b == 2 ? b - 1 - a : b] *= meshSize.y;
                                 u.z = m_VoxelsConfig[blockID - 1].TextureIndex(faceIndex);
                                 UVs.Add(u);
                             }

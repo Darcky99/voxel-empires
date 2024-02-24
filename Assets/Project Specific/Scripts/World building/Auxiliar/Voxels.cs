@@ -8,7 +8,7 @@ namespace VoxelUtils
     public static class Voxels
     {
         public static readonly int s_ChunkSize = 16;
-        public static readonly int s_ChunkHeight = 256;
+        public static readonly int s_ChunkHeight = 128;
 
         public static int Index(int x, int y, int z)
         {

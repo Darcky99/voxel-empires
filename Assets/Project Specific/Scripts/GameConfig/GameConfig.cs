@@ -44,9 +44,66 @@ public class WorldGenerationConfiguration
 {
     [field: SerializeField] public int WorldSizeInChunks { get; private set; }
     [field: SerializeField] public int WorldHeightInChunks { get; private set; }
-    public float HeightNoiseScale => m_HeightNoiseScale;
 
-    [SerializeField] private float m_HeightNoiseScale = 0.01f;
+    [Title("Noise configuration")]
+    [field: SerializeField] public uint Seed {  get; private set; }
+    [field: SerializeField] public float Scale {  get; private set; }
+    //[field: SerializeField] public float Scale { get; private set; }
+    //[field: SerializeField] public int Octaves { get; private set; }
+    //[field: SerializeField] public float Persistance { get; private set; }
+    //[field: SerializeField] public float Lacunarity { get; private set; }
+
+    [Title("Height Curves")]
+    public NativeHashMap<float, float> ContinentalnessValues
+    {
+        get
+        {
+            NativeHashMap<float, float> values = new NativeHashMap<float, float>(CurveResolution + 1, Allocator.Persistent);
+            float tf = 2f / CurveResolution;
+            for (int i = 0; i <= CurveResolution; i++)
+            {
+                float t = -1 + (tf * i);
+                values.Add(t, Continentalness.Evaluate(t));
+            }
+            return values;
+        }
+    }
+    public NativeHashMap<float, float> ErosionValues
+    {
+        get
+        {
+            NativeHashMap<float, float> values = new NativeHashMap<float, float>(CurveResolution + 1, Allocator.Persistent);
+            float tf = 2f / CurveResolution;
+            for (int i = 0; i <= CurveResolution; i++)
+            {
+                float t = -1 + (tf * i);
+                values.Add(t, Erosion.Evaluate(t));
+            }
+            return values;
+        }
+    }
+    public NativeHashMap<float, float> PeaksAndValleysValues
+    {
+        get
+        {
+            NativeHashMap<float, float> values = new NativeHashMap<float, float>(CurveResolution + 1, Allocator.Persistent);
+            float tf = 2f / CurveResolution;
+            for (int i = 0; i <= CurveResolution; i++)
+            {
+                float t = -1 + (tf * i);
+                values.Add(t, PeaksAndValleys.Evaluate(t));
+            }
+            return values;
+        }
+    }
+
+    [field: SerializeField] public int CurveResolution { get; private set; }
+    [field: SerializeField] public AnimationCurve Continentalness { get; private set; }
+    [field: SerializeField] public AnimationCurve Erosion { get; private set; }
+    [field: SerializeField] public AnimationCurve PeaksAndValleys { get; set; }
+
+
+
 }
 
 [Serializable]
