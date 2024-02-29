@@ -56,7 +56,7 @@ namespace Project.Managers
         //[Button]
         private async void Load_and_Draw_World()
         {
-            await m_ChunkLoader.Load(GetChunksByDistance(m_GameConfig.WorldConfig.WorldSizeInChunks,
+            await m_ChunkLoader.Load(GetChunksByDistance(m_GameConfig.WorldConfiguration.WorldSizeInChunks,
                 (chunkID) => (!LoadedChunks.ContainsKey(chunkID))));
 
             m_ChunkDrawer.CheckToDraw();

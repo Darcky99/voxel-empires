@@ -17,14 +17,14 @@ public struct ITerrainGeneration : IJob
         IsEmpty = new NativeArray<bool>(new bool[]{ true }, Allocator.Persistent);
 
         //generate a region data based on 3 curvese
-        m_CurveResolution = GameConfig.Instance.WorldConfig.CurveResolution;
+        m_CurveResolution = GameConfig.Instance.WorldConfiguration.CurveResolution;
 
-        Continentalness = GameConfig.Instance.WorldConfig.ContinentalnessValues;
-        Erosion = GameConfig.Instance.WorldConfig.ErosionValues;
-        PeaksAndValleys = GameConfig.Instance.WorldConfig.PeaksAndValleysValues;
+        Continentalness = new NativeArray<float>(GameConfig.Instance.WorldConfiguration.GetCurveValues(0), Allocator.Persistent);
+        Erosion = new NativeArray<float>(GameConfig.Instance.WorldConfiguration.GetCurveValues(1), Allocator.Persistent);
+        PeaksAndValleys = new NativeArray<float>(GameConfig.Instance.WorldConfiguration.GetCurveValues(2), Allocator.Persistent);
 
-        m_Seed = GameConfig.Instance.WorldConfig.Seed;
-        m_Scale = GameConfig.Instance.WorldConfig.Scale;
+        m_Seed = GameConfig.Instance.WorldConfiguration.Seed;
+        m_Scale = GameConfig.Instance.WorldConfiguration.Scale;
     }
 
     public NativeArray<byte> FlatVoxelMap;
@@ -35,9 +35,9 @@ public struct ITerrainGeneration : IJob
     private uint m_Seed;
     private float m_Scale;
 
-    private NativeHashMap<float, float> Continentalness;
-    private NativeHashMap<float, float> Erosion;
-    private NativeHashMap<float, float> PeaksAndValleys;
+    private NativeArray<float> Continentalness;
+    private NativeArray<float> Erosion;
+    private NativeArray<float> PeaksAndValleys;
 
 
     private readonly int3 m_ChunkID;
@@ -45,7 +45,8 @@ public struct ITerrainGeneration : IJob
     public void Execute()
     {
         int chunkSize = Voxels.s_ChunkSize;
-        int seed = 255897;
+        float p = 1f;
+        float l = 1f;
 
         int3
             globalChunkPosition = m_ChunkID * chunkSize,
@@ -57,21 +58,21 @@ public struct ITerrainGeneration : IJob
                 int sampleX = globalChunkPosition.x + voxelLocalPosition.x;
                 int sampleZ = globalChunkPosition.z + voxelLocalPosition.z;
 
-                float c_noice = Noise.Perlin2D(sampleX, sampleZ, m_Seed, 17.3f * m_Scale, 3, 0.16f, 5.6f);
-                float e_noice = Noise.Perlin2D(sampleX, sampleZ, m_Seed, 53.9f * m_Scale, 2, 0.33f, 4.9f);
-                float pv_noice = Noise.Perlin2D(sampleX, sampleZ, m_Seed, 15.2f * m_Scale, 3, 0.83f, 1.6f);
-
+                float c_noice = Noise.Perlin2D(sampleX, sampleZ, m_Seed, 0.15f * m_Scale, 4, 0.55f * p, 1.25f * l);
+                float e_noice = Noise.Perlin2D(sampleX, sampleZ, m_Seed, 1 * m_Scale, 4, 0.76f * p, 2f * l);
+                float pv_noice = Noise.Perlin2D(sampleX, sampleZ, m_Seed, 0.5f * m_Scale, 3, 0.95f * p, 3.1f * l);
+                pv_noice = math.abs(pv_noice);
                 float c = evaluate(c_noice, 0);
                 float e = evaluate(e_noice, 1);
                 float pv = evaluate(pv_noice, 2);
 
-                float CEP = (c + (e * pv)) / 2;
+                float CEP = (c + (e * pv)) / 2f;
 
-                int h = (int)math.round(CEP * 128);
+                int h = (int)math.floor(CEP * 128);
+                int lh = (int)math.floor(h - globalChunkPosition.y);
+                lh = math.clamp(lh, -1, Voxels.s_ChunkHeight - 1);
 
-                int localHeight = (int)math.clamp(math.round(h - globalChunkPosition.y), -1, Voxels.s_ChunkHeight - 1);
-
-                for (voxelLocalPosition.y = localHeight; voxelLocalPosition.y >= 0; voxelLocalPosition.y--)
+                for (voxelLocalPosition.y = lh; voxelLocalPosition.y >= 0; voxelLocalPosition.y--)
                 {
                     int i = index(voxelLocalPosition);
                     int globalY = globalChunkPosition.y + voxelLocalPosition.y;
@@ -100,14 +101,9 @@ public struct ITerrainGeneration : IJob
     }
 
     private int index(int3 position) => Voxels.Index(position.x, position.y, position.z);
-    private float evaluate(float noise, int curve)
+    private float evaluate(float time, int curve)
     {
-        NativeHashMap<float, float> target = default;
-
-        //if i was to use an array, from noise look for the closest value
-        //remmber it's position index
-        //
-
+        NativeArray<float> target = default;
         switch (curve)
         {
             case 0:
@@ -120,24 +116,24 @@ public struct ITerrainGeneration : IJob
                 target = PeaksAndValleys;
             break;
             default:
+                Debug.LogError("Not valid");
                 target = Continentalness;
             break;
         }
 
-        float closestKey = 0f;
-        float closestDistance = math.abs(noise - closestKey); ;
-
-        for(int i = 0; i <= m_CurveResolution; i++)
+        int closestIndex = 0;
+        double closestDistance = 2f;
+        double resolution = 2f / m_CurveResolution;
+        for (int i = 0; i < target.Length; i++)
         {
-            float k =  -1 + ((2f / m_CurveResolution) * i);
-            float d = math.abs(noise - k);
-
+            double ct =  -1 + (resolution * i);
+            double d = math.abs(time - ct);
             if(d < closestDistance)
             {
-                closestKey = k;
+                closestIndex = i;
                 closestDistance = d;
             }
         }
-        return target[closestKey];
+        return target[closestIndex];
     }
 }

@@ -12,29 +12,88 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7c72d24a1d76ba42aac346ed1917799, type: 3}
   m_Name: Game Configuration
   m_EditorClassIdentifier: 
+  <CharacterConfiguration>k__BackingField:
+    <JumpHeight>k__BackingField: 3
+    <JumpDuration>k__BackingField: 0.35
+    <JumpCurve>k__BackingField:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    AccelerationTime: 0.35
+    m_GravityAcceleration:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   <ChunkConfiguration>k__BackingField:
     m_ChunkSize: 16
     m_ChunkHeight: 128
   <GraphicsConfiguration>k__BackingField:
     m_RenderDistance: 16
-  <WorldConfig>k__BackingField:
+  <VoxelConfiguration>k__BackingField:
+    <Voxels>k__BackingField:
+    - {fileID: 11400000, guid: f8d23665b38332f40a8d230749ee657f, type: 2}
+    - {fileID: 11400000, guid: dc0fd598c51556b4bb7f35edac0a330e, type: 2}
+    - {fileID: 11400000, guid: 05983e296e003504ba9f43ee25f56642, type: 2}
+    - {fileID: 11400000, guid: c77defc42f532044a9c5cbd96ce41d7b, type: 2}
+    - {fileID: 11400000, guid: b223f244a073da842a9b8ebc28430cf1, type: 2}
+  <WorldConfiguration>k__BackingField:
     <WorldSizeInChunks>k__BackingField: 16
     <WorldHeightInChunks>k__BackingField: 0
-    <Seed>k__BackingField: 4294962295
-    <Scale>k__BackingField: 1
-    <CurveResolution>k__BackingField: 256
+    <Seed>k__BackingField: 198893
+    <Scale>k__BackingField: 48
+    <CurveResolution>k__BackingField: 1280
     <Continentalness>k__BackingField:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: -1
         value: 1
-        inSlope: -0.1772236
-        outSlope: -0.1772236
+        inSlope: -40.018654
+        outSlope: -40.018654
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 1
+        outWeight: 0.03425416
       - serializedVersion: 3
         time: -0.9417105
         value: 0.04256451
@@ -81,17 +140,17 @@ MonoBehaviour:
         inWeight: 0.33333334
         outWeight: 1
       - serializedVersion: 3
-        time: 0.022734798
-        value: 0.84557277
-        inSlope: 0.09061488
-        outSlope: 0.09061488
+        time: 0.09175856
+        value: 0.8089596
+        inSlope: 0.13128804
+        outSlope: 0.13128804
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.4482694
-        outWeight: 0.4888573
+        outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.47091568
-        value: 0.970128
+        time: 0.47840652
+        value: 0.8694432
         inSlope: 0.043478332
         outSlope: 0.043478332
         tangentMode: 0
@@ -99,8 +158,8 @@ MonoBehaviour:
         inWeight: 0.33333334
         outWeight: 0.5091791
       - serializedVersion: 3
-        time: 1
-        value: 1
+        time: 0.9940197
+        value: 0.9186745
         inSlope: 0.0790061
         outSlope: 0.0790061
         tangentMode: 0
@@ -239,28 +298,21 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0.22185364
         value: 0.7179677
-        inSlope: 1.8938816
-        outSlope: 1.8938816
+        inSlope: 1.3815905
+        outSlope: 1.3815905
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 0.12752937
+        outWeight: 0.19081464
       - serializedVersion: 3
-        time: 0.9820041
-        value: 0.71615267
-        inSlope: -1.0060792
-        outSlope: -1.0060792
+        time: 1
+        value: 0.85
+        inSlope: -0.7182974
+        outSlope: -0.7182974
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.22062464
+        inWeight: 0.27733803
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  <VoxelConfiguration>k__BackingField:
-    <Voxels>k__BackingField:
-    - {fileID: 11400000, guid: f8d23665b38332f40a8d230749ee657f, type: 2}
-    - {fileID: 11400000, guid: dc0fd598c51556b4bb7f35edac0a330e, type: 2}
-    - {fileID: 11400000, guid: 05983e296e003504ba9f43ee25f56642, type: 2}
-    - {fileID: 11400000, guid: c77defc42f532044a9c5cbd96ce41d7b, type: 2}
-    - {fileID: 11400000, guid: b223f244a073da842a9b8ebc28430cf1, type: 2}

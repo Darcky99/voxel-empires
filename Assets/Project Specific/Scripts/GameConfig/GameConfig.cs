@@ -9,10 +9,22 @@ using Unity.Collections;
 [CreateAssetMenu(fileName = "Game Configuration")]
 public class GameConfig : ScriptableObjectSingleton<GameConfig>
 {
+    [field: SerializeField] public CharacterConfiguration CharacterConfiguration { get; private set; }
     [field: SerializeField] public ChunkConfiguration ChunkConfiguration { get; private set; }
     [field: SerializeField] public GraphicsConfiguration GraphicsConfiguration { get; private set; }
-    [field: SerializeField] public WorldGenerationConfiguration WorldConfig { get; private set; }
     [field: SerializeField] public VoxelConfiguration VoxelConfiguration { get; private set; }
+    [field: SerializeField] public WorldGenerationConfiguration WorldConfiguration { get; private set; }
+}
+
+[Serializable]
+public class CharacterConfiguration
+{
+    [field: SerializeField] public float JumpHeight { get; private set; }
+    [field: SerializeField] public float JumpDuration { get; private set; }
+    [field: SerializeField] public AnimationCurve JumpCurve { get; private set;}
+
+    [field: SerializeField] public float AccelerationTime;
+    [field: SerializeField] public AnimationCurve m_GravityAcceleration;
 }
 
 [Serializable]
@@ -40,73 +52,6 @@ public class GraphicsConfiguration
 }
 
 [Serializable]
-public class WorldGenerationConfiguration
-{
-    [field: SerializeField] public int WorldSizeInChunks { get; private set; }
-    [field: SerializeField] public int WorldHeightInChunks { get; private set; }
-
-    [Title("Noise configuration")]
-    [field: SerializeField] public uint Seed {  get; private set; }
-    [field: SerializeField] public float Scale {  get; private set; }
-    //[field: SerializeField] public float Scale { get; private set; }
-    //[field: SerializeField] public int Octaves { get; private set; }
-    //[field: SerializeField] public float Persistance { get; private set; }
-    //[field: SerializeField] public float Lacunarity { get; private set; }
-
-    [Title("Height Curves")]
-    public NativeHashMap<float, float> ContinentalnessValues
-    {
-        get
-        {
-            NativeHashMap<float, float> values = new NativeHashMap<float, float>(CurveResolution + 1, Allocator.Persistent);
-            float tf = 2f / CurveResolution;
-            for (int i = 0; i <= CurveResolution; i++)
-            {
-                float t = -1 + (tf * i);
-                values.Add(t, Continentalness.Evaluate(t));
-            }
-            return values;
-        }
-    }
-    public NativeHashMap<float, float> ErosionValues
-    {
-        get
-        {
-            NativeHashMap<float, float> values = new NativeHashMap<float, float>(CurveResolution + 1, Allocator.Persistent);
-            float tf = 2f / CurveResolution;
-            for (int i = 0; i <= CurveResolution; i++)
-            {
-                float t = -1 + (tf * i);
-                values.Add(t, Erosion.Evaluate(t));
-            }
-            return values;
-        }
-    }
-    public NativeHashMap<float, float> PeaksAndValleysValues
-    {
-        get
-        {
-            NativeHashMap<float, float> values = new NativeHashMap<float, float>(CurveResolution + 1, Allocator.Persistent);
-            float tf = 2f / CurveResolution;
-            for (int i = 0; i <= CurveResolution; i++)
-            {
-                float t = -1 + (tf * i);
-                values.Add(t, PeaksAndValleys.Evaluate(t));
-            }
-            return values;
-        }
-    }
-
-    [field: SerializeField] public int CurveResolution { get; private set; }
-    [field: SerializeField] public AnimationCurve Continentalness { get; private set; }
-    [field: SerializeField] public AnimationCurve Erosion { get; private set; }
-    [field: SerializeField] public AnimationCurve PeaksAndValleys { get; set; }
-
-
-
-}
-
-[Serializable]
 public class VoxelConfiguration
 {
     [field: SerializeField] public VoxelBaseSO[] Voxels { get; private set; }
@@ -117,5 +62,64 @@ public class VoxelConfiguration
         for(int i = 0; i < Voxels.Length; i++)
             nativeArray[i] = Voxels[i].GetConfig();
         return nativeArray;
+    }
+}
+
+[Serializable]
+public class WorldGenerationConfiguration
+{
+    [field: SerializeField] public int WorldSizeInChunks { get; private set; }
+    [field: SerializeField] public int WorldHeightInChunks { get; private set; }
+
+    [Title("Noise configuration")]
+    [field: SerializeField] public uint Seed {  get; private set; }
+    [field: SerializeField] public float Scale {  get; private set; }
+
+
+    [Title("Height Curves")]
+    [field: SerializeField] public int CurveResolution { get; private set; }
+    [field: SerializeField] public AnimationCurve Continentalness { get; private set; }
+    [field: SerializeField] public AnimationCurve Erosion { get; private set; }
+    [field: SerializeField] public AnimationCurve PeaksAndValleys { get; set; }
+
+    private float[] m_ContinentalnessValues;
+    private float[] m_ErosionValues;
+    private float[] m_PeaksAndValleysValues;
+
+    private float[] curveValues(AnimationCurve curve)
+    {
+        float[] values = new float[CurveResolution + 1];
+
+        values[0] = curve.Evaluate(-1);
+        values[values.Length - 1] = curve.Evaluate(1);
+
+        float tf = 2f / CurveResolution;
+        for (int i = 1; i < values.Length - 1; i++)
+        {
+            float t = -1 + (tf * i);
+            values[i] = curve.Evaluate(t);
+        }
+        return values;
+    }
+    public float[] GetCurveValues(int i)
+    {
+        switch (i)
+        {
+            case 0:
+                if(m_ContinentalnessValues == null || m_ContinentalnessValues.Length != CurveResolution)
+                    m_ContinentalnessValues = curveValues(Continentalness);
+                return m_ContinentalnessValues;
+            case 1:
+                if (m_ErosionValues == null || m_ErosionValues.Length != CurveResolution)
+                    m_ErosionValues = curveValues(Erosion);
+                return m_ErosionValues;
+            case 2:
+                if (m_PeaksAndValleysValues == null || m_PeaksAndValleysValues.Length != CurveResolution)
+                    m_PeaksAndValleysValues = curveValues(PeaksAndValleys);
+                return m_PeaksAndValleysValues;
+            default:
+                Debug.LogError("CHINGUEN TODOS, ASU MADREEE");
+                return null;
+        }
     }
 }

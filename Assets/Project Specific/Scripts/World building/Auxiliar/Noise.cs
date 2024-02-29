@@ -4,8 +4,10 @@ public static class Noise
 {
     public static float Perlin2D(int x, int y, uint seed, float scale, int octaves, float persistance, float lacunarity)
     {
-        Random random = new Random(seed);
-        float2 seedOffset = new float2(random.NextFloat(-100000f, 100000f), random.NextFloat(-100000f, 100000f));
+        FastNoiseLite noise = new FastNoiseLite((int)seed);
+        noise.SetNoiseType(FastNoiseLite.NoiseType.Perlin);
+        //Random random = new Random(seed);
+        //float2 seedOffset = new float2(random.NextFloat(-100000f, 100000f), random.NextFloat(-100000f, 100000f));
 
         if (scale <= 0)
             scale = 0.0000001f;
@@ -16,10 +18,10 @@ public static class Noise
 
         for(int i = 0; i < octaves; i++)
         {
-            float sampleX = x / scale * frequensy + seedOffset.x;
-            float sampleY = y / scale * frequensy + seedOffset.y;
+            float sampleX = x / scale * frequensy;
+            float sampleY = y / scale * frequensy;
 
-            float perlinNoise = noise.cnoise(new float2(sampleX, sampleY));
+            float perlinNoise = noise.GetNoise(sampleX, sampleY);
             noiseValue += perlinNoise * amplitude;
 
             amplitude *= persistance;
