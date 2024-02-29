@@ -1,4 +1,5 @@
 using Project.Managers;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Jobs;
@@ -16,6 +17,8 @@ namespace Chunks
             m_ChunksToDraw = new List<Vector3Int>();
             m_StarOverFlag = false;
         }
+
+        public static event Action OnTerrainDrawn;
 
         private List<Vector3Int> m_ChunksToDraw;
         private Task m_CheckDraw;
@@ -49,6 +52,7 @@ namespace Chunks
                     m_StarOverFlag = false;
                 }
             }
+            OnTerrainDrawn.Invoke();
             Debug.Log($"Time to draw everything: {Time.realtimeSinceStartup -  time}");
         }
 

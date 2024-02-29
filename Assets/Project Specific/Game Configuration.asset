@@ -12,35 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7c72d24a1d76ba42aac346ed1917799, type: 3}
   m_Name: Game Configuration
   m_EditorClassIdentifier: 
+  <CameraConfiguration>k__BackingField:
+    <CameraDragSensibility>k__BackingField: 0.1
+    <ZoomingSensibility>k__BackingField: 1.678
+    <MinimumDistance>k__BackingField: 42
+    <MaximumDistance>k__BackingField: 168
+    <MaximumInclinationAngle>k__BackingField: 1.5708
   <CharacterConfiguration>k__BackingField:
     <JumpHeight>k__BackingField: 3
-    <JumpDuration>k__BackingField: 0.35
+    <JumpDuration>k__BackingField: 0.24
     <JumpCurve>k__BackingField:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 2
-        outSlope: 2
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    AccelerationTime: 0.35
-    m_GravityAcceleration:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -68,7 +49,7 @@ MonoBehaviour:
     m_ChunkSize: 16
     m_ChunkHeight: 128
   <GraphicsConfiguration>k__BackingField:
-    m_RenderDistance: 24
+    m_RenderDistance: 8
   <VoxelConfiguration>k__BackingField:
     <Voxels>k__BackingField:
     - {fileID: 11400000, guid: f8d23665b38332f40a8d230749ee657f, type: 2}
@@ -77,10 +58,10 @@ MonoBehaviour:
     - {fileID: 11400000, guid: c77defc42f532044a9c5cbd96ce41d7b, type: 2}
     - {fileID: 11400000, guid: b223f244a073da842a9b8ebc28430cf1, type: 2}
   <WorldConfiguration>k__BackingField:
-    <WorldSizeInChunks>k__BackingField: 24
+    <WorldSizeInChunks>k__BackingField: 8
     <WorldHeightInChunks>k__BackingField: 0
-    <Seed>k__BackingField: 198620
-    <Scale>k__BackingField: 48
+    <Seed>k__BackingField: 198812
+    <Scale>k__BackingField: 96
     <CurveResolution>k__BackingField: 1280
     <Continentalness>k__BackingField:
       serializedVersion: 2

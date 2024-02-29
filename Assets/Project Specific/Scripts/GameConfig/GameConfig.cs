@@ -9,6 +9,7 @@ using Unity.Collections;
 [CreateAssetMenu(fileName = "Game Configuration")]
 public class GameConfig : ScriptableObjectSingleton<GameConfig>
 {
+    [field: SerializeField] public CameraConfiguration CameraConfiguration { get; private set; }
     [field: SerializeField] public CharacterConfiguration CharacterConfiguration { get; private set; }
     [field: SerializeField] public ChunkConfiguration ChunkConfiguration { get; private set; }
     [field: SerializeField] public GraphicsConfiguration GraphicsConfiguration { get; private set; }
@@ -17,14 +18,23 @@ public class GameConfig : ScriptableObjectSingleton<GameConfig>
 }
 
 [Serializable]
+public class CameraConfiguration
+{
+    [field: SerializeField] public float CameraDragSensibility { get; private set; }
+    [field: SerializeField] public float ZoomingSensibility { get; private set; }
+
+    [field: SerializeField] public float MinimumDistance { get; private set; }
+    [field: SerializeField] public float MaximumDistance { get; private set; }
+
+    [field: SerializeField] public float MaximumInclinationAngle { get; private set; }
+}
+
+[Serializable]
 public class CharacterConfiguration
 {
     [field: SerializeField] public float JumpHeight { get; private set; }
     [field: SerializeField] public float JumpDuration { get; private set; }
     [field: SerializeField] public AnimationCurve JumpCurve { get; private set;}
-
-    //[field: SerializeField] public float AccelerationTime;
-    //[field: SerializeField] public AnimationCurve m_GravityAcceleration;
 }
 
 [Serializable]

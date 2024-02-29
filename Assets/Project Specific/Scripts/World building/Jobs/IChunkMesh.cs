@@ -76,6 +76,7 @@ public struct IChunkMesh : IJob
                             int faceIndex = getFaceIndex(p, i);
                             if (!isDrawFace(blockID, abs_position, faceIndex) || (m_ID.y == 0 && abs_position.y == 0 && faceIndex == 1))
                                 continue;
+
                             v[p] = d[p];
                             v[a] = d[a];
                             v[b] = d[b];
@@ -148,12 +149,11 @@ public struct IChunkMesh : IJob
 
     private byte getValue(int x, int y, int z)
     {
-        NativeArray<byte> targetChunk = m_Central_Chunk;
-        if (y < 0 && y >= Voxels.s_ChunkHeight)
+        if (y < 0 || y >= Voxels.s_ChunkHeight)
             return 0;
+        NativeArray<byte> targetChunk = m_Central_Chunk;
         targetChunk = x < 0 ? m_Left_Chunk : x == Voxels.s_ChunkSize ? m_Right_Chunk : targetChunk;
         targetChunk = z < 0 ? m_Back_Chunk : z == Voxels.s_ChunkSize ? m_Front_Chunk : targetChunk;
-
         return targetChunk.Length == 1 ? (byte)0 : targetChunk[Voxels.Index(x, y, z)];
     }
     private byte getValue(int3 xyz) => getValue(xyz.x, xyz.y, xyz.z);

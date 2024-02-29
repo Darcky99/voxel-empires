@@ -28,7 +28,8 @@ public abstract class StateMachineBase<StateMachine, EState> : IStateMachine whe
 
     public void Update()
     {
-        m_CurrentStateKey = CurrentState.StateKey;
+        if(CurrentState != null)
+            m_CurrentStateKey = CurrentState.StateKey;
 
         OnUpdate();
 

@@ -22,7 +22,7 @@ namespace VerticalMoment
         }
         protected override void OnUpdateState()
         {
-            StateMachine.VerticalMovement.CharacterController.Move(Physics.gravity / 2  * Time.deltaTime);
+            StateMachine.VerticalMovement.CharacterController.Move(Physics.gravity * 0.1f  * Time.deltaTime);
         }
         protected override void CheckSwitchState()
         {
