@@ -23,8 +23,8 @@ public class CharacterConfiguration
     [field: SerializeField] public float JumpDuration { get; private set; }
     [field: SerializeField] public AnimationCurve JumpCurve { get; private set;}
 
-    [field: SerializeField] public float AccelerationTime;
-    [field: SerializeField] public AnimationCurve m_GravityAcceleration;
+    //[field: SerializeField] public float AccelerationTime;
+    //[field: SerializeField] public AnimationCurve m_GravityAcceleration;
 }
 
 [Serializable]

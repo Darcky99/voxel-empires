@@ -18,8 +18,10 @@ public class InputManager : Singleton<InputManager>
         float r = Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D) ?  1 : 0;
         float l = Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A) ? -1 : 0;
         Vector2 v = new Vector2(r + l, w + s);
-
         WASD = v;
+
+
+
 
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKey(KeyCode.Space))
             Space = true;
