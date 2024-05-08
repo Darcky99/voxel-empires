@@ -4,23 +4,11 @@ using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
 {
-    private ChunksManager m_ChunkManager => ChunksManager.Instance;
-
-    public static event Action OnCameraMove;
-
-    [SerializeField] private float m_MovementSpeed = 2.5f;
-    [SerializeField] private float m_RotationSensibility = 0.15f;
-
-    private Vector3Int m_CurrentChunkPosition;
-
-    private Vector3 m_InitialRotation;
-    private Vector2 m_InitialMousePosition;
-
+    #region Unity
     private void Start()
     {
-        m_CurrentChunkPosition = m_ChunkManager.WorldCoordinatesToChunkIndex(transform.position);
+        m_CurrentChunkPosition = ChunkUtils.WorldCoordinatesToChunkIndex(transform.position);
     }
-
     private void Update()
     {
         Vector3 direction = Vector3.zero;
@@ -57,6 +45,18 @@ public class PlayerCamera : MonoBehaviour
             rotate((Vector2)Input.mousePosition - m_InitialMousePosition);
         }
     }
+    #endregion
+
+    public static event Action OnCameraMove;
+
+    [SerializeField] private float m_MovementSpeed = 2.5f;
+    [SerializeField] private float m_RotationSensibility = 0.15f;
+
+    private Vector3Int m_CurrentChunkPosition;
+
+    private Vector3 m_InitialRotation;
+    private Vector2 m_InitialMousePosition;
+
 
     private void move(Vector3 direction, int vertical)
     {
@@ -65,7 +65,7 @@ public class PlayerCamera : MonoBehaviour
         direction.y = vertical;
         transform.position += direction * m_MovementSpeed * Time.deltaTime;
 
-        Vector3Int currentChunk = m_ChunkManager.WorldCoordinatesToChunkIndex(transform.position);
+        Vector3Int currentChunk = ChunkUtils.WorldCoordinatesToChunkIndex(transform.position);
 
         if (currentChunk != m_CurrentChunkPosition) {
             m_CurrentChunkPosition = currentChunk;

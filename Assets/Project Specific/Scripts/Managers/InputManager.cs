@@ -24,6 +24,7 @@ public class InputManager : Singleton<InputManager>
         MouseScrollDelta = Input.mouseScrollDelta;
         m_LastMousePosition = Input.mousePosition;
     }
+
     private void updateWASD()
     {
         float w = Input.GetKeyDown(KeyCode.W) || Input.GetKey(KeyCode.W) ? 1 : 0;

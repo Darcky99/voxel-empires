@@ -31,43 +31,43 @@ namespace Project.Managers
         #region Unity
         protected override void OnAwakeEvent()
         {
-            m_ChunkLoader = new ChunkLoader();
-            m_ChunkDrawer = new ChunkDrawer();
+            _ChunkLoader = new ChunkLoader();
+            _ChunkRenderer = new ChunkRenderer();
         }
         public override void Start()
         {
             base.Start();
-            Load_and_Draw_World();
+
+            initialize();
         }
         #endregion
 
         [Title("Configuration")]
-        public Vector3 WorldCenter => m_WorldCenter.position;
+        public Vector3 CameraPosition => m_CameraTransform.position;
 
         [SerializeField] private bool DrawGizmos = false;
-        [SerializeField] private Transform m_WorldCenter;
+        [SerializeField] private Transform m_CameraTransform;
 
         [Title("Handlers")]
-        private Dictionary<Vector3Int, Chunk> LoadedChunks => m_ChunkLoader.LoadedChunks;
+        private Dictionary<Vector3Int, Chunk> LoadedChunks => _ChunkLoader.LoadedChunks;
 
-        private ChunkLoader m_ChunkLoader;
-        private ChunkDrawer m_ChunkDrawer;
+        private ChunkLoader _ChunkLoader;
+        private ChunkRenderer _ChunkRenderer;
 
-        //[Button]
-        private async void Load_and_Draw_World()
+        private void initialize()
         {
-            await m_ChunkLoader.Load(GetChunksByDistance(m_GameConfig.WorldConfiguration.WorldSizeInChunks,
-                (chunkID) => (!LoadedChunks.ContainsKey(chunkID))));
-
-            m_ChunkDrawer.CheckToDraw();
+            _ChunkLoader.Initialize();
+            _ChunkRenderer.Initialize();
         }
 
-        public bool TryGetChunk(Vector3Int chunkID, out Chunk chunk) => m_ChunkLoader.TryGetChunk(chunkID, out chunk);
-        public Vector3Int WorldCoordinatesToChunkIndex(Vector3 worldPosition) =>
-            m_ChunkLoader.WorldCoordinatesToChunkIndex(worldPosition);
-        public List<Vector3Int> GetChunksByDistance(int renderDistance, Func<Vector3Int, bool> condition) =>
-            m_ChunkLoader.GetChunksByDistance(renderDistance, condition);
-        public List<Vector3Int> GetChunkByRing(int ring/*, Func<Vector3Int, bool> condition*/) =>
-            m_ChunkLoader.GetChunkByRing(ring/*, condition*/);
+        //private async void load_and_Draw_World()
+        //{
+        //    await _ChunkLoader.Load(ChunkUtils.GetChunksByDistance(m_CameraTransform.position, m_GameConfig.WorldConfiguration.WorldSizeInChunks,
+        //        (chunkID) => (!LoadedChunks.ContainsKey(chunkID))));
+
+        //    _ChunkRenderer.CheckToDraw();
+        //}
+
+        public bool TryGetChunk(Vector3Int chunkID, out Chunk chunk) => _ChunkLoader.TryGetChunk(chunkID, out chunk);
     }
 }

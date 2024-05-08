@@ -7,6 +7,7 @@ using System;
 
 public class CharacterHandler : StateMachinesHandler, IGroundMovement, IVerticalMovement
 {
+    #region Unity
     protected override void Awake()
     {
         SetStateMachines(
@@ -18,12 +19,13 @@ public class CharacterHandler : StateMachinesHandler, IGroundMovement, IVertical
 
     private void OnEnable()
     {
-        ChunkDrawer.OnTerrainDrawn += onTerrainDrawn;
+        ChunkRenderer.OnTerrainDrawn += onTerrainDrawn;
     }
     private void OnDisable()
     {
-        ChunkDrawer.OnTerrainDrawn -= onTerrainDrawn;
+        ChunkRenderer.OnTerrainDrawn -= onTerrainDrawn;
     }
+    #endregion
 
     private void onTerrainDrawn()
     {

@@ -6,54 +6,53 @@ using System;
 
 public class CameraController : MonoBehaviour
 {
-    private CameraConfiguration m_CameraConfiguration => GameConfig.Instance.CameraConfiguration;
-    private InputManager m_InputManager => InputManager.Instance;
+    private CameraConfiguration _CameraConfiguration => GameConfig.Instance.CameraConfiguration;
+    private InputManager _InputManager => InputManager.Instance;
 
+    #region Unity
     private void Awake()
     {
-        m_Distance = m_CameraConfiguration.MinimumDistance;
-        m_CinemachineTransposer = m_VirtualCamera.GetCinemachineComponent<CinemachineOrbitalTransposer>();
+        _Distance = _CameraConfiguration.MinimumDistance;
+        _CinemachineTransposer = _VirtualCamera.GetCinemachineComponent<CinemachineOrbitalTransposer>();
     }
     private void OnEnable()
     {
-        m_InputManager.OnMouseScrollDelta += onMouseScrollDelta;
+        _InputManager.OnMouseScrollDelta += onMouseScrollDelta;
     }
     private void OnDisable()
     {
-        m_InputManager.OnMouseScrollDelta -= onMouseScrollDelta;
+        if(_InputManager)
+            _InputManager.OnMouseScrollDelta -= onMouseScrollDelta;
     }
+    #endregion
 
+    #region Callbacks
     private void onMouseScrollDelta(Vector2 scrollDragDelta)
     {
-        m_CinemachineTransposer.m_Heading.m_Bias += scrollDragDelta.x * m_CameraConfiguration.CameraDragSensibility;
+        _CinemachineTransposer.m_Heading.m_Bias += scrollDragDelta.x * _CameraConfiguration.CameraDragSensibility;
 
-        Vector3 followOffset = m_CinemachineTransposer.m_FollowOffset;
+        Vector3 followOffset = _CinemachineTransposer.m_FollowOffset;
         float angle = Mathf.Atan2(followOffset.y, followOffset.x);
-        angle += scrollDragDelta.y * m_CameraConfiguration.CameraDragSensibility * 0.01f;
+        angle += scrollDragDelta.y * _CameraConfiguration.CameraDragSensibility * 0.01f;
         Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)).normalized;
         Vector3 orientation = new Vector3(direction.x, direction.y, direction.x).normalized;
         orientation *= followOffset.magnitude;
-        m_CinemachineTransposer.m_FollowOffset = orientation;
+        _CinemachineTransposer.m_FollowOffset = orientation;
     }
+    #endregion
 
-    private float m_Distance;
+    private float _Distance;
 
-    private CinemachineOrbitalTransposer m_CinemachineTransposer;
-    [SerializeField] private CinemachineVirtualCamera m_VirtualCamera;
+    private CinemachineOrbitalTransposer _CinemachineTransposer;
+    [SerializeField] private CinemachineVirtualCamera _VirtualCamera;
 
     private void Update()
     {
-        Vector3 followOffset = m_CinemachineTransposer.m_FollowOffset;
+        Vector3 followOffset = _CinemachineTransposer.m_FollowOffset;
 
-        m_Distance = Mathf.Clamp(m_Distance -= (m_InputManager.MouseScrollDelta.y * m_CameraConfiguration.ZoomingSensibility), m_CameraConfiguration.MinimumDistance, m_CameraConfiguration.MaximumDistance);
-        followOffset = followOffset.normalized * m_Distance;
+        _Distance = Mathf.Clamp(_Distance -= (_InputManager.MouseScrollDelta.y * _CameraConfiguration.ZoomingSensibility), _CameraConfiguration.MinimumDistance, _CameraConfiguration.MaximumDistance);
+        followOffset = followOffset.normalized * _Distance;
 
-        m_CinemachineTransposer.m_FollowOffset = followOffset;
-
-        //m_CinemachineTransposer.m_Heading.m_Bias += ScrollDrag.x;
-
-        //followOffset.x += ScrollDrag.y;
-        //followOffset.z += ScrollDrag.y;
-        //ScrollDrag
+        _CinemachineTransposer.m_FollowOffset = followOffset;
     }
 }
