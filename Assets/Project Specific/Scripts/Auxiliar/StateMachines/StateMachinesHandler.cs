@@ -9,14 +9,6 @@ public abstract class StateMachinesHandler : MonoBehaviour
     /// </summary>
     protected abstract void Awake();
 
-    /// <summary>
-    /// Initializes all of the machines
-    /// </summary>
-    protected virtual void Start()
-    {
-        InitializeMachines();
-    }
-
     protected virtual void Update()
     {
         foreach (IStateMachine stateMachine in m_StateMachines)
@@ -60,10 +52,11 @@ public abstract class StateMachinesHandler : MonoBehaviour
 
     private IStateMachine[] m_StateMachines;
 
-    protected void SetStateMachines(params IStateMachine[] stateMachines) => m_StateMachines = stateMachines;
-    protected void InitializeMachines()
+    protected void SetStateMachines(params IStateMachine[] stateMachines)
     {
+        m_StateMachines = stateMachines;
+
         foreach (IStateMachine stateMachine in m_StateMachines)
             stateMachine.Initialize();
-    }
+    } 
 }

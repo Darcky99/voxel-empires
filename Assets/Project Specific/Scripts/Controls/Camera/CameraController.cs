@@ -53,6 +53,11 @@ public class CameraController : MonoBehaviour
         _Distance = Mathf.Clamp(_Distance -= (_InputManager.MouseScrollDelta.y * _CameraConfiguration.ZoomingSensibility), _CameraConfiguration.MinimumDistance, _CameraConfiguration.MaximumDistance);
         followOffset = followOffset.normalized * _Distance;
 
+        //I have to calculate an angle between the camera target and the camera
+        //Limit this angle maximum and minimum
+
+        //
+
         _CinemachineTransposer.m_FollowOffset = followOffset;
     }
 }

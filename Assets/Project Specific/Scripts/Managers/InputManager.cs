@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class InputManager : Singleton<InputManager>
 {
-    public Vector2 WASD { get; private set; }
+    [field: SerializeField] public Vector2 WASD { get; private set; }
     public bool Space { get; private set; }
 
     public Vector2 MouseScrollDelta { get; private set; }
@@ -47,7 +47,6 @@ public class InputManager : Singleton<InputManager>
         {
             Vector2 scrollDragDelta =  (Vector2)Input.mousePosition - m_LastMousePosition;
             OnMouseScrollDelta?.Invoke(scrollDragDelta);
-            Debug.Log(scrollDragDelta);
         }
     }
 }

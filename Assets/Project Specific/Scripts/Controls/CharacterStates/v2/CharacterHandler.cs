@@ -15,7 +15,6 @@ public class CharacterHandler : StateMachinesHandler, IGroundMovement, IVertical
             new VerticalMovement_StateMachine(this)
             );
     }
-    protected override void Start() { }
 
     private void OnEnable()
     {
@@ -29,7 +28,7 @@ public class CharacterHandler : StateMachinesHandler, IGroundMovement, IVertical
 
     private void onTerrainDrawn()
     {
-        InitializeMachines();
+        //InitializeMachines(); this should be some method like "Allow movement", not initialize the stateMachines
     }
 
     [field: SerializeField] public Transform Camera { get; private set; }
