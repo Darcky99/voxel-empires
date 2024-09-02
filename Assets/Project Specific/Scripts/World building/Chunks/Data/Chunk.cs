@@ -1,6 +1,5 @@
 using UnityEngine;
 using VoxelUtils;
-using Project.Managers;
 using Unity.Jobs;
 using Unity.Collections.NotBurstCompatible;
 using System;
@@ -12,8 +11,8 @@ namespace Chunks
 {
     public struct Chunk
     {
-        private ChunksManager m_ChunksManager => ChunksManager.Instance;
-        private GameConfig m_GameConfig => GameConfig.Instance;
+        private ChunksManager _ChunksManager => ChunksManager.Instance;
+        private GameConfig _GameConfig => GameConfig.Instance;
 
         public Chunk(Vector3Int ID)
         {
@@ -57,7 +56,8 @@ namespace Chunks
         {
             m_JobHandle.Complete();
 
-            if (m_Job.Vertices.Length == 0) {
+            if (m_Job.Vertices.Length == 0)
+            {
                 m_Job.Dispose();
                 return;
             }
@@ -109,17 +109,17 @@ namespace Chunks
 
             m_ChunkState = eChunkState.Drawn;
 
-            m_ChunksManager.TryGetChunk(m_ChunkID + Vector3Int.right, out Chunk rightChunk);
-            m_ChunksManager.TryGetChunk(m_ChunkID + Vector3Int.left, out Chunk leftChunk);
-            m_ChunksManager.TryGetChunk(m_ChunkID + Vector3Int.forward, out Chunk frontChunk);
-            m_ChunksManager.TryGetChunk(m_ChunkID + Vector3Int.back, out Chunk backChunk);
+            _ChunksManager.TryGetChunk(m_ChunkID + Vector3Int.right, out Chunk rightChunk);
+            _ChunksManager.TryGetChunk(m_ChunkID + Vector3Int.left, out Chunk leftChunk);
+            _ChunksManager.TryGetChunk(m_ChunkID + Vector3Int.forward, out Chunk frontChunk);
+            _ChunksManager.TryGetChunk(m_ChunkID + Vector3Int.back, out Chunk backChunk);
 
             m_Job = new IChunkMesh(ChunkID, m_VoxelMap.FlatMap,
                 rightChunk.m_VoxelMap.FlatMap,
                 leftChunk.m_VoxelMap.FlatMap,
                 frontChunk.m_VoxelMap.FlatMap,
                 backChunk.m_VoxelMap.FlatMap);
-            
+
             m_JobHandle = m_Job.Schedule();
             checkMeshCompletition();
             //onMeshReady();

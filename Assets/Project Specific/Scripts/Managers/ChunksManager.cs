@@ -9,9 +9,8 @@ using Unity.Mathematics;
 using UnityEngine;
 using System;
 using Unity.Collections.NotBurstCompatible;
-using Chunks;
 
-namespace Project.Managers
+namespace Chunks
 {
     public class ChunksManager : Singleton<ChunksManager>
     {
@@ -37,7 +36,6 @@ namespace Project.Managers
         public override void Start()
         {
             base.Start();
-
             initialize();
         }
         #endregion
@@ -56,17 +54,18 @@ namespace Project.Managers
 
         private void initialize()
         {
-            _ChunkLoader.Initialize();
-            _ChunkRenderer.Initialize();
+            //_ChunkLoader.Initialize();
+            //_ChunkRenderer.Initialize();
+            LoadAndDrawWorld();
         }
 
-        //private async void load_and_Draw_World()
-        //{
-        //    await _ChunkLoader.Load(ChunkUtils.GetChunksByDistance(m_CameraTransform.position, m_GameConfig.WorldConfiguration.WorldSizeInChunks,
-        //        (chunkID) => (!LoadedChunks.ContainsKey(chunkID))));
+        private async void LoadAndDrawWorld()
+        {
+            await _ChunkLoader.Load(ChunkUtils.GetChunksByDistance(m_CameraTransform.position, m_GameConfig.WorldConfiguration.WorldSizeInChunks,
+                (chunkID) => (!LoadedChunks.ContainsKey(chunkID))));
 
-        //    _ChunkRenderer.CheckToDraw();
-        //}
+            _ChunkRenderer.CheckToDraw();
+        }
 
         public bool TryGetChunk(Vector3Int chunkID, out Chunk chunk) => _ChunkLoader.TryGetChunk(chunkID, out chunk);
     }

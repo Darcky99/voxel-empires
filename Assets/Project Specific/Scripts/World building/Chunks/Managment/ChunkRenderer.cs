@@ -1,4 +1,3 @@
-using Project.Managers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -53,20 +52,24 @@ namespace Chunks
                 }
             }
             OnTerrainDrawn.Invoke();
-            Debug.Log($"Time to draw everything: {Time.realtimeSinceStartup -  time}");
+            Debug.Log($"Time to draw everything: {Time.realtimeSinceStartup - time}");
         }
 
         public void Initialize()
         {
             //here start a coroutine, check for player pos every x seconds
-            
+
         }
         public void CheckToDraw()
         {
             if (_CheckDraw != null && !_CheckDraw.IsCompleted)
+            {
                 _StarOverFlag = true;
+            }
             else
+            {
                 _CheckDraw = drawRenderArea();
+            }
         }
     }
 }
