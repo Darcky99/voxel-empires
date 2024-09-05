@@ -6,12 +6,15 @@ using UnityEngine;
 
 namespace Chunks
 {
-    public class ChunkRenderer
+    public class ChunksController
     {
+        //Uses methods inside loader and maybe other managers to determine the general behaviour of chunks.
+        //might trigger certain states of chunksmanager
+
         private ChunksManager _ChunksManager => ChunksManager.Instance;
         public GameConfig _GameConfig => GameConfig.Instance;
 
-        public ChunkRenderer()
+        public ChunksController()
         {
             _ChunksToDraw = new List<Vector3Int>();
             _StarOverFlag = false;

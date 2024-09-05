@@ -18,11 +18,11 @@ public class CharacterHandler : StateMachinesHandler, IGroundMovement, IVertical
 
     private void OnEnable()
     {
-        ChunkRenderer.OnTerrainDrawn += onTerrainDrawn;
+        ChunksController.OnTerrainDrawn += onTerrainDrawn;
     }
     private void OnDisable()
     {
-        ChunkRenderer.OnTerrainDrawn -= onTerrainDrawn;
+        ChunksController.OnTerrainDrawn -= onTerrainDrawn;
     }
     #endregion
 

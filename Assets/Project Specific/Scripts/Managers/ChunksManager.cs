@@ -10,10 +10,19 @@ using UnityEngine;
 using System;
 using Unity.Collections.NotBurstCompatible;
 
+
 namespace Chunks
 {
     public class ChunksManager : Singleton<ChunksManager>
     {
+        //posible states:
+        
+        //Initialize => Initializing || Loads the first chunks 16*16 area
+        //Draw       => Drawing      || Draws chunks by nearest
+        //Load       => Loading      || Loads nearest missing chunks within limits
+        //Wait       => Waiting      || Listen to player movement and wait until there's something to do 
+
+
         public GameConfig m_GameConfig => GameConfig.Instance;
 
         #region Editor
@@ -30,8 +39,8 @@ namespace Chunks
         #region Unity
         protected override void OnAwakeEvent()
         {
-            _ChunkLoader = new ChunkLoader();
-            _ChunkRenderer = new ChunkRenderer();
+            _ChunkLoader = new ChunksLoader();
+            _ChunkRenderer = new ChunksController();
         }
         public override void Start()
         {
@@ -49,8 +58,8 @@ namespace Chunks
         [Title("Handlers")]
         private Dictionary<Vector3Int, Chunk> LoadedChunks => _ChunkLoader.LoadedChunks;
 
-        private ChunkLoader _ChunkLoader;
-        private ChunkRenderer _ChunkRenderer;
+        private ChunksLoader _ChunkLoader;
+        private ChunksController _ChunkRenderer;
 
         private void initialize()
         {

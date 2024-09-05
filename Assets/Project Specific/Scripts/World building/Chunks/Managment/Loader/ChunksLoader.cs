@@ -11,11 +11,14 @@ using System.Collections;
 namespace Chunks
 {
     [Serializable]
-    public class ChunkLoader
+    public class ChunksLoader
     {
+        //chunk loader it's just a factory class, it should only contain the methods to load stuff, and maybe keep track of loaded / unloaded chunks
+
+
         private GameConfig m_GameConfig => GameConfig.Instance;
 
-        public ChunkLoader()
+        public ChunksLoader()
         {
             m_LoadedChunks = new Dictionary<Vector3Int, Chunk>();
         }
