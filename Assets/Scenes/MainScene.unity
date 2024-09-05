@@ -12166,6 +12166,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1073185056}
   - component: {fileID: 1073185057}
+  - component: {fileID: 1073185058}
   m_Layer: 0
   m_Name: ChunkManager
   m_TagString: Untagged
@@ -12200,8 +12201,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53f739490391fef47995dbdacbeaf6f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DrawGizmos: 0
-  m_CameraTransform: {fileID: 307742922}
+  _ChunkRenderer: {fileID: 1073185058}
+  _CameraTransform: {fileID: 330585546}
+--- !u!114 &1073185058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1073185055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa75a20c7f11f4c4884027531f2042f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1074490271
 GameObject:
   m_ObjectHideFlags: 0

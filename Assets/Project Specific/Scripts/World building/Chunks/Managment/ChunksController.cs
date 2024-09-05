@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Chunks
 {
-    public class ChunksController
+    public class ChunksController : MonoBehaviour
     {
         //Uses methods inside loader and maybe other managers to determine the general behaviour of chunks.
         //might trigger certain states of chunksmanager

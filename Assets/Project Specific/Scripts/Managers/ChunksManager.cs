@@ -1,81 +1,108 @@
 using Sirenix.OdinInspector;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Unity.Collections;
-using Unity.Jobs;
-using Unity.Mathematics;
 using UnityEngine;
-using System;
-using Unity.Collections.NotBurstCompatible;
-
+using Stateless;
+using System.Threading.Tasks;
+using Unity.Jobs;
+using System.Collections;
 
 namespace Chunks
 {
     public class ChunksManager : Singleton<ChunksManager>
     {
         //posible states:
-        
-        //Initialize => Initializing || Loads the first chunks 16*16 area
-        //Draw       => Drawing      || Draws chunks by nearest
-        //Load       => Loading      || Loads nearest missing chunks within limits
-        //Wait       => Waiting      || Listen to player movement and wait until there's something to do 
 
+        //Initialize => Initializing || Loads the first chunks 16 * 16 area.
+        //Draw       => Drawing      || Draws chunks by nearest.
+        //Load       => Loading      || Loads nearest missing chunks within limits.
+        //Wait       => Waiting      || Listen to player movement and wait until there's something to do.
 
-        public GameConfig m_GameConfig => GameConfig.Instance;
+        public GameConfig _GameConfig => GameConfig.Instance;
 
-        #region Editor
-        private void OnDrawGizmos()
-        {
-            if (DrawGizmos == false || LoadedChunks == null)
-                return;
+        public Dictionary<Vector3Int, Chunk> LoadedChunks => _LoadedChunks;
+        public Vector3 CameraPosition => _CameraTransform.position;
 
-            foreach (Chunk chunk in LoadedChunks.Values)
-                chunk.OnDrawGizmos();
-        }
-        #endregion
+        //private Statema
+        private Dictionary<Vector3Int, Chunk> _LoadedChunks = new Dictionary<Vector3Int, Chunk>();
+
+        [Title("Handlers")]
+        [SerializeField] private ChunksController _ChunkRenderer;
+
+        [Title("Configuration")]
+        [SerializeField] private Transform _CameraTransform;
+
 
         #region Unity
         protected override void OnAwakeEvent()
         {
-            _ChunkLoader = new ChunksLoader();
-            _ChunkRenderer = new ChunksController();
         }
         public override void Start()
         {
             base.Start();
-            initialize();
         }
         #endregion
 
-        [Title("Configuration")]
-        public Vector3 CameraPosition => m_CameraTransform.position;
-
-        [SerializeField] private bool DrawGizmos = false;
-        [SerializeField] private Transform m_CameraTransform;
-
-        [Title("Handlers")]
-        private Dictionary<Vector3Int, Chunk> LoadedChunks => _ChunkLoader.LoadedChunks;
-
-        private ChunksLoader _ChunkLoader;
-        private ChunksController _ChunkRenderer;
-
-        private void initialize()
+        private void Initialize()
         {
-            //_ChunkLoader.Initialize();
-            //_ChunkRenderer.Initialize();
+            _LoadedChunks = new Dictionary<Vector3Int, Chunk>();
             LoadAndDrawWorld();
         }
 
         private async void LoadAndDrawWorld()
         {
-            await _ChunkLoader.Load(ChunkUtils.GetChunksByDistance(m_CameraTransform.position, m_GameConfig.WorldConfiguration.WorldSizeInChunks,
+            await Load(ChunkUtils.GetChunksByDistance(_CameraTransform.position, _GameConfig.WorldConfiguration.WorldSizeInChunks,
                 (chunkID) => (!LoadedChunks.ContainsKey(chunkID))));
-
             _ChunkRenderer.CheckToDraw();
         }
 
-        public bool TryGetChunk(Vector3Int chunkID, out Chunk chunk) => _ChunkLoader.TryGetChunk(chunkID, out chunk);
+
+        private async Task Load(List<Vector3Int> toLoad)
+        {
+            await GenerateAndAddChunks(toLoad);
+            //here you could either load from disk or generate.
+        }
+        private async Task GenerateAndAddChunks(List<Vector3Int> toLoad)
+        {
+            for (int i = 0; i < toLoad.Count; i++)
+            {
+                ITerrainGeneration terrainJob = new ITerrainGeneration(toLoad[i]);
+                JobHandle handler = terrainJob.Schedule();
+                handler.Complete();
+
+                Vector3Int id = toLoad[i];
+                Chunk chunk = new Chunk(id);
+
+                if (terrainJob.IsEmpty[0])
+                    chunk.SetVoxelMap(new byte[] { 0 });
+                else
+                    chunk.SetVoxelMap(terrainJob.FlatVoxelMap.ToArray());
+
+                _LoadedChunks[id] = chunk;
+                terrainJob.Dispose();
+
+                if (i % 60 == 0 && i != 0)
+                    await Task.Yield();
+            }
+        }
+
+
+        private IEnumerator loadLoop()
+        {
+            //constantly check the chunk origin position, 
+            yield return null;
+        }
+
+
+
+        public bool TryGetChunk(Vector3Int chunkID, out Chunk chunk)
+        {
+            bool exists = LoadedChunks.TryGetValue(chunkID, out chunk);
+            if (!exists)
+            {
+                chunk = new Chunk(chunkID);
+                chunk.SetVoxelMap(new byte[] { 0 });
+            }
+            return exists;
+        }
     }
 }

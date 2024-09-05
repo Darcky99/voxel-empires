@@ -26,31 +26,6 @@ namespace Chunks
 
         }
 
-        #region Editor
-        public void OnDrawGizmos()
-        {
-            int chunkSize = GameConfig.Instance.ChunkConfiguration.ChunkSize;
-            Vector3 offset = new Vector3(m_ChunkID.x, m_ChunkID.y, m_ChunkID.z) * chunkSize * .5f;
-
-            for (int y = 0; y < chunkSize; y++)
-                for (int z = 0; z < chunkSize; z++)
-                    for (int x = 0; x < chunkSize; x++)
-                    {
-                        Vector3Int position = new Vector3Int(x, y, z);
-                        byte blockID = GetVoxel(position);
-
-                        if (blockID == 0)
-                            continue;
-
-                        position -= Vector3Int.one;
-                        Vector3 voxelCenter = new Vector3(position.x * 0.5f, position.y * 0.5f, position.z * 0.5f);
-                        position += Vector3Int.one;
-
-                        Gizmos.DrawWireCube(offset + voxelCenter, Vector3.one * 0.5f);
-                    }
-        }
-        #endregion
-
         #region Callbacks
         private void onMeshReady()
         {
