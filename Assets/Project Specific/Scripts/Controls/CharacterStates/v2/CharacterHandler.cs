@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using VerticalMoment;
-using Chunks;
+using World;
 using System;
 
 public class CharacterHandler : StateMachinesHandler, IGroundMovement, IVerticalMovement
@@ -18,11 +18,11 @@ public class CharacterHandler : StateMachinesHandler, IGroundMovement, IVertical
 
     private void OnEnable()
     {
-        ChunksController.OnTerrainDrawn += onTerrainDrawn;
+        WorldController.OnTerrainDrawn += onTerrainDrawn;
     }
     private void OnDisable()
     {
-        ChunksController.OnTerrainDrawn -= onTerrainDrawn;
+        WorldController.OnTerrainDrawn -= onTerrainDrawn;
     }
     #endregion
 

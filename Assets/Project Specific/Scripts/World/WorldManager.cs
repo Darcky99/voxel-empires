@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Unity.Jobs;
 using System.Collections;
 
-namespace Chunks
+namespace World
 {
-    public class ChunksManager : Singleton<ChunksManager>
+    public class WorldManager : Singleton<WorldManager>
     {
         //posible states:
 
@@ -22,11 +22,11 @@ namespace Chunks
         public Dictionary<Vector3Int, Chunk> LoadedChunks => _LoadedChunks;
         public Vector3 CameraPosition => _CameraTransform.position;
 
-        //private Statema
+        //private StateMachine<>
         private Dictionary<Vector3Int, Chunk> _LoadedChunks = new Dictionary<Vector3Int, Chunk>();
 
         [Title("Handlers")]
-        [SerializeField] private ChunksController _ChunkRenderer;
+        [SerializeField] private WorldController _ChunkRenderer;
 
         [Title("Configuration")]
         [SerializeField] private Transform _CameraTransform;

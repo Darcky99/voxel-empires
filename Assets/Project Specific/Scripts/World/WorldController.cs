@@ -1,20 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Unity.Jobs;
 using UnityEngine;
 
-namespace Chunks
+namespace World
 {
-    public class ChunksController : MonoBehaviour
+    public class WorldController : MonoBehaviour
     {
         //Uses methods inside loader and maybe other managers to determine the general behaviour of chunks.
         //might trigger certain states of chunksmanager
 
-        private ChunksManager _ChunksManager => ChunksManager.Instance;
+        private WorldManager _ChunksManager => WorldManager.Instance;
         public GameConfig _GameConfig => GameConfig.Instance;
 
-        public ChunksController()
+        public WorldController()
         {
             _ChunksToDraw = new List<Vector3Int>();
             _StarOverFlag = false;
@@ -61,7 +60,7 @@ namespace Chunks
         public void Initialize()
         {
             //here start a coroutine, check for player pos every x seconds
-
+            //controllers are not really initializers. It will listen to the current state and go from there
         }
         public void CheckToDraw()
         {

@@ -7,11 +7,11 @@ using UnityEngine.Profiling;
 using System.Threading.Tasks;
 using System.Collections;
 
-namespace Chunks
+namespace World
 {
     public struct Chunk
     {
-        private ChunksManager _ChunksManager => ChunksManager.Instance;
+        private WorldManager _ChunksManager => WorldManager.Instance;
         private GameConfig _GameConfig => GameConfig.Instance;
 
         public Chunk(Vector3Int ID)

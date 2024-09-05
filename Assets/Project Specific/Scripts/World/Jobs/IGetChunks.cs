@@ -1,4 +1,4 @@
-using Chunks;
+using World;
 using System.Collections.Generic;
 using Unity.Burst;
 using Unity.Collections;

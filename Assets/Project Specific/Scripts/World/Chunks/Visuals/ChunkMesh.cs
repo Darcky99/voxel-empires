@@ -1,7 +1,7 @@
 using UnityEngine;
 using Unity.Collections;
 using Unity.Mathematics;
-using Chunks;
+using World;
 using Unity.Jobs;
 using Unity.Collections.NotBurstCompatible;
 
