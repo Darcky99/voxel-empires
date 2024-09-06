@@ -16,14 +16,6 @@ public class CharacterHandler : StateMachinesHandler, IGroundMovement, IVertical
             );
     }
 
-    private void OnEnable()
-    {
-        WorldController.OnTerrainDrawn += onTerrainDrawn;
-    }
-    private void OnDisable()
-    {
-        WorldController.OnTerrainDrawn -= onTerrainDrawn;
-    }
     #endregion
 
     private void onTerrainDrawn()

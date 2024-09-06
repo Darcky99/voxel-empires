@@ -1,77 +1,71 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using VE;
 
 namespace World
 {
     public class WorldController : MonoBehaviour
     {
-        //Uses methods inside loader and maybe other managers to determine the general behaviour of chunks.
-        //might trigger certain states of chunksmanager
-
-        private WorldManager _ChunksManager => WorldManager.Instance;
+        public GameManager _GameManager => GameManager.Instance;
+        private WorldManager _WorldManager => WorldManager.Instance;
         public GameConfig _GameConfig => GameConfig.Instance;
 
-        public WorldController()
-        {
-            _ChunksToDraw = new List<Vector3Int>();
-            _StarOverFlag = false;
-        }
+        //public static event Action OnTerrainDrawn;
 
-        public static event Action OnTerrainDrawn;
-
-        private List<Vector3Int> _ChunksToDraw;
-        private Task _CheckDraw;
         private bool _StarOverFlag;
 
-        private async Task drawRenderArea()
+        private void Awake()
         {
-            float time = Time.realtimeSinceStartup;
-            int renderDistance = _GameConfig.GraphicsConfiguration.RenderDistance;
+            _ = Initialize();
+        }
+        private async UniTask Initialize()
+        {
+            await UniTask.WaitUntil(() => _GameManager != null);
 
-            for (int i = 0; i <= renderDistance; i++)
-            {
-                _ChunksToDraw = ChunkUtils.GetChunkByRing(_ChunksManager.CameraPosition, i);
-                if (_ChunksToDraw.Count == 0)
-                    continue;
+            _StarOverFlag = false;
 
-                for (int j = 0; j < _ChunksToDraw.Count; j++)
-                {
-                    Vector3Int key = _ChunksToDraw[j];
-                    bool exists = _ChunksManager.TryGetChunk(key, out Chunk chunk);
-                    if (exists && chunk.ChunkState != eChunkState.Drawn)
-                        chunk.RequestMesh();
-                    if (j != 0 && j % 30 == 0)
-                        await Task.Yield();
-                }
-                _ChunksToDraw.Clear();
-
-                if (_StarOverFlag)
-                {
-                    i = -1;
-                    _StarOverFlag = false;
-                }
-            }
-            OnTerrainDrawn.Invoke();
-            Debug.Log($"Time to draw everything: {Time.realtimeSinceStartup - time}");
+            _WorldManager.StateChanged += WorldManager_StateChanged;
         }
 
-        public void Initialize()
+        private void WorldManager_StateChanged(object sender, WorldState worldState)
         {
-            //here start a coroutine, check for player pos every x seconds
-            //controllers are not really initializers. It will listen to the current state and go from there
+            switch (worldState)
+            {
+                case WorldState.Waiting:
+                    Wait();
+                    break;
+                case WorldState.Loading:
+                    Loading();
+                    break;
+                case WorldState.Drawing:
+                    Drawing();
+                    break;
+            }
         }
-        public void CheckToDraw()
+
+        private void Wait()
         {
-            if (_CheckDraw != null && !_CheckDraw.IsCompleted)
+            if (_GameManager.CurrentState == GameState.Startup)
             {
-                _StarOverFlag = true;
+                //load an area of chunks around.
+                return;
             }
-            else
-            {
-                _CheckDraw = drawRenderArea();
-            }
+            //Load the next ring
+            //if there's nothing to load, suscribe to player movement, and check on move
         }
+        private void Loading()
+        {
+            //This means that we are already loading some chunks, check for the completition of the load, then
+            throw new NotImplementedException();
+        }
+        private void Drawing()
+        {
+            throw new NotImplementedException();
+        }
+
+        
     }
 }

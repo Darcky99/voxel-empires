@@ -5,57 +5,66 @@ using Stateless;
 using System.Threading.Tasks;
 using Unity.Jobs;
 using System.Collections;
+using System;
 
 namespace World
 {
     public class WorldManager : Singleton<WorldManager>
     {
-        //posible states:
-
-        //Initialize => Initializing || Loads the first chunks 16 * 16 area.
-        //Draw       => Drawing      || Draws chunks by nearest.
-        //Load       => Loading      || Loads nearest missing chunks within limits.
-        //Wait       => Waiting      || Listen to player movement and wait until there's something to do.
-
         public GameConfig _GameConfig => GameConfig.Instance;
+
+        public event EventHandler<WorldState> StateChanged;
 
         public Dictionary<Vector3Int, Chunk> LoadedChunks => _LoadedChunks;
         public Vector3 CameraPosition => _CameraTransform.position;
 
-        //private StateMachine<>
-        private Dictionary<Vector3Int, Chunk> _LoadedChunks = new Dictionary<Vector3Int, Chunk>();
+        private StateMachine<WorldState, WorldTrigger> _fsm;
+        private Dictionary<Vector3Int, Chunk> _LoadedChunks;
+        private List<Vector3Int> _ChunksToDraw;
+        private Task _CheckDraw;
+        //private Dictionary<int, >
 
         [Title("Handlers")]
         [SerializeField] private WorldController _ChunkRenderer;
-
         [Title("Configuration")]
         [SerializeField] private Transform _CameraTransform;
 
-
-        #region Unity
-        protected override void OnAwakeEvent()
-        {
-        }
-        public override void Start()
-        {
-            base.Start();
-        }
-        #endregion
-
-        private void Initialize()
+        public void Initialize()
         {
             _LoadedChunks = new Dictionary<Vector3Int, Chunk>();
-            LoadAndDrawWorld();
+            _ChunksToDraw = new List<Vector3Int>();
+
+            _fsm = new StateMachine<WorldState, WorldTrigger>(WorldState.Waiting);
+
+            _fsm.Configure(WorldState.Waiting)
+            .Permit(WorldTrigger.Load, WorldState.Loading);
+
+            _fsm.Configure(WorldState.Loading)
+            .Permit(WorldTrigger.Draw, WorldState.Drawing);
+
+            _fsm.Configure(WorldState.Drawing)
+            .Permit(WorldTrigger.Wait, WorldState.Waiting);
+
+            _fsm.OnTransitionCompleted(WorldState_OnTransitionCompleted);
         }
+
+        private void WorldState_OnTransitionCompleted(StateMachine<WorldState, WorldTrigger>.Transition transition)
+        {
+            StateChanged?.Invoke(this, transition.Destination);
+        }
+
+        //We need methods to generate a list of chunks to load (ring based, or whatever)
+        //Loading methods, schedules Jobs.
+        //Methods to instance new chunks, assign them this data.
+        //Methods to get chunk data and generate meshes.
+        //Method to set that mesh on a chunk.
 
         private async void LoadAndDrawWorld()
         {
             await Load(ChunkUtils.GetChunksByDistance(_CameraTransform.position, _GameConfig.WorldConfiguration.WorldSizeInChunks,
                 (chunkID) => (!LoadedChunks.ContainsKey(chunkID))));
-            _ChunkRenderer.CheckToDraw();
+            CheckToDraw();
         }
-
-
         private async Task Load(List<Vector3Int> toLoad)
         {
             await GenerateAndAddChunks(toLoad);
@@ -84,15 +93,54 @@ namespace World
                     await Task.Yield();
             }
         }
-
-
-        private IEnumerator loadLoop()
+        private IEnumerator LoadLoop()
         {
             //constantly check the chunk origin position, 
             yield return null;
         }
 
+        private async Task DrawRenderArea()
+        {
+            //float time = Time.realtimeSinceStartup;
+            int renderDistance = _GameConfig.GraphicsConfiguration.RenderDistance;
 
+            for (int i = 0; i <= renderDistance; i++)
+            {
+                _ChunksToDraw = ChunkUtils.GetChunkByRing(CameraPosition, i);
+                if (_ChunksToDraw.Count == 0)
+                    continue;
+
+                for (int j = 0; j < _ChunksToDraw.Count; j++)
+                {
+                    Vector3Int key = _ChunksToDraw[j];
+                    bool exists = TryGetChunk(key, out Chunk chunk);
+                    if (exists && chunk.ChunkState != eChunkState.Drawn)
+                        chunk.RequestMesh();
+                    if (j != 0 && j % 30 == 0)
+                        await Task.Yield();
+                }
+                _ChunksToDraw.Clear();
+
+                // if (_StarOverFlag)
+                // {
+                //     i = -1;
+                //     _StarOverFlag = false;
+                // }
+            }
+            // OnTerrainDrawn.Invoke();
+            //Debug.Log($"Time to draw everything: {Time.realtimeSinceStartup - time}");
+        }
+        public void CheckToDraw()
+        {
+            if (_CheckDraw != null && !_CheckDraw.IsCompleted)
+            {
+                // _StarOverFlag = true;
+            }
+            else
+            {
+                _CheckDraw = DrawRenderArea();
+            }
+        }
 
         public bool TryGetChunk(Vector3Int chunkID, out Chunk chunk)
         {
