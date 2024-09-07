@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using Unity.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 using VE;
 
@@ -24,9 +26,7 @@ namespace World
         private async UniTask Initialize()
         {
             await UniTask.WaitUntil(() => _GameManager != null);
-
             _StarOverFlag = false;
-
             _WorldManager.StateChanged += WorldManager_StateChanged;
         }
 
@@ -50,22 +50,21 @@ namespace World
         {
             if (_GameManager.CurrentState == GameState.Startup)
             {
-                //load an area of chunks around.
+                NativeList<int3> chunks = ChunkUtils.GetChunksByCircle(new float3(0, 0, 0), 8);
+                _ = _WorldManager.Load(chunks);
                 return;
             }
             //Load the next ring
             //if there's nothing to load, suscribe to player movement, and check on move
+
         }
         private void Loading()
         {
-            //This means that we are already loading some chunks, check for the completition of the load, then
-            throw new NotImplementedException();
+            //Every x time, check for completition
         }
         private void Drawing()
         {
             throw new NotImplementedException();
         }
-
-        
     }
 }

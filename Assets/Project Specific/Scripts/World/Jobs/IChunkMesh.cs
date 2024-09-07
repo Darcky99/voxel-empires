@@ -10,43 +10,43 @@ using VoxelUtils;
 [BurstCompile]
 public struct IChunkMesh : IJob
 {
-    public IChunkMesh(Vector3Int id, byte[] centralChunk, byte[] rightChunk, byte[] leftChunk, byte[] frontChunk, byte[] backChunk)
+    public IChunkMesh(int3 id, byte[] centralChunk, byte[] rightChunk, byte[] leftChunk, byte[] frontChunk, byte[] backChunk)
     {
-        m_VoxelsConfig = new NativeArray<VoxelConfig>(GameConfig.Instance.VoxelConfiguration.GetVoxelsData(), Allocator.Persistent);
-        m_ID = new int3(id.y, id.y, id.z);
+        _VoxelsConfig = new NativeArray<VoxelConfig>(GameConfig.Instance.VoxelConfiguration.GetVoxelsData(), Allocator.Persistent);
+        _ID = new int3(id.y, id.y, id.z);
 
         Vertices = new NativeList<Vector3>(Allocator.Persistent);
         Triangles = new NativeList<int>(Allocator.Persistent);
         UVs = new NativeList<Vector3>(Allocator.Persistent);
 
-        m_DrawnFaces = new NativeHashMap<int3, FacesDrawn>(6000,Allocator.Persistent);
-        m_Central_Chunk = new NativeArray<byte>(centralChunk, Allocator.Persistent);
+        _DrawnFaces = new NativeHashMap<int3, FacesDrawn>(6000,Allocator.Persistent);
+        _Central_Chunk = new NativeArray<byte>(centralChunk, Allocator.Persistent);
 
-        m_Right_Chunk = new NativeArray<byte>(rightChunk, Allocator.Persistent);
-        m_Left_Chunk = new NativeArray<byte>(leftChunk, Allocator.Persistent);
-        m_Front_Chunk = new NativeArray<byte>(frontChunk, Allocator.Persistent);
-        m_Back_Chunk = new NativeArray<byte>(backChunk, Allocator.Persistent);
+        _Right_Chunk = new NativeArray<byte>(rightChunk, Allocator.Persistent);
+        _Left_Chunk = new NativeArray<byte>(leftChunk, Allocator.Persistent);
+        _Front_Chunk = new NativeArray<byte>(frontChunk, Allocator.Persistent);
+        _Back_Chunk = new NativeArray<byte>(backChunk, Allocator.Persistent);
     }
 
-    private NativeArray<VoxelConfig> m_VoxelsConfig;
+    private NativeArray<VoxelConfig> _VoxelsConfig;
     
     public NativeList<Vector3> Vertices { get; private set; }
     public NativeList<int> Triangles { get; private set; }
     public NativeList<Vector3> UVs { get; private set; }
 
-    private readonly int3 m_ID;
-    private readonly NativeArray<byte> m_Central_Chunk;
+    private readonly int3 _ID;
+    private readonly NativeArray<byte> _Central_Chunk;
 
-    private readonly NativeArray<byte> m_Right_Chunk;
-    private readonly NativeArray<byte> m_Left_Chunk;
-    private readonly NativeArray<byte> m_Front_Chunk;
-    private readonly NativeArray<byte> m_Back_Chunk;
+    private readonly NativeArray<byte> _Right_Chunk;
+    private readonly NativeArray<byte> _Left_Chunk;
+    private readonly NativeArray<byte> _Front_Chunk;
+    private readonly NativeArray<byte> _Back_Chunk;
 
-    private readonly NativeHashMap<int3, FacesDrawn> m_DrawnFaces;
+    private readonly NativeHashMap<int3, FacesDrawn> _DrawnFaces;
 
     public void Execute()
     {
-        if (m_Central_Chunk.Length == 1)
+        if (_Central_Chunk.Length == 1)
             return;
 
         NativeArray<int> d = new NativeArray<int>(3, Allocator.Temp);
@@ -74,7 +74,7 @@ public struct IChunkMesh : IJob
                         for(int i = -1; i <= 1; i += 2)
                         {
                             int faceIndex = getFaceIndex(p, i);
-                            if (!isDrawFace(blockID, abs_position, faceIndex) || (m_ID.y == 0 && abs_position.y == 0 && faceIndex == 1))
+                            if (!isDrawFace(blockID, abs_position, faceIndex) || (_ID.y == 0 && abs_position.y == 0 && faceIndex == 1))
                                 continue;
 
                             v[p] = d[p];
@@ -123,7 +123,7 @@ public struct IChunkMesh : IJob
                                 Vector3 u = uv;
                                 u[a == 2 ? a - 1 - b : a] *= meshSize.x;
                                 u[b == 2 ? b - 1 - a : b] *= meshSize.y;
-                                u.z = m_VoxelsConfig[blockID - 1].TextureIndex(faceIndex);
+                                u.z = _VoxelsConfig[blockID - 1].TextureIndex(faceIndex);
                                 UVs.Add(u);
                             }
                             setAsDrawn(min_limit, max_limit, faceIndex);
@@ -151,22 +151,22 @@ public struct IChunkMesh : IJob
     {
         if (y < 0 || y >= Voxels.s_ChunkHeight)
             return 0;
-        NativeArray<byte> targetChunk = m_Central_Chunk;
-        targetChunk = x < 0 ? m_Left_Chunk : x == Voxels.s_ChunkSize ? m_Right_Chunk : targetChunk;
-        targetChunk = z < 0 ? m_Back_Chunk : z == Voxels.s_ChunkSize ? m_Front_Chunk : targetChunk;
+        NativeArray<byte> targetChunk = _Central_Chunk;
+        targetChunk = x < 0 ? _Left_Chunk : x == Voxels.s_ChunkSize ? _Right_Chunk : targetChunk;
+        targetChunk = z < 0 ? _Back_Chunk : z == Voxels.s_ChunkSize ? _Front_Chunk : targetChunk;
         return targetChunk.Length == 1 ? (byte)0 : targetChunk[Voxels.Index(x, y, z)];
     }
     private byte getValue(int3 xyz) => getValue(xyz.x, xyz.y, xyz.z);
 
     private void setAsDrawn(int3 xyz, int faceIndex)
     {
-        bool keyExists = m_DrawnFaces.ContainsKey(xyz);
+        bool keyExists = _DrawnFaces.ContainsKey(xyz);
 
-        FacesDrawn faces = keyExists ? m_DrawnFaces[xyz] : new FacesDrawn();
+        FacesDrawn faces = keyExists ? _DrawnFaces[xyz] : new FacesDrawn();
         faces.SetByIndex(faceIndex);
         if (keyExists)
-            m_DrawnFaces.Remove(xyz);
-        m_DrawnFaces.Add(xyz, faces);
+            _DrawnFaces.Remove(xyz);
+        _DrawnFaces.Add(xyz, faces);
     }
     private void setAsDrawn(int3 min, int3 max, int faceIndex)
     {
@@ -184,8 +184,8 @@ public struct IChunkMesh : IJob
 
     private bool isFaceDrawn(int3 xyz, int faceIndex)
     {
-        bool isInDictionary = m_DrawnFaces.ContainsKey(xyz);
-        return !isInDictionary ? false : m_DrawnFaces[xyz].IsFaceDrawn(faceIndex);
+        bool isInDictionary = _DrawnFaces.ContainsKey(xyz);
+        return !isInDictionary ? false : _DrawnFaces[xyz].IsFaceDrawn(faceIndex);
     }
 
     private bool isDrawFace(byte value, int3 xyz, int faceIndex)
@@ -229,16 +229,16 @@ public struct IChunkMesh : IJob
 
     public void Dispose()
     {
-        m_Right_Chunk.Dispose();
-        m_Left_Chunk.Dispose();
-        m_Front_Chunk.Dispose();
-        m_Back_Chunk.Dispose();
-        m_Central_Chunk.Dispose();
+        _Right_Chunk.Dispose();
+        _Left_Chunk.Dispose();
+        _Front_Chunk.Dispose();
+        _Back_Chunk.Dispose();
+        _Central_Chunk.Dispose();
         Vertices.Dispose();
         Triangles.Dispose();
         UVs.Dispose();
-        m_DrawnFaces.Dispose();
-        m_VoxelsConfig.Dispose();
+        _DrawnFaces.Dispose();
+        _VoxelsConfig.Dispose();
     }
 }
 

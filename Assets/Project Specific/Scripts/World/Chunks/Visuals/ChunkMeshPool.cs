@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using World;
 
-public class ChunkMeshPool : Pool<ChunkMesh>
+public class ChunkMeshPool : Pool<ChunkObject>
 {
 
 }

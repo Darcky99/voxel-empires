@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 using Unity.Jobs;
 using System.Collections;
 using System;
+using Unity.Mathematics;
+using System.Linq;
+using Cysharp.Threading.Tasks;
+using Unity.Collections;
 
 namespace World
 {
@@ -15,12 +19,12 @@ namespace World
 
         public event EventHandler<WorldState> StateChanged;
 
-        public Dictionary<Vector3Int, Chunk> LoadedChunks => _LoadedChunks;
+        public Dictionary<int3, Chunk> LoadedChunks => _LoadedChunks;
         public Vector3 CameraPosition => _CameraTransform.position;
 
         private StateMachine<WorldState, WorldTrigger> _fsm;
-        private Dictionary<Vector3Int, Chunk> _LoadedChunks;
-        private List<Vector3Int> _ChunksToDraw;
+        private Dictionary<int3, Chunk> _LoadedChunks;
+        private List<int3> _ChunksToDraw;
         private Task _CheckDraw;
         //private Dictionary<int, >
 
@@ -31,8 +35,8 @@ namespace World
 
         public void Initialize()
         {
-            _LoadedChunks = new Dictionary<Vector3Int, Chunk>();
-            _ChunksToDraw = new List<Vector3Int>();
+            _LoadedChunks = new Dictionary<int3, Chunk>();
+            _ChunksToDraw = new List<int3>();
 
             _fsm = new StateMachine<WorldState, WorldTrigger>(WorldState.Waiting);
 
@@ -59,75 +63,67 @@ namespace World
         //Methods to get chunk data and generate meshes.
         //Method to set that mesh on a chunk.
 
-        private async void LoadAndDrawWorld()
+        public async UniTask Load(NativeList<int3> toLoad)
         {
-            await Load(ChunkUtils.GetChunksByDistance(_CameraTransform.position, _GameConfig.WorldConfiguration.WorldSizeInChunks,
-                (chunkID) => (!LoadedChunks.ContainsKey(chunkID))));
-            CheckToDraw();
-        }
-        private async Task Load(List<Vector3Int> toLoad)
-        {
-            await GenerateAndAddChunks(toLoad);
-            //here you could either load from disk or generate.
-        }
-        private async Task GenerateAndAddChunks(List<Vector3Int> toLoad)
-        {
-            for (int i = 0; i < toLoad.Count; i++)
+            for (int i = 0; i < toLoad.Length; i++)
             {
                 ITerrainGeneration terrainJob = new ITerrainGeneration(toLoad[i]);
                 JobHandle handler = terrainJob.Schedule();
                 handler.Complete();
-
-                Vector3Int id = toLoad[i];
+                int3 id = toLoad[i];
                 Chunk chunk = new Chunk(id);
-
                 if (terrainJob.IsEmpty[0])
+                {
                     chunk.SetVoxelMap(new byte[] { 0 });
+                }
                 else
+                {
                     chunk.SetVoxelMap(terrainJob.FlatVoxelMap.ToArray());
-
+                }
                 _LoadedChunks[id] = chunk;
                 terrainJob.Dispose();
-
                 if (i % 60 == 0 && i != 0)
+                {
                     await Task.Yield();
+                }
             }
         }
-        private IEnumerator LoadLoop()
+        public bool TryGetChunk(int3 chunkID, out Chunk chunk)
         {
-            //constantly check the chunk origin position, 
-            yield return null;
+            bool exists = LoadedChunks.TryGetValue(chunkID, out chunk);
+            if (!exists)
+            {
+                chunk = new Chunk(chunkID);
+                chunk.SetVoxelMap(new byte[] { 0 });
+            }
+            return exists;
         }
 
         private async Task DrawRenderArea()
         {
             //float time = Time.realtimeSinceStartup;
             int renderDistance = _GameConfig.GraphicsConfiguration.RenderDistance;
-
             for (int i = 0; i <= renderDistance; i++)
             {
-                _ChunksToDraw = ChunkUtils.GetChunkByRing(CameraPosition, i);
+                _ChunksToDraw = ChunkUtils.GetChunkByRing(CameraPosition, i).ToList();
                 if (_ChunksToDraw.Count == 0)
                     continue;
 
                 for (int j = 0; j < _ChunksToDraw.Count; j++)
                 {
-                    Vector3Int key = _ChunksToDraw[j];
-                    bool exists = TryGetChunk(key, out Chunk chunk);
+                    //int3 key = new int3(_ChunksToDraw[j].x, _ChunksToDraw[j].y, _ChunksToDraw[j].z);
+                    bool exists = TryGetChunk(_ChunksToDraw[j], out Chunk chunk);
                     if (exists && chunk.ChunkState != eChunkState.Drawn)
+                    {
                         chunk.RequestMesh();
+                    }
                     if (j != 0 && j % 30 == 0)
+                    {
                         await Task.Yield();
+                    }
                 }
                 _ChunksToDraw.Clear();
-
-                // if (_StarOverFlag)
-                // {
-                //     i = -1;
-                //     _StarOverFlag = false;
-                // }
             }
-            // OnTerrainDrawn.Invoke();
             //Debug.Log($"Time to draw everything: {Time.realtimeSinceStartup - time}");
         }
         public void CheckToDraw()
@@ -140,17 +136,6 @@ namespace World
             {
                 _CheckDraw = DrawRenderArea();
             }
-        }
-
-        public bool TryGetChunk(Vector3Int chunkID, out Chunk chunk)
-        {
-            bool exists = LoadedChunks.TryGetValue(chunkID, out chunk);
-            if (!exists)
-            {
-                chunk = new Chunk(chunkID);
-                chunk.SetVoxelMap(new byte[] { 0 });
-            }
-            return exists;
         }
     }
 }

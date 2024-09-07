@@ -9,38 +9,38 @@ using VoxelUtils;
 [BurstCompile]
 public struct ITerrainGeneration : IJob
 {
-    public ITerrainGeneration(Vector3Int ChunkID)
+    public ITerrainGeneration(int3 chunkID)
     {
-        m_ChunkID = new int3(ChunkID.x, ChunkID.y, ChunkID.z);
+        _ChunkID = chunkID;
 
         FlatVoxelMap = new NativeArray<byte>(GameConfig.Instance.ChunkConfiguration.ChunkVoxelCount, Allocator.Persistent);
         IsEmpty = new NativeArray<bool>(new bool[]{ true }, Allocator.Persistent);
 
         //generate a region data based on 3 curvese
-        m_CurveResolution = GameConfig.Instance.WorldConfiguration.CurveResolution;
+        _CurveResolution = GameConfig.Instance.WorldConfiguration.CurveResolution;
 
         Continentalness = new NativeArray<float>(GameConfig.Instance.WorldConfiguration.GetCurveValues(0), Allocator.Persistent);
         Erosion = new NativeArray<float>(GameConfig.Instance.WorldConfiguration.GetCurveValues(1), Allocator.Persistent);
         PeaksAndValleys = new NativeArray<float>(GameConfig.Instance.WorldConfiguration.GetCurveValues(2), Allocator.Persistent);
 
-        m_Seed = GameConfig.Instance.WorldConfiguration.Seed;
-        m_Scale = GameConfig.Instance.WorldConfiguration.Scale;
+        _Seed = GameConfig.Instance.WorldConfiguration.Seed;
+        _Scale = GameConfig.Instance.WorldConfiguration.Scale;
     }
 
     public NativeArray<byte> FlatVoxelMap;
     public NativeArray<bool> IsEmpty;
 
-    private int m_CurveResolution;
+    private int _CurveResolution;
 
-    private uint m_Seed;
-    private float m_Scale;
+    private uint _Seed;
+    private float _Scale;
 
     private NativeArray<float> Continentalness;
     private NativeArray<float> Erosion;
     private NativeArray<float> PeaksAndValleys;
 
 
-    private readonly int3 m_ChunkID;
+    private readonly int3 _ChunkID;
 
     public void Execute()
     {
@@ -49,7 +49,7 @@ public struct ITerrainGeneration : IJob
         float l = 1f;
 
         int3
-            globalChunkPosition = m_ChunkID * chunkSize,
+            globalChunkPosition = _ChunkID * chunkSize,
             voxelLocalPosition = 0;
 
         for (voxelLocalPosition.x = 0; voxelLocalPosition.x < chunkSize; voxelLocalPosition.x++)
@@ -58,9 +58,9 @@ public struct ITerrainGeneration : IJob
                 int sampleX = globalChunkPosition.x + voxelLocalPosition.x;
                 int sampleZ = globalChunkPosition.z + voxelLocalPosition.z;
 
-                float c_noice = Noise.Perlin2D(sampleX, sampleZ, m_Seed, 0.15f * m_Scale, 4, 0.55f * p, 1.25f * l);
-                float e_noice = Noise.Perlin2D(sampleX, sampleZ, m_Seed, 1 * m_Scale, 4, 0.76f * p, 2f * l);
-                float pv_noice = Noise.Perlin2D(sampleX, sampleZ, m_Seed, 0.5f * m_Scale, 3, 0.95f * p, 3.1f * l);
+                float c_noice = Noise.Perlin2D(sampleX, sampleZ, _Seed, 0.15f * _Scale, 4, 0.55f * p, 1.25f * l);
+                float e_noice = Noise.Perlin2D(sampleX, sampleZ, _Seed, 1 * _Scale, 4, 0.76f * p, 2f * l);
+                float pv_noice = Noise.Perlin2D(sampleX, sampleZ, _Seed, 0.5f * _Scale, 3, 0.95f * p, 3.1f * l);
                 pv_noice = math.abs(pv_noice);
                 float c = evaluate(c_noice, 0);
                 float e = evaluate(e_noice, 1);
@@ -123,7 +123,7 @@ public struct ITerrainGeneration : IJob
 
         int closestIndex = 0;
         double closestDistance = 2f;
-        double resolution = 2f / m_CurveResolution;
+        double resolution = 2f / _CurveResolution;
         for (int i = 0; i < target.Length; i++)
         {
             double ct =  -1 + (resolution * i);
