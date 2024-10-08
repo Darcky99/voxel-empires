@@ -96,8 +96,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_LODs: {fileID: 8808778173757465436}
-  m_MeshCollider: {fileID: 2880266805003410392}
+  lods: {fileID: 8808778173757465436}
+  meshCollider: {fileID: 2880266805003410392}
 --- !u!1 &9160094407418228846
 GameObject:
   m_ObjectHideFlags: 0

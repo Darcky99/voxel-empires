@@ -15,19 +15,9 @@ namespace World
         private WorldManager _WorldManager => WorldManager.Instance;
         public GameConfig _GameConfig => GameConfig.Instance;
 
-        //public static event Action OnTerrainDrawn;
-
-        private bool _StarOverFlag;
-
         private void Awake()
         {
             _ = Initialize();
-        }
-        private async UniTask Initialize()
-        {
-            await UniTask.WaitUntil(() => _GameManager != null);
-            _StarOverFlag = false;
-            _WorldManager.StateChanged += WorldManager_StateChanged;
         }
 
         private void WorldManager_StateChanged(object sender, WorldState worldState)
@@ -46,21 +36,33 @@ namespace World
             }
         }
 
+        private UniTask _generateTask;
+
+        private async UniTask Initialize()
+        {
+            await UniTask.WaitUntil(() => _GameManager != null);
+            _WorldManager.StateChanged += WorldManager_StateChanged;
+        }
+
+        private void SentToLoad(NativeList<int3> chunks)
+        {
+            _generateTask = _WorldManager.Load(chunks);
+        }
+
         private void Wait()
         {
             if (_GameManager.CurrentState == GameState.Startup)
             {
-                NativeList<int3> chunks = ChunkUtils.GetChunksByCircle(new float3(0, 0, 0), 8);
-                _ = _WorldManager.Load(chunks);
+                SentToLoad(ChunkUtils.GetChunksByCircle(new float3(0, 0, 0), 8));
                 return;
             }
-            //Load the next ring
+            //Load the next ring.
             //if there's nothing to load, suscribe to player movement, and check on move
-
         }
-        private void Loading()
+        private async UniTask Loading()
         {
-            //Every x time, check for completition
+            await _generateTask;
+            //here check for chunks loaded but not drawn, 
         }
         private void Drawing()
         {

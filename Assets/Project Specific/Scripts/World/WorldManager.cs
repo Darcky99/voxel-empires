@@ -65,6 +65,7 @@ namespace World
 
         public async UniTask Load(NativeList<int3> toLoad)
         {
+            _fsm.Fire(WorldTrigger.Load);
             for (int i = 0; i < toLoad.Length; i++)
             {
                 ITerrainGeneration terrainJob = new ITerrainGeneration(toLoad[i]);

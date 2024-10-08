@@ -25,4 +25,5 @@ public class CharacterHandler : StateMachinesHandler, IGroundMovement, IVertical
 
     [field: SerializeField] public Transform Camera { get; private set; }
     [field: SerializeField] public CharacterController CharacterController { get; private set; }
+    [field: SerializeField] public float GroundSpeed { get; private set; }
 }

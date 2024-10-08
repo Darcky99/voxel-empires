@@ -16,21 +16,10 @@ public class GroundMovement_Moving : StateBase<GroundMovement_StateMachine, eGro
     {
         Vector2 wasd = m_InputManager.WASD;
         if (wasd.magnitude == 0)
+        {
             return;
-
-        float speed = 25f;
-        //switch (ParentState.StateKey)
-        //{
-        //    case CharacterStateMachine.eCharacterStates.Grounded:
-        //        speed = 25f;
-        //        break;
-        //    case CharacterStateMachine.eCharacterStates.NotGrounded:
-        //        speed = 18f;
-        //        break;
-        //    case CharacterStateMachine.eCharacterStates.Jumping:
-        //        speed = 27.5f;
-        //        break;
-        //}
+        }
+        float speed = StateMachine.IGroundMovement.GroundSpeed;
         Vector3 movement = XZMovement(wasd) * speed;
         StateMachine.IGroundMovement.CharacterController.Move(movement);
     }
