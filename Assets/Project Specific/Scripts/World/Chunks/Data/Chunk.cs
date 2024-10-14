@@ -7,6 +7,7 @@ using UnityEngine.Profiling;
 using System.Threading.Tasks;
 using System.Collections;
 using Unity.Mathematics;
+using Unity.Collections;
 
 namespace World
 {
@@ -37,7 +38,7 @@ namespace World
         public byte GetVoxel(Vector3Int voxelPosition) => _VoxelMap.GetVoxel(voxelPosition);
         public void SetVoxel(Vector3Int voxelPosition) => _VoxelMap.SetVoxel(voxelPosition.x, voxelPosition.y, voxelPosition.z, 1);
 
-        public void SetVoxelMap(byte[] flatVoxelMap) => _VoxelMap.SetFlatMap(flatVoxelMap);
+        public void SetVoxelMap(NativeArray<byte> flatVoxelMap) => _VoxelMap.SetFlatMap(flatVoxelMap);
 
         private IChunkMesh _Job;
         private JobHandle _JobHandle;
@@ -75,24 +76,24 @@ namespace World
             OnMeshReady();
         }
 
-        public void RequestMesh()
-        {
-            if (_VoxelMap.FlatMap.Length == 1)
-            {
-                return;
-            }
-            _ChunkState = eChunkState.Drawn;
-            _ChunksManager.TryGetChunk(_ChunkID.Move(1, 0, 0), out Chunk rightChunk);
-            _ChunksManager.TryGetChunk(_ChunkID.Move(-1, 0, 0), out Chunk leftChunk);
-            _ChunksManager.TryGetChunk(_ChunkID.Move(0, 0, 1), out Chunk frontChunk);
-            _ChunksManager.TryGetChunk(_ChunkID.Move(0, 0, -1), out Chunk backChunk);
-            _Job = new IChunkMesh(_ChunkID, _VoxelMap.FlatMap,
-                rightChunk._VoxelMap.FlatMap,
-                leftChunk._VoxelMap.FlatMap,
-                frontChunk._VoxelMap.FlatMap,
-                backChunk._VoxelMap.FlatMap);
-            _JobHandle = _Job.Schedule();
-            CheckMeshCompletition();
-        }
+        // public void RequestMesh()
+        // {
+        //     if (_VoxelMap.FlatMap.Length == 1)
+        //     {
+        //         return;
+        //     }
+        //     _ChunkState = eChunkState.Drawn;
+        //     _ChunksManager.TryGetChunk(_ChunkID.Move(1, 0, 0), out Chunk rightChunk);
+        //     _ChunksManager.TryGetChunk(_ChunkID.Move(-1, 0, 0), out Chunk leftChunk);
+        //     _ChunksManager.TryGetChunk(_ChunkID.Move(0, 0, 1), out Chunk frontChunk);
+        //     _ChunksManager.TryGetChunk(_ChunkID.Move(0, 0, -1), out Chunk backChunk);
+        //     _Job = new IChunkMesh(_ChunkID, _VoxelMap.FlatMap,
+        //         rightChunk._VoxelMap.FlatMap,
+        //         leftChunk._VoxelMap.FlatMap,
+        //         frontChunk._VoxelMap.FlatMap,
+        //         backChunk._VoxelMap.FlatMap);
+        //     _JobHandle = _Job.Schedule();
+        //     CheckMeshCompletition();
+        // }
     }
 }

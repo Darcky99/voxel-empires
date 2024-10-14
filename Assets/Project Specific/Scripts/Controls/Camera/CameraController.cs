@@ -9,7 +9,7 @@ public class CameraController : Singleton<CameraController>
     private CameraConfiguration _CameraConfiguration => GameConfig.Instance.CameraConfiguration;
     private InputManager _InputManager => InputManager.Instance;
 
-    public event EventHandler OnMove;
+    public event EventHandler Move;
 
     #region Unity
     protected override void OnAwakeEvent()
@@ -69,7 +69,7 @@ public class CameraController : Singleton<CameraController>
     {
         if (_LastPosition != transform.position || _LastRotation != transform.rotation)
         {
-            OnMove?.Invoke(this, EventArgs.Empty);
+            Move?.Invoke(this, EventArgs.Empty);
             RegisterCurrentCameraPosition();
         }
     }

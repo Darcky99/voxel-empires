@@ -13,6 +13,7 @@ namespace World
     {
         public GameManager _GameManager => GameManager.Instance;
         private WorldManager _WorldManager => WorldManager.Instance;
+        private CameraController _CameraController => CameraController.Instance;
         public GameConfig _GameConfig => GameConfig.Instance;
 
         private void Awake()
@@ -36,37 +37,56 @@ namespace World
             }
         }
 
-        private UniTask _generateTask;
+        private Vector3Int _worldChunkRenderingCenter;
+        private bool _stopExpansiveLoadingFlag = false;
+        private bool _loadingOngoing = false;
 
         private async UniTask Initialize()
         {
             await UniTask.WaitUntil(() => _GameManager != null);
             _WorldManager.StateChanged += WorldManager_StateChanged;
+            //I should start loading some stuff here, maybe 8x8 chunks + 1 for checkin
+            //The initial load is different to the constant world load.
+
+            //After initial loading, we start to load based on movement.
+            _CameraController.Move += CameraController_Move;
         }
 
-        private void SentToLoad(NativeList<int3> chunks)
+        private async void CameraController_Move(object sender, EventArgs eventArgs)
         {
-            _generateTask = _WorldManager.Load(chunks);
-        }
-
-        private void Wait()
-        {
-            if (_GameManager.CurrentState == GameState.Startup)
+            Vector3 cameraPosition = CameraController.Instance.transform.position;
+            Vector3Int chunkID = ChunkUtils.WorldCoordinatesToChunkIndex(cameraPosition);
+            if (_worldChunkRenderingCenter == chunkID)
             {
-                SentToLoad(ChunkUtils.GetChunksByCircle(new float3(0, 0, 0), 8));
                 return;
             }
-            //Load the next ring.
-            //if there's nothing to load, suscribe to player movement, and check on move
+            _stopExpansiveLoadingFlag = true;
+            await UniTask.WaitUntil(() => _loadingOngoing == false);
+            _worldChunkRenderingCenter = chunkID;
+            _stopExpansiveLoadingFlag = false;
+            _ = ExpansiveLoading(new int3(chunkID.x, chunkID.y, chunkID.z));
         }
-        private async UniTask Loading()
+
+
+        private async UniTask ExpansiveLoading(float3 centerPosition)
         {
-            await _generateTask;
-            //here check for chunks loaded but not drawn, 
+            _loadingOngoing = true;
+            for (int i = 0; i < _GameConfig.GraphicsConfiguration.RenderDistance; i++)
+            {
+                NativeList<int3> chunkIDs = ChunkUtils.GetChunkByRing(centerPosition, i);
+                NativeList<int3> aroundIDs = ChunkUtils.GetChunkByRing(centerPosition, i + 1);
+                //1. Load these and the surounding.
+                //2. Draw the ones in the inner ring.
+            }
+            _loadingOngoing = false;
         }
-        private void Drawing()
-        {
-            throw new NotImplementedException();
-        }
+
+        //Each movement 
+
+
+        //(Load OR Try to Load) certain chunks within a distance ring.
+        //The onces that required loading, check if their adjacent chunks exist.
+        //If so, send to draw.
+        //Don't restart the process until everything's complete
     }
 }

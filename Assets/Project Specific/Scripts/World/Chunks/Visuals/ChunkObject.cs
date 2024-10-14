@@ -21,11 +21,11 @@ namespace World
         #region Unity
         private void OnEnable()
         {
-            _CameraController.OnMove += CameraController_OnMove;
+            _CameraController.Move += CameraController_OnMove;
         }
         private void OnDisable()
         {
-            _CameraController.OnMove -= CameraController_OnMove;
+            _CameraController.Move -= CameraController_OnMove;
         }
         #endregion
 
