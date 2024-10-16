@@ -13,37 +13,40 @@ namespace World
         private WorldManager _WorldManager => WorldManager.Instance;
         private CameraController _CameraController => CameraController.Instance;
 
+        public Chunk Chunk => _Chunk;
+
+        [field: SerializeField] public bool HasTerrain { get; private set; }
+        [field: SerializeField] public bool HasMesh { get; private set; }
+
         private Chunk _Chunk;
 
-        [SerializeField] private MeshFilter lods;
+        [SerializeField] private MeshFilter meshFilter;
         [SerializeField] private MeshCollider meshCollider;
 
-        #region Unity
-        private void OnEnable()
+        public void Initialize(int3 chunkID)
         {
-            _CameraController.Move += CameraController_OnMove;
-        }
-        private void OnDisable()
-        {
-            _CameraController.Move -= CameraController_OnMove;
-        }
-        #endregion
-
-        private void CameraController_OnMove(object sender, EventArgs e)
-        {
-            //send the mesh to be drawn
-        }
-
-        private void SetMesh(Mesh mesh)
-        {
-            lods.mesh = mesh;
-            meshCollider.sharedMesh = mesh;
-        }
-        public void Set(Chunk chunk, Mesh mesh)
-        {
-            _Chunk = chunk;
+            _Chunk = new Chunk(chunkID);
             transform.position = ChunkUtils.ChunkIDToWorldCoordinates(_Chunk.ChunkID);
-            SetMesh(mesh);
+            gameObject.name = $"Chunk {chunkID}";
+            HasTerrain = false;
+            HasMesh = false;
+        }
+        public void SetVoxels(NativeArray<byte> voxels)
+        {
+            _Chunk.SetVoxelMap(voxels);
+            HasTerrain = true;
+        }
+        public void SetMesh(IChunkMesh meshJob)
+        {
+            Mesh mesh = new Mesh();
+            mesh.vertices = meshJob.Vertices.ToArrayNBC();
+            mesh.triangles = meshJob.Triangles.ToArrayNBC();
+            mesh.SetUVs(0, meshJob.UVs.ToArrayNBC());
+            meshJob.Dispose();
+            mesh.RecalculateNormals();
+            meshFilter.mesh = mesh;
+            meshCollider.sharedMesh = mesh;
+            HasMesh = true;
         }
     }
 }

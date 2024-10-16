@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lods: {fileID: 8808778173757465436}
+  meshFilter: {fileID: 8808778173757465436}
   meshCollider: {fileID: 2880266805003410392}
 --- !u!1 &9160094407418228846
 GameObject:
@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 8808778173757465436}
   - component: {fileID: 2298150669213839662}
   m_Layer: 0
-  m_Name: LOD 0
+  m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -20,61 +20,44 @@ namespace World
             _ChunkID = ID;
             _VoxelMap = new VoxelMap();
             _ChunkState = eChunkState.Active;
-            _ChunkMesh = null;
-            _Job = default;
-            _JobHandle = default;
+            // _ChunkMesh = null;
+            // _Job = default;
+            // _JobHandle = default;
         }
 
         public float3 WorldPosition => _ChunkID * ChunkConfiguration.KeyToWorld;
         public int3 ChunkID => _ChunkID;
         public eChunkState ChunkState => _ChunkState;
+        public VoxelMap VoxelMap => _VoxelMap;
 
         private int3 _ChunkID;
         private VoxelMap _VoxelMap;
         private eChunkState _ChunkState;
 
-        private ChunkObject _ChunkMesh;
+        // private ChunkObject _ChunkMesh;
 
         public byte GetVoxel(Vector3Int voxelPosition) => _VoxelMap.GetVoxel(voxelPosition);
         public void SetVoxel(Vector3Int voxelPosition) => _VoxelMap.SetVoxel(voxelPosition.x, voxelPosition.y, voxelPosition.z, 1);
 
         public void SetVoxelMap(NativeArray<byte> flatVoxelMap) => _VoxelMap.SetFlatMap(flatVoxelMap);
 
-        private IChunkMesh _Job;
-        private JobHandle _JobHandle;
+        // private IChunkMesh _Job;
+        // private JobHandle _JobHandle;
 
-        #region Callbacks
-        private void OnMeshReady()
-        {
-            _JobHandle.Complete();
-            if (_Job.Vertices.Length == 0)
-            {
-                _Job.Dispose();
-                return;
-            }
-            if (_ChunkMesh == null)
-            {
-                _ChunkMesh = ChunkMeshPool.s_Instance.DeQueue();
-            }
-            Mesh mesh = new Mesh();
-            mesh.vertices = _Job.Vertices.ToArrayNBC();
-            mesh.triangles = _Job.Triangles.ToArrayNBC();
-            mesh.SetUVs(0, _Job.UVs.ToArrayNBC());
-            _Job.Dispose();
-            mesh.RecalculateNormals();
-            _ChunkMesh.Set(this, mesh);
-        }
-        #endregion
+        // #region Callbacks
+        // #endregion
 
-        private async void CheckMeshCompletition()
-        {
-            do
-            {
-                await Task.Yield();
-            }
-            while (!_JobHandle.IsCompleted);
-            OnMeshReady();
-        }
+        
+
+        // private async void CheckMeshCompletition()
+        // {
+        //     do
+        //     {
+        //         await Task.Yield();
+        //     }
+        //     while (!_JobHandle.IsCompleted);
+        //     OnMeshReady();
+        // }
 
         // public void RequestMesh()
         // {

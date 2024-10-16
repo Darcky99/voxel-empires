@@ -1,6 +1,6 @@
 public enum WorldState
 {
-    Drawing,
-    Loading,
-    Waiting,
+    Idle,
+    Generating,
+    Canceling,
 }

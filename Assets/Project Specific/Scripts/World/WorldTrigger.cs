@@ -1,6 +1,6 @@
 public enum WorldTrigger
 {
-    Draw,
-    Load,
-    Wait
+    GenerationFinished,
+    Cancel,
+    Generate
 }

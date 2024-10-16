@@ -14,9 +14,8 @@ public struct ITerrainGeneration : IJob
         _ChunkID = chunkID;
 
         FlatVoxelMap = new NativeArray<byte>(GameConfig.Instance.ChunkConfiguration.ChunkVoxelCount, Allocator.Persistent);
-        IsEmpty = new NativeArray<bool>(new bool[]{ true }, Allocator.Persistent);
+        IsEmpty = true;
 
-        //generate a region data based on 3 curvese
         _CurveResolution = GameConfig.Instance.WorldConfiguration.CurveResolution;
 
         Continentalness = new NativeArray<float>(GameConfig.Instance.WorldConfiguration.GetCurveValues(0), Allocator.Persistent);
@@ -28,7 +27,7 @@ public struct ITerrainGeneration : IJob
     }
 
     public NativeArray<byte> FlatVoxelMap;
-    public NativeArray<bool> IsEmpty;
+    public bool IsEmpty;
 
     private int _CurveResolution;
 
@@ -38,7 +37,6 @@ public struct ITerrainGeneration : IJob
     private NativeArray<float> Continentalness;
     private NativeArray<float> Erosion;
     private NativeArray<float> PeaksAndValleys;
-
 
     private readonly int3 _ChunkID;
 
@@ -88,13 +86,13 @@ public struct ITerrainGeneration : IJob
                     else
                         FlatVoxelMap[i] = 1;
 
-                    IsEmpty[0] = false;
+                    IsEmpty = false;
                 }
             }
     }
     public void Dispose()
     {
-        FlatVoxelMap.Dispose();
+        // FlatVoxelMap.Dispose();
         Continentalness.Dispose();
         Erosion.Dispose();
         PeaksAndValleys.Dispose();

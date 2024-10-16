@@ -10,7 +10,7 @@ using VoxelUtils;
 [BurstCompile]
 public struct IChunkMesh : IJob
 {
-    public IChunkMesh(int3 id, byte[] centralChunk, byte[] rightChunk, byte[] leftChunk, byte[] frontChunk, byte[] backChunk)
+    public IChunkMesh(int3 id, NativeArray<byte> centralChunk, NativeArray<byte> rightChunk, NativeArray<byte> leftChunk, NativeArray<byte> frontChunk, NativeArray<byte> backChunk)
     {
         _VoxelsConfig = new NativeArray<VoxelConfig>(GameConfig.Instance.VoxelConfiguration.GetVoxelsData(), Allocator.Persistent);
         _ID = new int3(id.y, id.y, id.z);
@@ -19,7 +19,7 @@ public struct IChunkMesh : IJob
         Triangles = new NativeList<int>(Allocator.Persistent);
         UVs = new NativeList<Vector3>(Allocator.Persistent);
 
-        _DrawnFaces = new NativeHashMap<int3, FacesDrawn>(6000,Allocator.Persistent);
+        _DrawnFaces = new NativeHashMap<int3, FacesDrawn>(6000, Allocator.Persistent);
         _Central_Chunk = new NativeArray<byte>(centralChunk, Allocator.Persistent);
 
         _Right_Chunk = new NativeArray<byte>(rightChunk, Allocator.Persistent);
@@ -29,7 +29,7 @@ public struct IChunkMesh : IJob
     }
 
     private NativeArray<VoxelConfig> _VoxelsConfig;
-    
+
     public NativeList<Vector3> Vertices { get; private set; }
     public NativeList<int> Triangles { get; private set; }
     public NativeList<Vector3> UVs { get; private set; }
@@ -53,8 +53,8 @@ public struct IChunkMesh : IJob
         NativeArray<int> l = new NativeArray<int>(3, Allocator.Temp);
         NativeArray<int> v = new NativeArray<int>(3, Allocator.Temp);
         int a, b;
-        l[0] = Voxels.s_ChunkSize; 
-        l[1] = Voxels.s_ChunkHeight; 
+        l[0] = Voxels.s_ChunkSize;
+        l[1] = Voxels.s_ChunkHeight;
         l[2] = Voxels.s_ChunkSize;
         for (int p = 0; p <= 2; p++)
         {
@@ -71,7 +71,7 @@ public struct IChunkMesh : IJob
                         if (blockID == 0)
                             continue;
 
-                        for(int i = -1; i <= 1; i += 2)
+                        for (int i = -1; i <= 1; i += 2)
                         {
                             int faceIndex = getFaceIndex(p, i);
                             if (!isDrawFace(blockID, abs_position, faceIndex) || (_ID.y == 0 && abs_position.y == 0 && faceIndex == 1))
@@ -118,7 +118,7 @@ public struct IChunkMesh : IJob
                             }
                             Triangles.AddRange(new NativeArray<int>(Voxels.GetFaceTriangles(vertexIndex), Allocator.Temp));
                             NativeArray<Vector3> uvs = Voxels.GetUVs();
-                            foreach(Vector3 uv in uvs)
+                            foreach (Vector3 uv in uvs)
                             {
                                 Vector3 u = uv;
                                 u[a == 2 ? a - 1 - b : a] *= meshSize.x;
@@ -135,15 +135,15 @@ public struct IChunkMesh : IJob
 
     private int getFaceIndex(int p, int i)
     {
-        switch(p , i)
+        switch (p, i)
         {
-            case (1, 1):  return 0;
+            case (1, 1): return 0;
             case (1, -1): return 1;
-            case (0, 1):  return 2;
+            case (0, 1): return 2;
             case (0, -1): return 3;
-            case (2, 1):  return 4;
+            case (2, 1): return 4;
             case (2, -1): return 5;
-            default : return -1;
+            default: return -1;
         }
     }
 
@@ -201,7 +201,7 @@ public struct IChunkMesh : IJob
         int3 position = min;
         for (int y = min.y; y <= max.y; y++)
             for (int z = min.z; z <= max.z; z++)
-                for(int x = min.x; x <= max.x; x++)
+                for (int x = min.x; x <= max.x; x++)
                 {
                     position.x = x;
                     position.y = y;
@@ -214,7 +214,7 @@ public struct IChunkMesh : IJob
 
     private float3 getMeshCenter(int3 min, int3 max)
     {
-        int3 one = new int3(1,1,1);
+        int3 one = new int3(1, 1, 1);
         min -= one;
         max -= one;
         float x_dif = max.x - min.x;
@@ -263,13 +263,13 @@ public struct FacesDrawn
 
     public bool IsFaceDrawn(int faceIndex)
     {
-        switch(faceIndex)
+        switch (faceIndex)
         {
-            case 0: return Top; 
-            case 1: return Bottom; 
-            case 2: return Right; 
-            case 3: return Left; 
-            case 4: return Front; 
+            case 0: return Top;
+            case 1: return Bottom;
+            case 2: return Right;
+            case 3: return Left;
+            case 4: return Front;
             case 5: return Back;
             default:
                 Debug.LogError("Error");
@@ -280,11 +280,11 @@ public struct FacesDrawn
     {
         switch (faceIndex)
         {
-            case 0: 
+            case 0:
                 Top = true;
                 break;
-            case 1: 
-                Bottom = true; 
+            case 1:
+                Bottom = true;
                 break;
             case 2:
                 Right = true;

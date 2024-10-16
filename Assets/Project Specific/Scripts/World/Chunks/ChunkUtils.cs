@@ -68,11 +68,14 @@ public static class ChunkUtils
     {
         int3 center = WorldCoordinatesToChunkIndex(worldPosition);
         NativeList<int3> chunksInRing = new NativeList<int3>(Allocator.Persistent);
-
+        if (ring == 0)
+        {
+            chunksInRing.Add(center);
+            return chunksInRing;
+        }
         int2 x_limits = new int2(center.x - ring, center.x + ring);
         int2 y_limits = new int2(0, s_GameConfig.WorldConfiguration.WorldHeightInChunks);
         int2 z_limits = new int2(center.z - ring, center.z + ring);
-
         int3 pos1 = default;
         int3 pos2 = default;
 
@@ -117,13 +120,17 @@ public static class ChunkUtils
     public static Vector3Int WorldCoordinatesToChunkIndex(Vector3 worldPosition)
     {
         Vector3 position = worldPosition + (Vector3.one * 0.25f);
-        position /= 8;
+        position.x /= (s_GameConfig.ChunkConfiguration.ChunkSize / 2);
+        position.y /* / */= 0;//(s_GameConfig.ChunkConfiguration.ChunkHeight / 2);
+        position.z /= (s_GameConfig.ChunkConfiguration.ChunkSize / 2);
         return new Vector3Int(Mathf.FloorToInt(position.x), Mathf.FloorToInt(position.y), Mathf.FloorToInt(position.z));
     }
     public static int3 WorldCoordinatesToChunkIndex(float3 worldPosition)
     {
         float3 position = worldPosition + (new float3(1, 1, 1) * 0.25f);
-        position /= 8;
+        position.x /= (s_GameConfig.ChunkConfiguration.ChunkSize / 2);
+        position.y /* / */= 0;//(s_GameConfig.ChunkConfiguration.ChunkHeight / 2);
+        position.z /= (s_GameConfig.ChunkConfiguration.ChunkSize / 2);
         int x = (int)math.floor(position.x);
         int y = (int)math.floor(position.y);
         int z = (int)math.floor(position.z);

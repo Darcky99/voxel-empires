@@ -19,15 +19,13 @@ namespace World
 
         public event EventHandler<WorldState> StateChanged;
 
-        public Dictionary<int3, Chunk> LoadedChunks => _LoadedChunks;
+        public Dictionary<int3, ChunkObject> LoadedChunks => _LoadedChunks;
         public Vector3 CameraPosition => _CameraTransform.position;
+        public WorldState CurrentState => _fsm.State;
+
 
         private StateMachine<WorldState, WorldTrigger> _fsm;
-        private Dictionary<int3, Chunk> _LoadedChunks;
-
-        // private List<int3> _ChunksToDraw;
-        // private Task _CheckDraw;
-        //private Dictionary<int, >
+        private Dictionary<int3, ChunkObject> _LoadedChunks;
 
         [Title("Handlers")]
         [SerializeField] private WorldController _ChunkRenderer;
@@ -36,20 +34,20 @@ namespace World
 
         public void Initialize()
         {
-            _LoadedChunks = new Dictionary<int3, Chunk>();
-            // _ChunksToDraw = new List<int3>();
+            _LoadedChunks = new Dictionary<int3, ChunkObject>();
 
-            _fsm = new StateMachine<WorldState, WorldTrigger>(WorldState.Waiting);
+            _fsm = new StateMachine<WorldState, WorldTrigger>(WorldState.Idle);
 
-            _fsm.Configure(WorldState.Waiting)
-            .Permit(WorldTrigger.Load, WorldState.Loading);
+            _fsm.Configure(WorldState.Idle)
+            .Permit(WorldTrigger.Generate, WorldState.Generating);
 
-            _fsm.Configure(WorldState.Loading)
-            .Permit(WorldTrigger.Draw, WorldState.Drawing);
-
-            _fsm.Configure(WorldState.Drawing)
-            .Permit(WorldTrigger.Wait, WorldState.Waiting);
-
+            _fsm.Configure(WorldState.Generating)
+            .Permit(WorldTrigger.Cancel, WorldState.Canceling)
+            .Permit(WorldTrigger.GenerationFinished, WorldState.Idle);
+            
+            _fsm.Configure(WorldState.Canceling)
+            .Permit(WorldTrigger.Generate, WorldState.Generating)
+            .Permit(WorldTrigger.GenerationFinished, WorldState.Idle);
             _fsm.OnTransitionCompleted(WorldState_OnTransitionCompleted);
         }
 
@@ -58,96 +56,86 @@ namespace World
             StateChanged?.Invoke(this, transition.Destination);
         }
 
-        public bool TryGetChunk(int3 chunkID, out Chunk chunk)
+        private ChunkObject CreateChunkObject(int3 chunkID)
         {
-            bool exists = LoadedChunks.TryGetValue(chunkID, out chunk);
-            if (!exists)
+            ChunkObject chunkObject = ChunkObjectPool.s_Instance.DeQueue();
+            chunkObject.Initialize(chunkID);
+            _LoadedChunks.Add(chunkID, chunkObject);
+            return chunkObject;
+        }
+        public bool TryGetChunkObject(int3 chunkID, out ChunkObject chunk)
+        {
+            return _LoadedChunks.TryGetValue(chunkID, out chunk); ;
+        }
+        public ChunkObject[] GetChunksObjects(NativeList<int3> chunkIDs)
+        {
+            ChunkObject[] chunks = new ChunkObject[chunkIDs.Length];
+            for (int i = 0; i < chunkIDs.Length; i++)
             {
-                chunk = new Chunk(chunkID);
-                chunk.SetVoxelMap(new byte[] { 0 });
+                TryGetChunkObject(chunkIDs[i], out chunks[i]);
             }
-            return exists;
+            return chunks;
         }
 
-        public async UniTask Load(NativeList<int3> toLoad)
+        public async UniTask LoadAll(NativeList<int3> toLoad)
         {
-            _fsm.Fire(WorldTrigger.Load);
-            for (int i = 0; i < toLoad.Length; i++)
+            // _fsm.Fire(WorldTrigger.Load);
+            int totalCount = toLoad.Length;
+            NativeArray<JobHandle> jobHandles = new NativeArray<JobHandle>(totalCount, Allocator.Persistent);
+            NativeArray<ITerrainGeneration> terrainJobs = new NativeArray<ITerrainGeneration>(totalCount, Allocator.Persistent);
+            for (int i = 0; i < totalCount; i++)
             {
-                ITerrainGeneration terrainJob = new ITerrainGeneration(toLoad[i]);
-                JobHandle handler = terrainJob.Schedule();
-                // handler.Complete();
-                int3 id = toLoad[i];
-
-                Chunk chunk = new Chunk(id);
-
-                if (terrainJob.IsEmpty[0])
-                {
-                    chunk.SetVoxelMap(new byte[] { 0 });
-                }
-                else
-                {
-                    chunk.SetVoxelMap(terrainJob.FlatVoxelMap.ToArray());
-                }
-                _LoadedChunks[id] = chunk;
-                terrainJob.Dispose();
-            }
-        }
-        public void LoadAll(NativeList<int3> toLoad)
-        {
-            _fsm.Fire(WorldTrigger.Load);
-            NativeArray<JobHandle> jobHandles = new NativeArray<JobHandle>(toLoad.Length, Allocator.Temp);
-            for (int i = 0; i < toLoad.Length; i++)
-            {
-                ITerrainGeneration terrainJob = new ITerrainGeneration(toLoad[i]);
-                JobHandle handler = terrainJob.Schedule();
+                terrainJobs[i] = new ITerrainGeneration(toLoad[i]);
+                JobHandle handler = terrainJobs[i].Schedule();
                 jobHandles[i] = handler;
             }
             JobHandle combinedHandle = JobHandle.CombineDependencies(jobHandles);
+            await UniTask.WaitUntil(() => combinedHandle.IsCompleted);
+            combinedHandle.Complete();
+            for (int i = 0; i < totalCount; i++)
+            {
+                ChunkObject chunkObj = CreateChunkObject(toLoad[i]);
+                chunkObj.SetVoxels(terrainJobs[i].FlatVoxelMap);
+            }
+            jobHandles.Dispose();
+            terrainJobs.Dispose();
         }
-        public void CreateChunk()
+        public async UniTask DrawAll(NativeList<int3> toDraw)
+        {
+            int totalCount = toDraw.Length;
+            ChunkObject[] chunks = GetChunksObjects(toDraw);
+            NativeArray<JobHandle> jobHandles = new NativeArray<JobHandle>(totalCount, Allocator.Persistent);
+            NativeArray<IChunkMesh> meshJobs = new NativeArray<IChunkMesh>(totalCount, Allocator.Persistent);
+            for (int i = 0; i < totalCount; i++)
+            {
+                int3 chunkID = toDraw[i];
+                TryGetChunkObject(chunkID, out ChunkObject chunkObj);
+                TryGetChunkObject(chunkID.Move(1, 0, 0), out ChunkObject rightChunkObj);
+                TryGetChunkObject(chunkID.Move(-1, 0, 0), out ChunkObject leftChunkObj);
+                TryGetChunkObject(chunkID.Move(0, 0, 1), out ChunkObject frontChunkObj);
+                TryGetChunkObject(chunkID.Move(0, 0, -1), out ChunkObject backChunkObj);
+                meshJobs[i] = new IChunkMesh(chunkID, chunkObj.Chunk.VoxelMap.FlatMap,
+                    rightChunkObj.Chunk.VoxelMap.FlatMap,
+                    leftChunkObj.Chunk.VoxelMap.FlatMap,
+                    frontChunkObj.Chunk.VoxelMap.FlatMap,
+                    backChunkObj.Chunk.VoxelMap.FlatMap);
+                JobHandle handler = meshJobs[i].Schedule();
+                jobHandles[i] = handler;
+            }
+            JobHandle combinedHandle = JobHandle.CombineDependencies(jobHandles);
+            await UniTask.WaitUntil(() => combinedHandle.IsCompleted);
+            combinedHandle.Complete();
+            for (int i = 0; i < totalCount; i++)
+            {
+                chunks[i].SetMesh(meshJobs[i]);
+            }
+            jobHandles.Dispose();
+            meshJobs.Dispose();
+        }
 
-        //NEED TO CREATE AN OBJECT TO LOOK AT ALL OF THESE COMPLETITION
-        //THIS IS FOR WHEN WE ARE COMPLETE
-        // int3 id = toLoad[i];
-        // Chunk chunk = new Chunk(id);
-        // if (terrainJob.IsEmpty[0])
-        // {
-        //     chunk.SetVoxelMap(new byte[] { 0 });
-        // }
-        // else
-        // {
-        //     chunk.SetVoxelMap(terrainJob.FlatVoxelMap.ToArray());
-        // }
-        // _LoadedChunks[id] = chunk;
-        // jobHandles.Dispose();
-        // //
-
-
-        // private async Task DrawRenderArea()
-        // {
-        //     int renderDistance = _GameConfig.GraphicsConfiguration.RenderDistance;
-        //     for (int i = 0; i <= renderDistance; i++)
-        //     {
-        //         _ChunksToDraw = ChunkUtils.GetChunkByRing(CameraPosition, i).ToList();
-        //         if (_ChunksToDraw.Count == 0)
-        //             continue;
-
-        //         for (int j = 0; j < _ChunksToDraw.Count; j++)
-        //         {
-        //             //int3 key = new int3(_ChunksToDraw[j].x, _ChunksToDraw[j].y, _ChunksToDraw[j].z);
-        //             bool exists = TryGetChunk(_ChunksToDraw[j], out Chunk chunk);
-        //             if (exists && chunk.ChunkState != eChunkState.Drawn)
-        //             {
-        //                 chunk.RequestMesh();
-        //             }
-        //             if (j != 0 && j % 30 == 0)
-        //             {
-        //                 await Task.Yield();
-        //             }
-        //         }
-        //         _ChunksToDraw.Clear();
-        //     }
-        // }
+        public void SetState(WorldTrigger trigger)
+        {
+            _fsm.Fire(trigger);
+        }
     }
 }

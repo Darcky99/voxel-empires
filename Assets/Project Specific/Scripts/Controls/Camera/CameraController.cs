@@ -70,6 +70,7 @@ public class CameraController : Singleton<CameraController>
         if (_LastPosition != transform.position || _LastRotation != transform.rotation)
         {
             Move?.Invoke(this, EventArgs.Empty);
+            Debug.Log("Camera position changed");
             RegisterCurrentCameraPosition();
         }
     }
