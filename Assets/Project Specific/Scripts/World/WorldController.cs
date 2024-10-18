@@ -40,7 +40,7 @@ namespace World
             }
         }
 
-        private Vector3Int _worldDrawOrigin;
+        private Vector3Int _drawOriginChunkID;
         private bool _stopExpansiveLoadingFlag = false;
         private bool _loadingOngoing = false;
 
@@ -59,7 +59,7 @@ namespace World
         }
         private void Generating()
         {
-            _ = ExpansiveLoading(new int3(_worldDrawOrigin.x, _worldDrawOrigin.y, _worldDrawOrigin.z));
+            _ = ExpansiveLoading(new int3(_drawOriginChunkID.x, _drawOriginChunkID.y, _drawOriginChunkID.z));
         }
         private void Cancel()
         {
@@ -71,28 +71,28 @@ namespace World
             Vector3 cameraPosition = CameraController.Instance.transform.position;
             Vector3Int chunkID = ChunkUtils.WorldCoordinatesToChunkIndex(cameraPosition);
 
-            if (_worldDrawOrigin != chunkID && _WorldManager.CurrentState == WorldState.Generating)
+            if (_drawOriginChunkID != chunkID && _WorldManager.CurrentState == WorldState.Generating)
             {
-                _worldDrawOrigin = chunkID;
+                _drawOriginChunkID = chunkID;
                 _WorldManager.SetState(WorldTrigger.Cancel);
                 return;
             }
-            else if (_worldDrawOrigin != chunkID && _WorldManager.CurrentState == WorldState.Idle)
+            else if (_drawOriginChunkID != chunkID && _WorldManager.CurrentState == WorldState.Idle)
             {
-                _worldDrawOrigin = chunkID;
+                _drawOriginChunkID = chunkID;
                 _WorldManager.SetState(WorldTrigger.Generate);
                 return;
             }
         }
 
-        private async UniTask ExpansiveLoading(float3 centerPosition)
+        private async UniTask ExpansiveLoading(int3 originChunkID)
         {
             for (int i = 0; i < _GameConfig.GraphicsConfiguration.RenderDistance; i++)
             {
-                NativeList<int3> generateTerraint = RemoveChunkObjects(ChunkUtils.GetChunkByRing(centerPosition, i), HasTerrain);
-                NativeList<int3> generateAround = RemoveChunkObjects(ChunkUtils.GetChunkByRing(centerPosition, i + 1), HasTerrain);
-                NativeList<int3> draw = RemoveChunkObjects(ChunkUtils.GetChunkByRing(centerPosition, i), HasMesh);
-                Debug.Log($"Center: {_worldDrawOrigin}, Ring: {i},\nGenerate: {generateAround.Length}, Around: {generateAround.Length}, Draw: {draw.Length}");
+                NativeList<int3> generateTerraint = RemoveChunkObjects(ChunkUtils.GetChunksByRing(originChunkID, i), HasTerrain);
+                NativeList<int3> generateAround = RemoveChunkObjects(ChunkUtils.GetChunksByRing(originChunkID, i + 1), HasTerrain);
+                NativeList<int3> draw = RemoveChunkObjects(ChunkUtils.GetChunksByRing(originChunkID, i), HasMesh);
+                Debug.Log($"Center: {_drawOriginChunkID}, Ring: {i},\nGenerate: {generateAround.Length}, Around: {generateAround.Length}, Draw: {draw.Length}");
                 await _WorldManager.LoadAll(generateTerraint);
                 await _WorldManager.LoadAll(generateAround);
                 await _WorldManager.DrawAll(draw);

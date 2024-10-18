@@ -64,18 +64,17 @@ public static class ChunkUtils
     // }
 
     [BurstCompile]
-    public static NativeList<int3> GetChunkByRing(float3 worldPosition, int ring)
+    public static NativeList<int3> GetChunksByRing(int3 chunkID, int ring)
     {
-        int3 center = WorldCoordinatesToChunkIndex(worldPosition);
         NativeList<int3> chunksInRing = new NativeList<int3>(Allocator.Persistent);
         if (ring == 0)
         {
-            chunksInRing.Add(center);
+            chunksInRing.Add(chunkID);
             return chunksInRing;
         }
-        int2 x_limits = new int2(center.x - ring, center.x + ring);
+        int2 x_limits = new int2(chunkID.x - ring, chunkID.x + ring);
         int2 y_limits = new int2(0, s_GameConfig.WorldConfiguration.WorldHeightInChunks);
-        int2 z_limits = new int2(center.z - ring, center.z + ring);
+        int2 z_limits = new int2(chunkID.z - ring, chunkID.z + ring);
         int3 pos1 = default;
         int3 pos2 = default;
 
@@ -99,12 +98,19 @@ public static class ChunkUtils
         return chunksInRing;
     }
     [BurstCompile]
+    public static NativeList<int3> GetChunksByRing(float3 worldPosition, int ring)
+    {
+        int3 chunkID = WorldCoordinatesToChunkIndex(worldPosition);
+        return GetChunksByRing(chunkID, ring);
+    }
+    [BurstCompile]
     public static NativeList<int3> GetChunksByCircle(float3 worldPosition, int radius)
     {
+        int3 chunkID = WorldCoordinatesToChunkIndex(worldPosition);
         NativeList<int3> chunksInCircle = new NativeList<int3>(Allocator.Persistent);
         for (int ring = 0; ring <= radius; ring++)
         {
-            NativeList<int3> chunksInRing = GetChunkByRing(worldPosition, ring);
+            NativeList<int3> chunksInRing = GetChunksByRing(chunkID, ring);
             for (int i = 0; i < chunksInRing.Length; i++)
             {
                 if (!chunksInCircle.Contains(chunksInRing[i]))

@@ -49,7 +49,7 @@ MonoBehaviour:
     m_ChunkSize: 16
     m_ChunkHeight: 128
   <GraphicsConfiguration>k__BackingField:
-    m_RenderDistance: 16
+    m_RenderDistance: 64
   <VoxelConfiguration>k__BackingField:
     <Voxels>k__BackingField:
     - {fileID: 11400000, guid: f8d23665b38332f40a8d230749ee657f, type: 2}
