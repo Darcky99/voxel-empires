@@ -89,11 +89,15 @@ namespace World
         {
             for (int i = 0; i < _GameConfig.GraphicsConfiguration.RenderDistance; i++)
             {
-                NativeList<int3> generateTerraint = RemoveChunkObjects(ChunkUtils.GetChunksByRing(originChunkID, i), HasTerrain);
+                //if there's noting in generate terrain, skip
+                NativeList<int3> generateTerrain = RemoveChunkObjects(ChunkUtils.GetChunksByRing(originChunkID, i), HasTerrain);
+                //if(generateTerrain.Lenght == 0){
+                //continue
+                //}
                 NativeList<int3> generateAround = RemoveChunkObjects(ChunkUtils.GetChunksByRing(originChunkID, i + 1), HasTerrain);
                 NativeList<int3> draw = RemoveChunkObjects(ChunkUtils.GetChunksByRing(originChunkID, i), HasMesh);
                 Debug.Log($"Center: {_drawOriginChunkID}, Ring: {i},\nGenerate: {generateAround.Length}, Around: {generateAround.Length}, Draw: {draw.Length}");
-                await _WorldManager.LoadAll(generateTerraint);
+                await _WorldManager.LoadAll(generateTerrain);
                 await _WorldManager.LoadAll(generateAround);
                 await _WorldManager.DrawAll(draw);
                 if (_stopExpansiveLoadingFlag)
