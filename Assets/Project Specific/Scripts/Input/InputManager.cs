@@ -16,14 +16,14 @@ public class InputManager : Singleton<InputManager>
 
     private void Update()
     {
-        updateWASD();
-        updateSpace();
-        updateMouseScrollDelta();
+        UpdateWASD();
+        UpdateSpace();
+        UpdateMouseScrollDelta();
         MouseScrollDelta = Input.mouseScrollDelta;
         m_LastMousePosition = Input.mousePosition;
     }
 
-    private void updateWASD()
+    private void UpdateWASD()
     {
         float w = Input.GetKeyDown(KeyCode.W) || Input.GetKey(KeyCode.W) ? 1 : 0;
         float s = Input.GetKeyDown(KeyCode.S) || Input.GetKey(KeyCode.S) ? -1 : 0;
@@ -32,14 +32,14 @@ public class InputManager : Singleton<InputManager>
         Vector2 v = new Vector2(r + l, w + s);
         WASD = v;
     }
-    private void updateSpace()
+    private void UpdateSpace()
     {
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKey(KeyCode.Space))
             Space = true;
         else
             Space = false;
     }
-    private void updateMouseScrollDelta()
+    private void UpdateMouseScrollDelta()
     {
         if (Input.GetMouseButtonDown(2) || Input.GetMouseButton(2))
         {

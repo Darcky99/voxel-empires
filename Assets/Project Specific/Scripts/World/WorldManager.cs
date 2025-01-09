@@ -20,17 +20,12 @@ namespace World
         public event EventHandler<WorldState> StateChanged;
 
         public Dictionary<int3, ChunkObject> LoadedChunks => _LoadedChunks;
-        public Vector3 CameraPosition => _CameraTransform.position;
         public WorldState CurrentState => _fsm.State;
-
 
         private StateMachine<WorldState, WorldTrigger> _fsm;
         private Dictionary<int3, ChunkObject> _LoadedChunks;
 
-        [Title("Handlers")]
-        [SerializeField] private WorldController _ChunkRenderer;
         [Title("Configuration")]
-        [SerializeField] private Transform _CameraTransform;
 
         public void Initialize()
         {
@@ -44,11 +39,13 @@ namespace World
             _fsm.Configure(WorldState.Generating)
             .Permit(WorldTrigger.Cancel, WorldState.Canceling)
             .Permit(WorldTrigger.GenerationFinished, WorldState.Idle);
-            
+
             _fsm.Configure(WorldState.Canceling)
             .Permit(WorldTrigger.Generate, WorldState.Generating)
             .Permit(WorldTrigger.GenerationFinished, WorldState.Idle);
             _fsm.OnTransitionCompleted(WorldState_OnTransitionCompleted);
+
+            _fsm.Fire(WorldTrigger.Generate);
         }
 
         private void WorldState_OnTransitionCompleted(StateMachine<WorldState, WorldTrigger>.Transition transition)
@@ -79,7 +76,6 @@ namespace World
 
         public async UniTask LoadAll(NativeList<int3> toLoad)
         {
-            // _fsm.Fire(WorldTrigger.Load);
             int totalCount = toLoad.Length;
             NativeArray<JobHandle> jobHandles = new NativeArray<JobHandle>(totalCount, Allocator.Persistent);
             NativeArray<ITerrainGeneration> terrainJobs = new NativeArray<ITerrainGeneration>(totalCount, Allocator.Persistent);

@@ -1,10 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using Sirenix.Utilities;
-using Unity.Burst;
 using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
@@ -16,12 +11,20 @@ namespace World
     {
         public GameManager _GameManager => GameManager.Instance;
         private WorldManager _WorldManager => WorldManager.Instance;
-        private CameraController _CameraController => CameraController.Instance;
         public GameConfig _GameConfig => GameConfig.Instance;
+
+        private int3 _DrawOrigin;
+        private bool _stopExpansiveLoadingFlag = false;
+
+        [SerializeField] private Transform _CenterTransform;
 
         private void Awake()
         {
             _ = Initialize();
+        }
+        private void FixedUpdate()
+        {
+            TryLoadingStart();
         }
 
         private void WorldManager_StateChanged(object sender, WorldState worldState)
@@ -40,17 +43,10 @@ namespace World
             }
         }
 
-        private Vector3Int _drawOriginChunkID;
-        private bool _stopExpansiveLoadingFlag = false;
-        private bool _loadingOngoing = false;
-
-        private UniTask _checker;
-
         private async UniTask Initialize()
         {
             await UniTask.WaitUntil(() => _GameManager != null);
             _WorldManager.StateChanged += WorldManager_StateChanged;
-            _CameraController.Move += CameraController_Move;
         }
 
         private void Idle()
@@ -59,29 +55,29 @@ namespace World
         }
         private void Generating()
         {
-            _ = ExpansiveLoading(new int3(_drawOriginChunkID.x, _drawOriginChunkID.y, _drawOriginChunkID.z));
+            _ = ExpansiveLoading(new int3(_DrawOrigin.x, _DrawOrigin.y, _DrawOrigin.z));
         }
         private void Cancel()
         {
             _stopExpansiveLoadingFlag = true;
         }
 
-        private void CameraController_Move(object sender, EventArgs eventArgs)
+        private void TryLoadingStart()
         {
-            Vector3 cameraPosition = CameraController.Instance.transform.position;
-            Vector3Int chunkID = ChunkUtils.WorldCoordinatesToChunkIndex(cameraPosition);
-
-            if (_drawOriginChunkID != chunkID && _WorldManager.CurrentState == WorldState.Generating)
+            float3 center = _CenterTransform.position;
+            int3 chunkID = ChunkUtils.WorldCoordinatesToChunkIndex(center);
+            if (_DrawOrigin.Equals(chunkID))
             {
-                _drawOriginChunkID = chunkID;
-                _WorldManager.SetState(WorldTrigger.Cancel);
                 return;
             }
-            else if (_drawOriginChunkID != chunkID && _WorldManager.CurrentState == WorldState.Idle)
+            _DrawOrigin = chunkID;
+            if (_WorldManager.CurrentState == WorldState.Idle)
             {
-                _drawOriginChunkID = chunkID;
                 _WorldManager.SetState(WorldTrigger.Generate);
-                return;
+            }
+            else if (_WorldManager.CurrentState == WorldState.Generating)
+            {
+                _WorldManager.SetState(WorldTrigger.Cancel);
             }
         }
 
@@ -89,17 +85,7 @@ namespace World
         {
             for (int i = 0; i < _GameConfig.GraphicsConfiguration.RenderDistance; i++)
             {
-                //if there's noting in generate terrain, skip
-                NativeList<int3> generateTerrain = RemoveChunkObjects(ChunkUtils.GetChunksByRing(originChunkID, i), HasTerrain);
-                //if(generateTerrain.Lenght == 0){
-                //continue
-                //}
-                NativeList<int3> generateAround = RemoveChunkObjects(ChunkUtils.GetChunksByRing(originChunkID, i + 1), HasTerrain);
-                NativeList<int3> draw = RemoveChunkObjects(ChunkUtils.GetChunksByRing(originChunkID, i), HasMesh);
-                Debug.Log($"Center: {_drawOriginChunkID}, Ring: {i},\nGenerate: {generateAround.Length}, Around: {generateAround.Length}, Draw: {draw.Length}");
-                await _WorldManager.LoadAll(generateTerrain);
-                await _WorldManager.LoadAll(generateAround);
-                await _WorldManager.DrawAll(draw);
+                await GenerateRing(originChunkID, i);
                 if (_stopExpansiveLoadingFlag)
                 {
                     _stopExpansiveLoadingFlag = false;
@@ -109,7 +95,16 @@ namespace World
             }
             _WorldManager.SetState(WorldTrigger.GenerationFinished);
         }
-        private NativeList<int3> RemoveChunkObjects(NativeList<int3> ids, Func<int3, bool> conditionToRemove)
+        private async UniTask GenerateRing(int3 origin, int ring)
+        {
+            NativeList<int3> generateTerrain = RemoveItemsFromList(ChunkUtils.GetChunksByRing(origin, ring), HasTerrain);
+            NativeList<int3> generateAround = RemoveItemsFromList(ChunkUtils.GetChunksByRing(origin, ring + 1), HasTerrain);
+            NativeList<int3> draw = RemoveItemsFromList(ChunkUtils.GetChunksByRing(origin, ring), HasMesh);
+            await _WorldManager.LoadAll(generateTerrain);
+            await _WorldManager.LoadAll(generateAround);
+            await _WorldManager.DrawAll(draw);
+        }
+        private NativeList<int3> RemoveItemsFromList(NativeList<int3> ids, Func<int3, bool> conditionToRemove)
         {
             NativeList<int3> result = new NativeList<int3>(Allocator.Persistent);
             foreach (int3 id in ids)

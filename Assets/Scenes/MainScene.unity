@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 10
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -38,13 +38,12 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.11178688, g: 0.7508371, b: 0.99999946, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
-  m_GIWorkflowMode: 1
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -67,9 +66,6 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_FinalGather: 0
-    m_FinalGatherFiltering: 1
-    m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
     m_BakeBackend: 1
@@ -174,6 +170,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -254,6 +253,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 87468024}
   meshCollider: {fileID: 10956724}
 --- !u!64 &10956724
@@ -355,6 +356,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -438,6 +442,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -518,6 +525,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 660458498}
   meshCollider: {fileID: 30724134}
 --- !u!64 &30724134
@@ -619,6 +628,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -829,6 +841,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -912,6 +927,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -995,6 +1013,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1075,6 +1096,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 461009464}
   meshCollider: {fileID: 79550127}
 --- !u!64 &79550127
@@ -1173,6 +1196,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1846462122}
   meshCollider: {fileID: 82601343}
 --- !u!64 &82601343
@@ -1274,6 +1299,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1357,6 +1385,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1440,6 +1471,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1523,6 +1557,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1603,6 +1640,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 439869762}
   meshCollider: {fileID: 93868419}
 --- !u!64 &93868419
@@ -1733,6 +1772,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 777511924}
   meshCollider: {fileID: 105651550}
 --- !u!64 &105651550
@@ -1834,6 +1875,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1920,6 +1964,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 424643649}
   meshCollider: {fileID: 109981752}
 --- !u!64 &109981752
@@ -2018,6 +2064,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1623042374}
   meshCollider: {fileID: 113179313}
 --- !u!64 &113179313
@@ -2119,6 +2167,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2199,6 +2250,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 274232686}
   meshCollider: {fileID: 129520139}
 --- !u!64 &129520139
@@ -2297,6 +2350,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 2136400604}
   meshCollider: {fileID: 150644478}
 --- !u!64 &150644478
@@ -2395,6 +2450,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 472225234}
   meshCollider: {fileID: 151340048}
 --- !u!64 &151340048
@@ -2493,6 +2550,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 78092988}
   meshCollider: {fileID: 154435658}
 --- !u!64 &154435658
@@ -2591,6 +2650,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1652338418}
   meshCollider: {fileID: 154667798}
 --- !u!64 &154667798
@@ -2692,6 +2753,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2772,6 +2836,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1939060590}
   meshCollider: {fileID: 157051431}
 --- !u!64 &157051431
@@ -2870,6 +2936,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1803330710}
   meshCollider: {fileID: 159153131}
 --- !u!64 &159153131
@@ -2971,6 +3039,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3051,6 +3122,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1867404562}
   meshCollider: {fileID: 176874415}
 --- !u!64 &176874415
@@ -3149,6 +3222,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 290727923}
   meshCollider: {fileID: 176919956}
 --- !u!64 &176919956
@@ -3250,6 +3325,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3330,6 +3408,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 505728770}
   meshCollider: {fileID: 182696804}
 --- !u!64 &182696804
@@ -3428,6 +3508,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 71105040}
   meshCollider: {fileID: 183606851}
 --- !u!64 &183606851
@@ -3526,6 +3608,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 216203798}
   meshCollider: {fileID: 192778897}
 --- !u!64 &192778897
@@ -3624,6 +3708,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1340973271}
   meshCollider: {fileID: 195038194}
 --- !u!64 &195038194
@@ -3725,6 +3811,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3805,6 +3894,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1605342524}
   meshCollider: {fileID: 201079267}
 --- !u!64 &201079267
@@ -3906,6 +3997,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3989,6 +4083,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4069,6 +4166,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 2086604037}
   meshCollider: {fileID: 211100283}
 --- !u!64 &211100283
@@ -4170,6 +4269,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4253,6 +4355,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4336,6 +4441,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4416,6 +4524,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 287304241}
   meshCollider: {fileID: 221466204}
 --- !u!64 &221466204
@@ -4514,6 +4624,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 764693070}
   meshCollider: {fileID: 229553337}
 --- !u!64 &229553337
@@ -4615,6 +4727,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4698,6 +4813,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4778,6 +4896,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 354670382}
   meshCollider: {fileID: 252624814}
 --- !u!64 &252624814
@@ -4876,6 +4996,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 2113401695}
   meshCollider: {fileID: 266802965}
 --- !u!64 &266802965
@@ -4977,6 +5099,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5060,6 +5185,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5143,6 +5271,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5226,6 +5357,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5309,6 +5443,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5392,6 +5529,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5475,6 +5615,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5558,6 +5701,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5638,6 +5784,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1795244916}
   meshCollider: {fileID: 306746525}
 --- !u!64 &306746525
@@ -5736,6 +5884,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 2132232476}
   meshCollider: {fileID: 307320702}
 --- !u!64 &307320702
@@ -5920,6 +6070,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1779345628}
   meshCollider: {fileID: 308483169}
 --- !u!64 &308483169
@@ -6018,6 +6170,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 53884083}
   meshCollider: {fileID: 317944469}
 --- !u!64 &317944469
@@ -6116,6 +6270,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 443680361}
   meshCollider: {fileID: 320634971}
 --- !u!64 &320634971
@@ -6214,6 +6370,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1106855739}
   meshCollider: {fileID: 320933058}
 --- !u!64 &320933058
@@ -6312,6 +6470,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 963053504}
   meshCollider: {fileID: 326801106}
 --- !u!64 &326801106
@@ -6413,6 +6573,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -6484,7 +6647,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -6579,12 +6742,12 @@ MonoBehaviour:
   m_RequiresColorTexture: 0
   m_Version: 2
   m_TaaSettings:
-    quality: 3
-    frameInfluence: 0.1
-    jitterScale: 1
-    mipBias: 0
-    varianceClampScale: 0.9
-    contrastAdaptiveSharpening: 0
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
 --- !u!114 &330585548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6666,6 +6829,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 349720093}
   meshCollider: {fileID: 336930854}
 --- !u!64 &336930854
@@ -6767,6 +6932,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -6850,6 +7018,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -6930,6 +7101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 883900526}
   meshCollider: {fileID: 346075117}
 --- !u!64 &346075117
@@ -7031,6 +7204,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7114,6 +7290,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7197,6 +7376,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7277,6 +7459,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1243173408}
   meshCollider: {fileID: 356683988}
 --- !u!64 &356683988
@@ -7378,6 +7562,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7458,6 +7645,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 279738658}
   meshCollider: {fileID: 359602704}
 --- !u!64 &359602704
@@ -7559,6 +7748,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7642,6 +7834,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7725,6 +7920,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7805,6 +8003,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1707059033}
   meshCollider: {fileID: 385916241}
 --- !u!64 &385916241
@@ -7906,6 +8106,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7989,6 +8192,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -8069,6 +8275,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1371842644}
   meshCollider: {fileID: 409817580}
 --- !u!64 &409817580
@@ -8146,9 +8354,8 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   m_Enabled: 1
-  serializedVersion: 10
+  serializedVersion: 11
   m_Type: 1
-  m_Shape: 0
   m_Color: {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 1}
   m_Intensity: 1
   m_Range: 10
@@ -8198,8 +8405,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!4 &410087041
 Transform:
   m_ObjectHideFlags: 0
@@ -8285,6 +8496,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 2131507077}
   meshCollider: {fileID: 411185938}
 --- !u!64 &411185938
@@ -8383,6 +8596,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1859681394}
   meshCollider: {fileID: 411282738}
 --- !u!64 &411282738
@@ -8481,6 +8696,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1484281098}
   meshCollider: {fileID: 413292898}
 --- !u!64 &413292898
@@ -8582,6 +8799,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -8662,6 +8882,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 521136470}
   meshCollider: {fileID: 420112239}
 --- !u!64 &420112239
@@ -8763,6 +8985,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -8843,6 +9068,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1885226278}
   meshCollider: {fileID: 430706131}
 --- !u!64 &430706131
@@ -8941,6 +9168,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1170143335}
   meshCollider: {fileID: 436677425}
 --- !u!64 &436677425
@@ -9039,6 +9268,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 343454673}
   meshCollider: {fileID: 438268687}
 --- !u!64 &438268687
@@ -9137,6 +9368,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 651986787}
   meshCollider: {fileID: 439173870}
 --- !u!64 &439173870
@@ -9238,6 +9471,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -9318,6 +9554,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 2088909938}
   meshCollider: {fileID: 440549476}
 --- !u!64 &440549476
@@ -9427,6 +9665,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -9552,6 +9793,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -9632,6 +9876,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 218351197}
   meshCollider: {fileID: 447503403}
 --- !u!64 &447503403
@@ -9733,6 +9979,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -9813,6 +10062,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 885755048}
   meshCollider: {fileID: 456995773}
 --- !u!64 &456995773
@@ -9911,6 +10162,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 2130103778}
   meshCollider: {fileID: 457460957}
 --- !u!64 &457460957
@@ -10012,6 +10265,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -10095,6 +10351,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -10175,6 +10434,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1071411407}
   meshCollider: {fileID: 475688473}
 --- !u!64 &475688473
@@ -10276,6 +10537,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -10359,6 +10623,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -10442,6 +10709,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -10525,6 +10795,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -10608,6 +10881,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -10691,6 +10967,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -10771,6 +11050,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 767902569}
   meshCollider: {fileID: 506600297}
 --- !u!64 &506600297
@@ -10869,6 +11150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 338362409}
   meshCollider: {fileID: 509617948}
 --- !u!64 &509617948
@@ -10967,6 +11250,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 107220029}
   meshCollider: {fileID: 510885105}
 --- !u!64 &510885105
@@ -11065,6 +11350,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 2083044923}
   meshCollider: {fileID: 511606536}
 --- !u!64 &511606536
@@ -11166,6 +11453,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -11246,6 +11536,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1767474391}
   meshCollider: {fileID: 514901994}
 --- !u!64 &514901994
@@ -11344,6 +11636,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1868478254}
   meshCollider: {fileID: 516180967}
 --- !u!64 &516180967
@@ -11445,6 +11739,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -11525,6 +11822,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 89712440}
   meshCollider: {fileID: 530536725}
 --- !u!64 &530536725
@@ -11626,6 +11925,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -11709,6 +12011,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -11789,6 +12094,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 200467409}
   meshCollider: {fileID: 548708772}
 --- !u!64 &548708772
@@ -11890,6 +12197,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -11970,6 +12280,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1883892384}
   meshCollider: {fileID: 558264310}
 --- !u!64 &558264310
@@ -12071,6 +12383,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -12154,6 +12469,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -12224,6 +12542,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -12288,7 +12609,6 @@ CharacterController:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -12364,6 +12684,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -12447,6 +12770,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -12527,6 +12853,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 918615785}
   meshCollider: {fileID: 575969062}
 --- !u!64 &575969062
@@ -12628,6 +12956,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -12711,6 +13042,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -12791,6 +13125,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1919417518}
   meshCollider: {fileID: 588606068}
 --- !u!64 &588606068
@@ -12889,6 +13225,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1470589923}
   meshCollider: {fileID: 591287216}
 --- !u!64 &591287216
@@ -12990,6 +13328,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -13070,6 +13411,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1324507702}
   meshCollider: {fileID: 605367430}
 --- !u!64 &605367430
@@ -13171,6 +13514,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -13251,6 +13597,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 2080973449}
   meshCollider: {fileID: 608608857}
 --- !u!64 &608608857
@@ -13352,6 +13700,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -13432,6 +13783,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 599126422}
   meshCollider: {fileID: 643008187}
 --- !u!64 &643008187
@@ -13533,6 +13886,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -13613,6 +13969,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 303237488}
   meshCollider: {fileID: 648930208}
 --- !u!64 &648930208
@@ -13714,6 +14072,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -13797,6 +14158,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -13880,6 +14244,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -13963,6 +14330,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -14046,6 +14416,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -14126,6 +14499,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1635068271}
   meshCollider: {fileID: 666560245}
 --- !u!64 &666560245
@@ -14224,6 +14599,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1019198676}
   meshCollider: {fileID: 669389357}
 --- !u!64 &669389357
@@ -14322,6 +14699,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1868942697}
   meshCollider: {fileID: 676541547}
 --- !u!64 &676541547
@@ -14423,6 +14802,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -14503,6 +14885,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1330715494}
   meshCollider: {fileID: 691745785}
 --- !u!64 &691745785
@@ -14601,6 +14985,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1547456187}
   meshCollider: {fileID: 693497958}
 --- !u!64 &693497958
@@ -14699,6 +15085,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 270993100}
   meshCollider: {fileID: 696176451}
 --- !u!64 &696176451
@@ -14797,6 +15185,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 2023616552}
   meshCollider: {fileID: 697782588}
 --- !u!64 &697782588
@@ -14933,6 +15323,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -15028,6 +15421,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 608051020}
   meshCollider: {fileID: 705039234}
 --- !u!64 &705039234
@@ -15126,6 +15521,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 477232327}
   meshCollider: {fileID: 707131600}
 --- !u!64 &707131600
@@ -15227,6 +15624,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -15307,6 +15707,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1316188381}
   meshCollider: {fileID: 716927427}
 --- !u!64 &716927427
@@ -15405,6 +15807,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1987512123}
   meshCollider: {fileID: 724480078}
 --- !u!64 &724480078
@@ -15503,6 +15907,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 117107234}
   meshCollider: {fileID: 727123925}
 --- !u!64 &727123925
@@ -15601,6 +16007,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1374402437}
   meshCollider: {fileID: 734355742}
 --- !u!64 &734355742
@@ -15699,6 +16107,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 843378814}
   meshCollider: {fileID: 735915468}
 --- !u!64 &735915468
@@ -15797,6 +16207,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1390215236}
   meshCollider: {fileID: 745545262}
 --- !u!64 &745545262
@@ -15895,6 +16307,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1830464797}
   meshCollider: {fileID: 746985173}
 --- !u!64 &746985173
@@ -15996,6 +16410,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -16079,6 +16496,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -16162,6 +16582,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -16245,6 +16668,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -16328,6 +16754,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -16411,6 +16840,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -16494,6 +16926,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -16574,6 +17009,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1169605168}
   meshCollider: {fileID: 770025606}
 --- !u!64 &770025606
@@ -16675,6 +17112,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -16755,6 +17195,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 392662095}
   meshCollider: {fileID: 779890921}
 --- !u!64 &779890921
@@ -16856,6 +17298,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -16936,6 +17381,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 751928066}
   meshCollider: {fileID: 784443493}
 --- !u!64 &784443493
@@ -17037,6 +17484,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -17120,6 +17570,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -17203,6 +17656,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -17286,6 +17742,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -17369,6 +17828,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -17449,6 +17911,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1113847691}
   meshCollider: {fileID: 816950432}
 --- !u!64 &816950432
@@ -17550,6 +18014,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -17668,6 +18135,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -17797,6 +18267,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1096039446}
   meshCollider: {fileID: 832971436}
 --- !u!64 &832971436
@@ -17895,6 +18367,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 2059928549}
   meshCollider: {fileID: 838427480}
 --- !u!64 &838427480
@@ -17996,6 +18470,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -18076,6 +18553,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1527799386}
   meshCollider: {fileID: 845060861}
 --- !u!64 &845060861
@@ -18177,6 +18656,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -18257,6 +18739,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 383938353}
   meshCollider: {fileID: 859900267}
 --- !u!64 &859900267
@@ -18358,6 +18842,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -18441,6 +18928,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -18524,6 +19014,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -18604,6 +19097,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1147148764}
   meshCollider: {fileID: 879459713}
 --- !u!64 &879459713
@@ -18705,6 +19200,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -18788,6 +19286,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -18871,6 +19372,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -18951,6 +19455,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 495475569}
   meshCollider: {fileID: 889791769}
 --- !u!64 &889791769
@@ -19049,6 +19555,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 868522188}
   meshCollider: {fileID: 890544189}
 --- !u!64 &890544189
@@ -19150,6 +19658,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -19230,6 +19741,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 389152310}
   meshCollider: {fileID: 895642334}
 --- !u!64 &895642334
@@ -19331,6 +19844,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -19411,6 +19927,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1855640157}
   meshCollider: {fileID: 900409727}
 --- !u!64 &900409727
@@ -19509,6 +20027,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1062981326}
   meshCollider: {fileID: 901644143}
 --- !u!64 &901644143
@@ -19607,6 +20127,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1917253779}
   meshCollider: {fileID: 902677756}
 --- !u!64 &902677756
@@ -19705,6 +20227,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 21905437}
   meshCollider: {fileID: 903625618}
 --- !u!64 &903625618
@@ -19803,6 +20327,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 652125045}
   meshCollider: {fileID: 904439089}
 --- !u!64 &904439089
@@ -19901,6 +20427,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1622081958}
   meshCollider: {fileID: 907388267}
 --- !u!64 &907388267
@@ -19999,6 +20527,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 945333871}
   meshCollider: {fileID: 907951594}
 --- !u!64 &907951594
@@ -20100,6 +20630,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -20180,6 +20713,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1513620515}
   meshCollider: {fileID: 917780181}
 --- !u!64 &917780181
@@ -20281,6 +20816,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -20361,6 +20899,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 233810866}
   meshCollider: {fileID: 940773681}
 --- !u!64 &940773681
@@ -20462,6 +21002,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -20545,6 +21088,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -20625,6 +21171,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1600469520}
   meshCollider: {fileID: 952464155}
 --- !u!64 &952464155
@@ -20723,6 +21271,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1907173666}
   meshCollider: {fileID: 953035463}
 --- !u!64 &953035463
@@ -20824,6 +21374,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -20904,6 +21457,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1236969791}
   meshCollider: {fileID: 957064435}
 --- !u!64 &957064435
@@ -21005,6 +21560,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -21088,6 +21646,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -21171,6 +21732,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -21251,6 +21815,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1394701764}
   meshCollider: {fileID: 971569017}
 --- !u!64 &971569017
@@ -21349,6 +21915,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1539088848}
   meshCollider: {fileID: 978992808}
 --- !u!64 &978992808
@@ -21447,6 +22015,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1114831511}
   meshCollider: {fileID: 981593451}
 --- !u!64 &981593451
@@ -21545,6 +22115,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 960716907}
   meshCollider: {fileID: 982302019}
 --- !u!64 &982302019
@@ -21678,6 +22250,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1524701696}
   meshCollider: {fileID: 1013201373}
 --- !u!64 &1013201373
@@ -21776,6 +22350,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 956499405}
   meshCollider: {fileID: 1013722387}
 --- !u!64 &1013722387
@@ -21874,6 +22450,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 797471631}
   meshCollider: {fileID: 1014143035}
 --- !u!64 &1014143035
@@ -21975,6 +22553,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -22058,6 +22639,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -22138,6 +22722,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 780089247}
   meshCollider: {fileID: 1020654658}
 --- !u!64 &1020654658
@@ -22236,6 +22822,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1770545628}
   meshCollider: {fileID: 1022814233}
 --- !u!64 &1022814233
@@ -22334,6 +22922,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 579660954}
   meshCollider: {fileID: 1024429599}
 --- !u!64 &1024429599
@@ -22432,6 +23022,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 912873133}
   meshCollider: {fileID: 1025363198}
 --- !u!64 &1025363198
@@ -22533,6 +23125,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -22613,6 +23208,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 946161503}
   meshCollider: {fileID: 1029263451}
 --- !u!64 &1029263451
@@ -22714,6 +23311,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -22794,6 +23394,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1155477013}
   meshCollider: {fileID: 1044782618}
 --- !u!64 &1044782618
@@ -22895,6 +23497,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -22978,6 +23583,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -23061,6 +23669,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -23141,6 +23752,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 86952955}
   meshCollider: {fileID: 1056598589}
 --- !u!64 &1056598589
@@ -23242,6 +23855,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -23325,6 +23941,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -23408,6 +24027,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -23500,6 +24122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa75a20c7f11f4c4884027531f2042f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _CenterTransform: {fileID: 565326796}
 --- !u!1 &1083613385
 GameObject:
   m_ObjectHideFlags: 0
@@ -23550,6 +24173,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -23633,6 +24259,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -23713,6 +24342,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1217515366}
   meshCollider: {fileID: 1100041598}
 --- !u!64 &1100041598
@@ -23814,6 +24445,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -23897,6 +24531,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -23980,6 +24617,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -24063,6 +24703,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -24143,6 +24786,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 2007461802}
   meshCollider: {fileID: 1115170457}
 --- !u!64 &1115170457
@@ -24244,6 +24889,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -24324,6 +24972,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 572429726}
   meshCollider: {fileID: 1118825534}
 --- !u!64 &1118825534
@@ -24425,6 +25075,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -24505,6 +25158,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1015492586}
   meshCollider: {fileID: 1144849094}
 --- !u!64 &1144849094
@@ -24606,6 +25261,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -24686,6 +25344,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1047755222}
   meshCollider: {fileID: 1148877396}
 --- !u!64 &1148877396
@@ -24787,6 +25447,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -24867,6 +25530,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1298667949}
   meshCollider: {fileID: 1160160407}
 --- !u!64 &1160160407
@@ -24968,6 +25633,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -25051,6 +25719,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -25131,6 +25802,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1189733471}
   meshCollider: {fileID: 1179188661}
 --- !u!64 &1179188661
@@ -25229,6 +25902,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 2068965968}
   meshCollider: {fileID: 1186555137}
 --- !u!64 &1186555137
@@ -25330,6 +26005,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -25410,6 +26088,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1200154803}
   meshCollider: {fileID: 1190190429}
 --- !u!64 &1190190429
@@ -25508,6 +26188,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1797189285}
   meshCollider: {fileID: 1192874523}
 --- !u!64 &1192874523
@@ -25606,6 +26288,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1781858296}
   meshCollider: {fileID: 1194294351}
 --- !u!64 &1194294351
@@ -25707,6 +26391,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -25787,6 +26474,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 819896527}
   meshCollider: {fileID: 1202073981}
 --- !u!64 &1202073981
@@ -25943,6 +26632,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 247356656}
   meshCollider: {fileID: 1204217775}
 --- !u!64 &1204217775
@@ -26041,6 +26732,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1596459541}
   meshCollider: {fileID: 1209490263}
 --- !u!64 &1209490263
@@ -26142,6 +26835,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -26525,6 +27221,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1880002688}
   meshCollider: {fileID: 1228285045}
 --- !u!64 &1228285045
@@ -26626,6 +27324,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -26706,6 +27407,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 2133983088}
   meshCollider: {fileID: 1234665848}
 --- !u!64 &1234665848
@@ -26807,6 +27510,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -26890,6 +27596,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -26973,6 +27682,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -27087,6 +27799,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 2014020692}
   meshCollider: {fileID: 1249999763}
 --- !u!64 &1249999763
@@ -27185,6 +27899,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1418262936}
   meshCollider: {fileID: 1253319763}
 --- !u!64 &1253319763
@@ -27286,6 +28002,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -27366,6 +28085,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 211812858}
   meshCollider: {fileID: 1265845685}
 --- !u!64 &1265845685
@@ -27464,6 +28185,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1534551299}
   meshCollider: {fileID: 1274153767}
 --- !u!64 &1274153767
@@ -27562,6 +28285,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1530163759}
   meshCollider: {fileID: 1281539736}
 --- !u!64 &1281539736
@@ -27660,6 +28385,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1965013709}
   meshCollider: {fileID: 1283250562}
 --- !u!64 &1283250562
@@ -27761,6 +28488,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -27844,6 +28574,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -27924,6 +28657,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 326860653}
   meshCollider: {fileID: 1292446121}
 --- !u!64 &1292446121
@@ -28022,6 +28757,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 652097142}
   meshCollider: {fileID: 1294143583}
 --- !u!64 &1294143583
@@ -28120,6 +28857,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 512858046}
   meshCollider: {fileID: 1295579785}
 --- !u!64 &1295579785
@@ -28218,6 +28957,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 562407698}
   meshCollider: {fileID: 1295722349}
 --- !u!64 &1295722349
@@ -28319,6 +29060,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -28399,6 +29143,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1523256552}
   meshCollider: {fileID: 1306318402}
 --- !u!64 &1306318402
@@ -28497,6 +29243,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1046493725}
   meshCollider: {fileID: 1310578261}
 --- !u!64 &1310578261
@@ -28595,6 +29343,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 451117113}
   meshCollider: {fileID: 1312276649}
 --- !u!64 &1312276649
@@ -28696,6 +29446,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -28779,6 +29532,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -28862,6 +29618,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -28945,6 +29704,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -29028,6 +29790,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -29111,6 +29876,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -29229,6 +29997,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -29327,6 +30098,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -29410,6 +30184,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -29490,6 +30267,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1821884502}
   meshCollider: {fileID: 1345338705}
 --- !u!64 &1345338705
@@ -29588,6 +30367,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 643742527}
   meshCollider: {fileID: 1347021491}
 --- !u!64 &1347021491
@@ -29689,6 +30470,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -29769,6 +30553,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1807168326}
   meshCollider: {fileID: 1350987031}
 --- !u!64 &1350987031
@@ -29867,6 +30653,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 182391998}
   meshCollider: {fileID: 1362068978}
 --- !u!64 &1362068978
@@ -29965,6 +30753,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 553833683}
   meshCollider: {fileID: 1363149481}
 --- !u!64 &1363149481
@@ -30063,6 +30853,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 687027268}
   meshCollider: {fileID: 1363705349}
 --- !u!64 &1363705349
@@ -30208,6 +31000,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -30291,6 +31086,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -30371,6 +31169,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1118346415}
   meshCollider: {fileID: 1374059093}
 --- !u!64 &1374059093
@@ -30472,6 +31272,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -30552,6 +31355,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 362225882}
   meshCollider: {fileID: 1377314723}
 --- !u!64 &1377314723
@@ -30653,6 +31458,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -30736,6 +31544,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -30816,6 +31627,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 715756704}
   meshCollider: {fileID: 1386004735}
 --- !u!64 &1386004735
@@ -30917,6 +31730,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -30997,6 +31813,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 578113289}
   meshCollider: {fileID: 1392428356}
 --- !u!64 &1392428356
@@ -31098,6 +31916,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -31178,6 +31999,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 571944838}
   meshCollider: {fileID: 1415991478}
 --- !u!64 &1415991478
@@ -31279,6 +32102,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -31359,6 +32185,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1052057052}
   meshCollider: {fileID: 1427499055}
 --- !u!64 &1427499055
@@ -31460,6 +32288,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -31540,6 +32371,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 805351608}
   meshCollider: {fileID: 1448872338}
 --- !u!64 &1448872338
@@ -31638,6 +32471,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 2143954542}
   meshCollider: {fileID: 1451006107}
 --- !u!64 &1451006107
@@ -31739,6 +32574,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -31819,6 +32657,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 210836403}
   meshCollider: {fileID: 1455980468}
 --- !u!64 &1455980468
@@ -31917,6 +32757,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1027960756}
   meshCollider: {fileID: 1461482179}
 --- !u!64 &1461482179
@@ -32018,6 +32860,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -32101,6 +32946,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -32212,6 +33060,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1787960348}
   meshCollider: {fileID: 1476097371}
 --- !u!64 &1476097371
@@ -32313,6 +33163,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -32393,6 +33246,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 2145292905}
   meshCollider: {fileID: 1479282809}
 --- !u!64 &1479282809
@@ -32494,6 +33349,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -32574,6 +33432,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 895954973}
   meshCollider: {fileID: 1488317388}
 --- !u!64 &1488317388
@@ -32672,6 +33532,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1774192102}
   meshCollider: {fileID: 1507770617}
 --- !u!64 &1507770617
@@ -32773,6 +33635,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -32856,6 +33721,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -32939,6 +33807,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -33022,6 +33893,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -33102,6 +33976,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 2029597072}
   meshCollider: {fileID: 1529233466}
 --- !u!64 &1529233466
@@ -33203,6 +34079,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -33283,6 +34162,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1083613388}
   meshCollider: {fileID: 1530098521}
 --- !u!64 &1530098521
@@ -33384,6 +34265,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -33467,6 +34351,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -33550,6 +34437,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -33633,6 +34523,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -33713,6 +34606,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 176289212}
   meshCollider: {fileID: 1550900840}
 --- !u!64 &1550900840
@@ -33849,6 +34744,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -33944,6 +34842,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 769650008}
   meshCollider: {fileID: 1553710178}
 --- !u!64 &1553710178
@@ -34045,6 +34945,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -34125,6 +35028,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1436496650}
   meshCollider: {fileID: 1565925536}
 --- !u!64 &1565925536
@@ -34223,6 +35128,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 495449876}
   meshCollider: {fileID: 1567530551}
 --- !u!64 &1567530551
@@ -34321,6 +35228,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1369834470}
   meshCollider: {fileID: 1568402749}
 --- !u!64 &1568402749
@@ -34419,6 +35328,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1331045486}
   meshCollider: {fileID: 1568535432}
 --- !u!64 &1568535432
@@ -34517,6 +35428,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 485713681}
   meshCollider: {fileID: 1573746149}
 --- !u!64 &1573746149
@@ -34615,6 +35528,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 559478861}
   meshCollider: {fileID: 1574403522}
 --- !u!64 &1574403522
@@ -34713,6 +35628,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1282595}
   meshCollider: {fileID: 1575646295}
 --- !u!64 &1575646295
@@ -34811,6 +35728,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 807193988}
   meshCollider: {fileID: 1576475347}
 --- !u!64 &1576475347
@@ -34912,6 +35831,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -34995,6 +35917,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -35078,6 +36003,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -35161,6 +36089,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -35244,6 +36175,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -35327,6 +36261,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -35407,6 +36344,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1288723452}
   meshCollider: {fileID: 1605839443}
 --- !u!64 &1605839443
@@ -35508,6 +36447,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -35588,6 +36530,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1140240560}
   meshCollider: {fileID: 1611382185}
 --- !u!64 &1611382185
@@ -35689,6 +36633,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -35772,6 +36719,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -35855,6 +36805,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -35938,6 +36891,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -36018,6 +36974,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 816554622}
   meshCollider: {fileID: 1630524413}
 --- !u!64 &1630524413
@@ -36116,6 +37074,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1925490152}
   meshCollider: {fileID: 1632189472}
 --- !u!64 &1632189472
@@ -36217,6 +37177,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -36297,6 +37260,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1110434640}
   meshCollider: {fileID: 1636745685}
 --- !u!64 &1636745685
@@ -36395,6 +37360,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 544850077}
   meshCollider: {fileID: 1644696124}
 --- !u!64 &1644696124
@@ -36493,6 +37460,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1711866626}
   meshCollider: {fileID: 1648972676}
 --- !u!64 &1648972676
@@ -36594,6 +37563,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -36677,6 +37649,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -36757,6 +37732,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1610314013}
   meshCollider: {fileID: 1654657489}
 --- !u!64 &1654657489
@@ -36855,6 +37832,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 764416988}
   meshCollider: {fileID: 1654975888}
 --- !u!64 &1654975888
@@ -36953,6 +37932,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1946124078}
   meshCollider: {fileID: 1655787844}
 --- !u!64 &1655787844
@@ -37054,6 +38035,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -37134,6 +38118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 348741044}
   meshCollider: {fileID: 1666516805}
 --- !u!64 &1666516805
@@ -37235,6 +38221,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -37315,6 +38304,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1381200291}
   meshCollider: {fileID: 1670578169}
 --- !u!64 &1670578169
@@ -37413,6 +38404,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1469865247}
   meshCollider: {fileID: 1699704244}
 --- !u!64 &1699704244
@@ -37514,6 +38507,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -37597,6 +38593,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -37677,6 +38676,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 755474327}
   meshCollider: {fileID: 1713627748}
 --- !u!64 &1713627748
@@ -37775,6 +38776,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1379319635}
   meshCollider: {fileID: 1730416011}
 --- !u!64 &1730416011
@@ -37873,6 +38876,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1337866729}
   meshCollider: {fileID: 1732488910}
 --- !u!64 &1732488910
@@ -37971,6 +38976,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 494986821}
   meshCollider: {fileID: 1736588390}
 --- !u!64 &1736588390
@@ -38069,6 +39076,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1036696770}
   meshCollider: {fileID: 1742509274}
 --- !u!64 &1742509274
@@ -38167,6 +39176,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1349879799}
   meshCollider: {fileID: 1759679023}
 --- !u!64 &1759679023
@@ -38265,6 +39276,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1584731093}
   meshCollider: {fileID: 1763557516}
 --- !u!64 &1763557516
@@ -38366,6 +39379,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -38446,6 +39462,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1837362993}
   meshCollider: {fileID: 1767785370}
 --- !u!64 &1767785370
@@ -38547,6 +39565,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -38630,6 +39651,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -38713,6 +39737,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -38796,6 +39823,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -38876,6 +39906,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 156847422}
   meshCollider: {fileID: 1783918540}
 --- !u!64 &1783918540
@@ -38974,6 +40006,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 867149159}
   meshCollider: {fileID: 1784685461}
 --- !u!64 &1784685461
@@ -39075,6 +40109,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -39158,6 +40195,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -39241,6 +40281,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -39324,6 +40367,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -39407,6 +40453,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -39490,6 +40539,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -39570,6 +40622,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1328154323}
   meshCollider: {fileID: 1809454780}
 --- !u!64 &1809454780
@@ -39668,6 +40722,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1656001699}
   meshCollider: {fileID: 1810584441}
 --- !u!64 &1810584441
@@ -39766,6 +40822,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 961022315}
   meshCollider: {fileID: 1815891952}
 --- !u!64 &1815891952
@@ -39867,6 +40925,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -39947,6 +41008,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 831242378}
   meshCollider: {fileID: 1824637596}
 --- !u!64 &1824637596
@@ -40048,6 +41111,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -40128,6 +41194,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1617387069}
   meshCollider: {fileID: 1830492036}
 --- !u!64 &1830492036
@@ -40229,6 +41297,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -40309,6 +41380,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1344856647}
   meshCollider: {fileID: 1843069521}
 --- !u!64 &1843069521
@@ -40410,6 +41483,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -40490,6 +41566,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1994117531}
   meshCollider: {fileID: 1848224442}
 --- !u!64 &1848224442
@@ -40588,6 +41666,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 613953129}
   meshCollider: {fileID: 1851989153}
 --- !u!64 &1851989153
@@ -40686,6 +41766,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 305099200}
   meshCollider: {fileID: 1853020030}
 --- !u!64 &1853020030
@@ -40784,6 +41866,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1876187836}
   meshCollider: {fileID: 1854357519}
 --- !u!64 &1854357519
@@ -40885,6 +41969,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -40968,6 +42055,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -41048,6 +42138,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1582675246}
   meshCollider: {fileID: 1863597431}
 --- !u!64 &1863597431
@@ -41194,6 +42286,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -41277,6 +42372,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -41360,6 +42458,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -41443,6 +42544,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -41523,6 +42627,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 20395670}
   meshCollider: {fileID: 1879275789}
 --- !u!64 &1879275789
@@ -41624,6 +42730,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -41707,6 +42816,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -41790,6 +42902,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -41870,6 +42985,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1529859413}
   meshCollider: {fileID: 1886660093}
 --- !u!64 &1886660093
@@ -41968,6 +43085,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1242311894}
   meshCollider: {fileID: 1892681071}
 --- !u!64 &1892681071
@@ -42066,6 +43185,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1925206936}
   meshCollider: {fileID: 1899563833}
 --- !u!64 &1899563833
@@ -42164,6 +43285,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 2061885388}
   meshCollider: {fileID: 1901604574}
 --- !u!64 &1901604574
@@ -42265,6 +43388,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -42348,6 +43474,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -42428,6 +43557,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1228742643}
   meshCollider: {fileID: 1913999436}
 --- !u!64 &1913999436
@@ -42529,6 +43660,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -42612,6 +43746,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -42692,6 +43829,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1936728214}
   meshCollider: {fileID: 1924522551}
 --- !u!64 &1924522551
@@ -42790,6 +43929,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 799832994}
   meshCollider: {fileID: 1924976114}
 --- !u!64 &1924976114
@@ -42891,6 +44032,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -42974,6 +44118,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -43054,6 +44201,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1940821018}
   meshCollider: {fileID: 1931301796}
 --- !u!64 &1931301796
@@ -43155,6 +44304,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -43235,6 +44387,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1262864066}
   meshCollider: {fileID: 1936793907}
 --- !u!64 &1936793907
@@ -43333,6 +44487,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 297091269}
   meshCollider: {fileID: 1937317214}
 --- !u!64 &1937317214
@@ -43434,6 +44590,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -43517,6 +44676,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -43600,6 +44762,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -43680,6 +44845,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 2040505925}
   meshCollider: {fileID: 1945989266}
 --- !u!64 &1945989266
@@ -43781,6 +44948,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -44165,6 +45335,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -44245,6 +45418,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 535141934}
   meshCollider: {fileID: 1962033913}
 --- !u!64 &1962033913
@@ -44346,6 +45521,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -44426,6 +45604,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1960465361}
   meshCollider: {fileID: 1971230093}
 --- !u!64 &1971230093
@@ -44524,6 +45704,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1941872636}
   meshCollider: {fileID: 1976951589}
 --- !u!64 &1976951589
@@ -44622,6 +45804,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 862428481}
   meshCollider: {fileID: 1986709085}
 --- !u!64 &1986709085
@@ -44723,6 +45907,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -44803,6 +45990,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1061672654}
   meshCollider: {fileID: 1989559280}
 --- !u!64 &1989559280
@@ -44904,6 +46093,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -44984,6 +46176,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1612646161}
   meshCollider: {fileID: 1997193084}
 --- !u!64 &1997193084
@@ -45082,6 +46276,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 848232860}
   meshCollider: {fileID: 2002927061}
 --- !u!64 &2002927061
@@ -45183,6 +46379,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -45263,6 +46462,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 359247314}
   meshCollider: {fileID: 2011066612}
 --- !u!64 &2011066612
@@ -45364,6 +46565,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -45444,6 +46648,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1802284322}
   meshCollider: {fileID: 2023073748}
 --- !u!64 &2023073748
@@ -45545,6 +46751,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -45625,6 +46834,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1908062006}
   meshCollider: {fileID: 2024405059}
 --- !u!64 &2024405059
@@ -45726,6 +46937,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -45806,6 +47020,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1288705401}
   meshCollider: {fileID: 2030024499}
 --- !u!64 &2030024499
@@ -45907,6 +47123,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -45987,6 +47206,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1453594699}
   meshCollider: {fileID: 2047460852}
 --- !u!64 &2047460852
@@ -46085,6 +47306,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1478970769}
   meshCollider: {fileID: 2048656748}
 --- !u!64 &2048656748
@@ -46183,6 +47406,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 361500521}
   meshCollider: {fileID: 2053312551}
 --- !u!64 &2053312551
@@ -46281,6 +47506,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1554175118}
   meshCollider: {fileID: 2058377593}
 --- !u!64 &2058377593
@@ -46382,6 +47609,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -46462,6 +47692,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 39569492}
   meshCollider: {fileID: 2060995208}
 --- !u!64 &2060995208
@@ -46563,6 +47795,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -46643,6 +47878,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1653273940}
   meshCollider: {fileID: 2062256266}
 --- !u!64 &2062256266
@@ -46741,6 +47978,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 890996601}
   meshCollider: {fileID: 2063496480}
 --- !u!64 &2063496480
@@ -46842,6 +48081,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -46922,6 +48164,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 879901532}
   meshCollider: {fileID: 2080413775}
 --- !u!64 &2080413775
@@ -47020,6 +48264,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 755913558}
   meshCollider: {fileID: 2080752116}
 --- !u!64 &2080752116
@@ -47121,6 +48367,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -47204,6 +48453,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -47287,6 +48539,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -47370,6 +48625,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -47450,6 +48708,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 205444543}
   meshCollider: {fileID: 2095772497}
 --- !u!64 &2095772497
@@ -47548,6 +48808,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 654593577}
   meshCollider: {fileID: 2098762552}
 --- !u!64 &2098762552
@@ -47646,6 +48908,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 91715921}
   meshCollider: {fileID: 2110173079}
 --- !u!64 &2110173079
@@ -47747,6 +49011,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -47827,6 +49094,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1669704297}
   meshCollider: {fileID: 2117268776}
 --- !u!64 &2117268776
@@ -47925,6 +49194,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 418435160}
   meshCollider: {fileID: 2121520210}
 --- !u!64 &2121520210
@@ -48026,6 +49297,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -48109,6 +49383,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -48192,6 +49469,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -48275,6 +49555,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -48355,6 +49638,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 1597101086}
   meshCollider: {fileID: 2135523764}
 --- !u!64 &2135523764
@@ -48456,6 +49741,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -48539,6 +49827,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -48622,6 +49913,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

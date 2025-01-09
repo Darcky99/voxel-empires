@@ -35,7 +35,7 @@ public abstract class Singleton<T> : SingletonBase<Singleton<T>> where T : MonoB
         {
             if (s_Instance == null)
             {
-                s_Instance = (T)FindObjectOfType(typeof(T));
+                s_Instance = FindFirstObjectByType<T>(); 
 
                 if (s_Instance == null)
                 {

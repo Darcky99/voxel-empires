@@ -32,39 +32,9 @@ public static class ChunkUtils
 
         return missingChunks;
     }
-    // public static List<Vector3Int> GetChunkByRing(Vector3 worldPosition, int ring)
-    // {
-    //     Vector3Int center = WorldCoordinatesToChunkIndex(worldPosition);
-    //     List<Vector3Int> chunksInRing = new List<Vector3Int>();
-    //     int2 x_limits = new int2(center.x - ring, center.x + ring);
-    //     int2 y_limits = new int2(0, s_GameConfig.WorldConfiguration.WorldHeightInChunks);
-    //     int2 z_limits = new int2(center.z - ring, center.z + ring);
-
-    //     Vector3Int pos1 = default;
-    //     Vector3Int pos2 = default;
-
-    //     for (int x = x_limits.x; x <= x_limits.y; x++)
-    //         for (int y = y_limits.x; y <= y_limits.y; y++)
-    //         {
-    //             pos1.x = x; pos1.y = y; pos1.z = z_limits.x;
-    //             pos2.x = x; pos2.y = y; pos2.z = z_limits.y;
-    //             chunksInRing.Add(pos1);
-    //             chunksInRing.Add(pos2);
-    //         }
-    //     for (int z = z_limits.x + 1; z < z_limits.y; z++)
-    //         for (int y = y_limits.x; y <= y_limits.y; y++)
-    //         {
-    //             pos1.x = x_limits.x; pos1.y = y; pos1.z = z;
-    //             pos2.x = x_limits.y; pos2.y = y; pos2.z = z;
-
-    //             chunksInRing.Add(pos1);
-    //             chunksInRing.Add(pos2);
-    //         }
-    //     return chunksInRing;
-    // }
-
+    
     [BurstCompile]
-    public static NativeList<int3> GetChunksByRing(int3 chunkID, int ring)
+    public static NativeList<int3> GetChunksByRing(int3 chunkID, int ring) //turn this into a job
     {
         NativeList<int3> chunksInRing = new NativeList<int3>(Allocator.Persistent);
         if (ring == 0)
