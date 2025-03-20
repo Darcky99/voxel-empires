@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7c72d24a1d76ba42aac346ed1917799, type: 3}
   m_Name: Game Configuration
   m_EditorClassIdentifier: 
-  <CameraConfiguration>k__BackingField:
-    <CameraDragSensibility>k__BackingField: 0.1
-    <ZoomingSensibility>k__BackingField: 1.678
-    <MinimumDistance>k__BackingField: 42
-    <MaximumDistance>k__BackingField: 168
-    <MaximumInclinationAngle>k__BackingField: 1.5708
+  CameraConfiguration:
+    _CameraDragSensibility: 0.1
+    _ZoomingSensibility: 2
+    _MinimumDistance: 42
+    _MaximumDistance: 168
+    _MaximumInclinationAngle: 1.5708
   <CharacterConfiguration>k__BackingField:
     <JumpHeight>k__BackingField: 3
     <JumpDuration>k__BackingField: 0.24

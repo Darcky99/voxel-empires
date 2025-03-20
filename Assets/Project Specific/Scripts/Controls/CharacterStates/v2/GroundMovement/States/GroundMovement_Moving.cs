@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Utilities.StateMachine;
 
@@ -26,7 +23,9 @@ public class GroundMovement_Moving : StateBase<GroundMovement_StateMachine, eGro
     protected override void CheckSwitchState()
     {
         if (m_InputManager.WASD == Vector2.zero)
+        {
             TransitionToState(eGroundStates.Still);
+        }
     }
 
     private Vector3 XZMovement(Vector2 v)

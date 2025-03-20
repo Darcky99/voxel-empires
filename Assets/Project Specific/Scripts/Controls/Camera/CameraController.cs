@@ -56,6 +56,7 @@ public class CameraController : Singleton<CameraController>
     {
         Vector3 followOffset = _CinemachineTransposer.m_FollowOffset;
         _Distance = Mathf.Clamp(_Distance -= (_InputManager.MouseScrollDelta.y * _CameraConfiguration.ZoomingSensibility), _CameraConfiguration.MinimumDistance, _CameraConfiguration.MaximumDistance);
+        // _Distance = Mathf.Clamp(_Distance -= (_InputManager.MouseScrollDelta.y * 1.678f), 42, 168);
         followOffset = followOffset.normalized * _Distance;
         _CinemachineTransposer.m_FollowOffset = followOffset;
     }
@@ -70,7 +71,6 @@ public class CameraController : Singleton<CameraController>
         if (_LastPosition != transform.position || _LastRotation != transform.rotation)
         {
             Move?.Invoke(this, EventArgs.Empty);
-            // Debug.Log("Camera position changed");
             RegisterCurrentCameraPosition();
         }
     }

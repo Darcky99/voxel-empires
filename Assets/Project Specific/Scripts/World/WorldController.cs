@@ -10,17 +10,17 @@ namespace World
     public class WorldController : MonoBehaviour
     {
         public GameManager _GameManager => GameManager.Instance;
-        private WorldManager _WorldManager => WorldManager.Instance;
         public GameConfig _GameConfig => GameConfig.Instance;
 
         private int3 _DrawOrigin;
         private bool _stopExpansiveLoadingFlag = false;
 
+        [SerializeField] private WorldManager _WorldManager;
         [SerializeField] private Transform _CenterTransform;
 
         private void Awake()
         {
-            _ = Initialize();
+            Initialize();
         }
         private void FixedUpdate()
         {
@@ -29,7 +29,7 @@ namespace World
 
         private void WorldManager_StateChanged(object sender, WorldState worldState)
         {
-            switch (worldState)
+             switch (worldState)
             {
                 case WorldState.Idle:
                     Idle();
@@ -43,9 +43,8 @@ namespace World
             }
         }
 
-        private async UniTask Initialize()
+        private void Initialize()
         {
-            await UniTask.WaitUntil(() => _GameManager != null);
             _WorldManager.StateChanged += WorldManager_StateChanged;
         }
 

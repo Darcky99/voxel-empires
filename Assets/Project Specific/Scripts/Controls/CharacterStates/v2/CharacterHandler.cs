@@ -1,9 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using VerticalMoment;
-using World;
-using System;
 
 public class CharacterHandler : StateMachinesHandler, IGroundMovement, IVerticalMovement
 {
@@ -17,11 +12,6 @@ public class CharacterHandler : StateMachinesHandler, IGroundMovement, IVertical
     }
 
     #endregion
-
-    private void onTerrainDrawn()
-    {
-        //InitializeMachines(); this should be some method like "Allow movement", not initialize the stateMachines
-    }
 
     [field: SerializeField] public Transform Camera { get; private set; }
     [field: SerializeField] public CharacterController CharacterController { get; private set; }

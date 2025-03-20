@@ -25,8 +25,6 @@ namespace World
         private StateMachine<WorldState, WorldTrigger> _fsm;
         private Dictionary<int3, ChunkObject> _LoadedChunks;
 
-        [Title("Configuration")]
-
         public void Initialize()
         {
             _LoadedChunks = new Dictionary<int3, ChunkObject>();
@@ -43,8 +41,8 @@ namespace World
             _fsm.Configure(WorldState.Canceling)
             .Permit(WorldTrigger.Generate, WorldState.Generating)
             .Permit(WorldTrigger.GenerationFinished, WorldState.Idle);
-            _fsm.OnTransitionCompleted(WorldState_OnTransitionCompleted);
 
+            _fsm.OnTransitionCompleted(WorldState_OnTransitionCompleted);
             _fsm.Fire(WorldTrigger.Generate);
         }
 

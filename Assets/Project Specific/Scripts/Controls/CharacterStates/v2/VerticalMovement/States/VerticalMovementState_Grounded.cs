@@ -1,32 +1,27 @@
 using Utilities.StateMachine;
 using UnityEngine;
 
-namespace VerticalMoment
+public class VerticalMovementState_Grounded : StateBase<VerticalMovement_StateMachine, eVerticalStates>
 {
-    public class VerticalMovementState_Grounded : StateBase<VerticalMovement_StateMachine, eVerticalStates>
+    private InputManager m_InputManager => InputManager.Instance;
+
+    public VerticalMovementState_Grounded(VerticalMovement_StateMachine stateMachine) : base(stateMachine, eVerticalStates.Grounded) { }
+
+    protected override void OnEnterState() { }
+    protected override void OnExitState() { }
+    protected override void OnUpdateState()
     {
-        private InputManager m_InputManager => InputManager.Instance;
-
-        public VerticalMovementState_Grounded(VerticalMovement_StateMachine stateMachine) : base(stateMachine, eVerticalStates.Grounded) { }
-
-        protected override void OnEnterState()
+        StateMachine.VerticalMovement.CharacterController.Move(Physics.gravity * 0.1f * Time.deltaTime);
+    }
+    protected override void CheckSwitchState()
+    {
+        if (StateMachine.VerticalMovement.CharacterController.isGrounded == false)
         {
-
+            TransitionToState(eVerticalStates.Falling);
         }
-        protected override void OnExitState()
+        else if (m_InputManager.Space)
         {
-
-        }
-        protected override void OnUpdateState()
-        {
-            StateMachine.VerticalMovement.CharacterController.Move(Physics.gravity * 0.1f  * Time.deltaTime);
-        }
-        protected override void CheckSwitchState()
-        {
-            if (StateMachine.VerticalMovement.CharacterController.isGrounded == false)
-                TransitionToState(eVerticalStates.Falling);
-            else if (m_InputManager.Space)
-                TransitionToState(eVerticalStates.Jumping);
+            TransitionToState(eVerticalStates.Jumping);
         }
     }
 }

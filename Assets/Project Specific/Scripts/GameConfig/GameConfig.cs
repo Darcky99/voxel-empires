@@ -9,7 +9,7 @@ using Unity.Collections;
 [CreateAssetMenu(fileName = "Game Configuration")]
 public class GameConfig : ScriptableObjectSingleton<GameConfig>
 {
-    [field: SerializeField] public CameraConfiguration CameraConfiguration { get; private set; }
+    public CameraConfiguration CameraConfiguration;
     [field: SerializeField] public CharacterConfiguration CharacterConfiguration { get; private set; }
     [field: SerializeField] public ChunkConfiguration ChunkConfiguration { get; private set; }
     [field: SerializeField] public GraphicsConfiguration GraphicsConfiguration { get; private set; }
@@ -20,13 +20,17 @@ public class GameConfig : ScriptableObjectSingleton<GameConfig>
 [Serializable]
 public class CameraConfiguration
 {
-    [field: SerializeField] public float CameraDragSensibility { get; private set; }
-    [field: SerializeField] public float ZoomingSensibility { get; private set; }
+    public float CameraDragSensibility => _CameraDragSensibility;
+    public float ZoomingSensibility => _ZoomingSensibility;
+    public float MinimumDistance => _MinimumDistance;
+    public float MaximumDistance => _MaximumDistance;
+    public float MaximumInclinationAngle => _MaximumInclinationAngle;
 
-    [field: SerializeField] public float MinimumDistance { get; private set; }
-    [field: SerializeField] public float MaximumDistance { get; private set; }
-
-    [field: SerializeField] public float MaximumInclinationAngle { get; private set; }
+    [SerializeField] private float _CameraDragSensibility;
+    [SerializeField] private float _ZoomingSensibility;
+    [SerializeField] private float _MinimumDistance;
+    [SerializeField] private float _MaximumDistance;
+    [SerializeField] private float _MaximumInclinationAngle;
 }
 
 [Serializable]
@@ -34,7 +38,7 @@ public class CharacterConfiguration
 {
     [field: SerializeField] public float JumpHeight { get; private set; }
     [field: SerializeField] public float JumpDuration { get; private set; }
-    [field: SerializeField] public AnimationCurve JumpCurve { get; private set;}
+    [field: SerializeField] public AnimationCurve JumpCurve { get; private set; }
 }
 
 [Serializable]
@@ -69,7 +73,7 @@ public class VoxelConfiguration
     public VoxelConfig[] GetVoxelsData()
     {
         VoxelConfig[] nativeArray = new VoxelConfig[Voxels.Length];
-        for(int i = 0; i < Voxels.Length; i++)
+        for (int i = 0; i < Voxels.Length; i++)
             nativeArray[i] = Voxels[i].GetConfig();
         return nativeArray;
     }
@@ -82,8 +86,8 @@ public class WorldGenerationConfiguration
     [field: SerializeField] public int WorldHeightInChunks { get; private set; }
 
     [Title("Noise configuration")]
-    [field: SerializeField] public uint Seed {  get; private set; }
-    [field: SerializeField] public float Scale {  get; private set; }
+    [field: SerializeField] public uint Seed { get; private set; }
+    [field: SerializeField] public float Scale { get; private set; }
 
 
     [Title("Height Curves")]
@@ -116,7 +120,7 @@ public class WorldGenerationConfiguration
         switch (i)
         {
             case 0:
-                if(m_ContinentalnessValues == null || m_ContinentalnessValues.Length != CurveResolution)
+                if (m_ContinentalnessValues == null || m_ContinentalnessValues.Length != CurveResolution)
                     m_ContinentalnessValues = curveValues(Continentalness);
                 return m_ContinentalnessValues;
             case 1:
