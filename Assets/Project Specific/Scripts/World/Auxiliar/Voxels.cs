@@ -7,18 +7,30 @@ namespace VoxelUtils
 {
     public static class Voxels
     {
-        public static readonly int s_ChunkSize = 16;
-        public static readonly int s_ChunkHeight = 128;
+        private static int s_ChunkSizeMaxIndex => s_ChunkSize - 1;
+        private static int s_ChunkHeightMaxIndex => s_ChunkHeight - 1;
+
+        public static readonly int s_ChunkSize = 32;
+        public static readonly int s_ChunkHeight = 1;
 
         public static int Index(int x, int y, int z)
         {
             if (x < 0 || x >= s_ChunkSize || y < 0 || y >= s_ChunkHeight || z < 0 || z >= s_ChunkSize)
             {
-                x = x < 0 ? 15 : x >= s_ChunkSize ? 0 : x;
-                y = y < 0 ? 15 : y >= s_ChunkHeight ? 0 : y;
-                z = z < 0 ? 15 : z >= s_ChunkSize ? 0 : z;
+                x = x < 0 ? s_ChunkSizeMaxIndex : x >= s_ChunkSize ? 0 : x;
+                y = y < 0 ? s_ChunkHeightMaxIndex : y >= s_ChunkHeight ? 0 : y;
+                z = z < 0 ? s_ChunkSizeMaxIndex : z >= s_ChunkSize ? 0 : z;
             }
             return x + (z * s_ChunkSize) + (y * s_ChunkSize * s_ChunkSize);
+        }
+        public static int Index(int x, int z)
+        {
+            if (x < 0 || x >= s_ChunkSize || z < 0 || z >= s_ChunkSize)
+            {
+                x = x < 0 ? s_ChunkSizeMaxIndex : x >= s_ChunkSize ? 0 : x;
+                z = z < 0 ? s_ChunkSizeMaxIndex : z >= s_ChunkSize ? 0 : z;
+            }
+            return x + (z * s_ChunkSize);
         }
         public static int3 XYZ(int i)
         {
@@ -32,7 +44,7 @@ namespace VoxelUtils
             return xyz;
         }
 
-        private static float3 getVoxelVertice(int vertexIndex)
+        private static float3 GetVoxelVertice(int vertexIndex)
         {
             switch (vertexIndex)
             {
@@ -47,7 +59,7 @@ namespace VoxelUtils
                 default: return default;
             }
         }
-        private static int getFaceVertexByIndex(int faceIndex, int faceVertexIndex)
+        private static int GetFaceVertexByIndex(int faceIndex, int faceVertexIndex)
         {
             switch (faceIndex, faceVertexIndex)
             {
@@ -86,7 +98,7 @@ namespace VoxelUtils
             }
         }
 
-        public static int3 GetCheckDirection(int directionIndex)
+        public static int3 GetDirection(int directionIndex)
         {
             switch (directionIndex)
             {
@@ -103,10 +115,10 @@ namespace VoxelUtils
         {
             NativeArray<float3> i_vertexArray = new NativeArray<float3>(4, Allocator.Temp);
 
-            i_vertexArray[0] = getVoxelVertice(getFaceVertexByIndex(faceIndex, 0));
-            i_vertexArray[1] = getVoxelVertice(getFaceVertexByIndex(faceIndex, 1));
-            i_vertexArray[2] = getVoxelVertice(getFaceVertexByIndex(faceIndex, 2));
-            i_vertexArray[3] = getVoxelVertice(getFaceVertexByIndex(faceIndex, 3));
+            i_vertexArray[0] = GetVoxelVertice(GetFaceVertexByIndex(faceIndex, 0));
+            i_vertexArray[1] = GetVoxelVertice(GetFaceVertexByIndex(faceIndex, 1));
+            i_vertexArray[2] = GetVoxelVertice(GetFaceVertexByIndex(faceIndex, 2));
+            i_vertexArray[3] = GetVoxelVertice(GetFaceVertexByIndex(faceIndex, 3));
 
             return i_vertexArray;
         }
@@ -125,11 +137,25 @@ namespace VoxelUtils
         public static NativeArray<Vector3> GetUVs()
         {
             NativeArray<Vector3> i_uvs = new NativeArray<Vector3>(4, Allocator.Temp);
-            i_uvs[0] = new Vector3(0, 1,0);
+            i_uvs[0] = new Vector3(0, 1, 0);
             i_uvs[1] = new Vector3(1, 1, 0);
             i_uvs[2] = new Vector3(0, 0, 0);
             i_uvs[3] = new Vector3(1, 0, 0);
             return i_uvs;
+        }
+
+        //this method should be moved to another class, related with terrain generation algorithms.
+        public static byte GetVoxelIDByHeight(int absoluteY)
+        {
+            //Also not the best to draw flat lines across the terrain. It should be according to the terrain shape.
+            return absoluteY switch
+            {
+                >= 115 => 3,
+                >= 85 => 2,
+                >= 45 => 4,
+                >= 15 => 5,
+                _ => 1
+            };
         }
     }
 }

@@ -12,7 +12,7 @@ namespace World
         public GameManager _GameManager => GameManager.Instance;
         public GameConfig _GameConfig => GameConfig.Instance;
 
-        private int3 _DrawOrigin;
+        private int2 _DrawOrigin;
         private bool _stopExpansiveLoadingFlag = false;
 
         [SerializeField] private WorldManager _WorldManager;
@@ -54,7 +54,7 @@ namespace World
         }
         private void Generating()
         {
-            _ = ExpansiveLoading(new int3(_DrawOrigin.x, _DrawOrigin.y, _DrawOrigin.z));
+            _ = ExpansiveLoading(_DrawOrigin);
         }
         private void Cancel()
         {
@@ -64,7 +64,7 @@ namespace World
         private void TryLoadingStart()
         {
             float3 center = _CenterTransform.position;
-            int3 chunkID = ChunkUtils.WorldCoordinatesToChunkIndex(center);
+            int2 chunkID = ChunkUtils.WorldCoordinatesToChunkIndex(center);
             if (_DrawOrigin.Equals(chunkID))
             {
                 return;
@@ -80,7 +80,7 @@ namespace World
             }
         }
 
-        private async UniTask ExpansiveLoading(int3 originChunkID)
+        private async UniTask ExpansiveLoading(int2 originChunkID)
         {
             for (int i = 0; i < _GameConfig.GraphicsConfiguration.RenderDistance; i++)
             {
@@ -94,19 +94,19 @@ namespace World
             }
             _WorldManager.SetState(WorldTrigger.GenerationFinished);
         }
-        private async UniTask GenerateRing(int3 origin, int ring)
+        private async UniTask GenerateRing(int2 origin, int ring)
         {
-            NativeList<int3> generateTerrain = RemoveItemsFromList(ChunkUtils.GetChunksByRing(origin, ring), HasTerrain);
-            NativeList<int3> generateAround = RemoveItemsFromList(ChunkUtils.GetChunksByRing(origin, ring + 1), HasTerrain);
-            NativeList<int3> draw = RemoveItemsFromList(ChunkUtils.GetChunksByRing(origin, ring), HasMesh);
+            NativeList<int2> generateTerrain = RemoveItemsFromList(ChunkUtils.GetChunksByRing(origin, ring), HasTerrain);
+            NativeList<int2> generateAround = RemoveItemsFromList(ChunkUtils.GetChunksByRing(origin, ring + 1), HasTerrain);
+            NativeList<int2> draw = RemoveItemsFromList(ChunkUtils.GetChunksByRing(origin, ring), HasMesh);
             await _WorldManager.LoadAll(generateTerrain);
             await _WorldManager.LoadAll(generateAround);
             await _WorldManager.DrawAll(draw);
         }
-        private NativeList<int3> RemoveItemsFromList(NativeList<int3> ids, Func<int3, bool> conditionToRemove)
+        private NativeList<int2> RemoveItemsFromList(NativeList<int2> ids, Func<int2, bool> conditionToRemove)
         {
-            NativeList<int3> result = new NativeList<int3>(Allocator.Persistent);
-            foreach (int3 id in ids)
+            NativeList<int2> result = new NativeList<int2>(Allocator.Persistent);
+            foreach (int2 id in ids)
             {
                 if (conditionToRemove(id))
                 {
@@ -117,12 +117,12 @@ namespace World
             ids.Dispose();
             return result;
         }
-        private bool HasTerrain(int3 id)
+        private bool HasTerrain(int2 id)
         {
             bool exists = _WorldManager.TryGetChunkObject(id, out ChunkObject chunkObject);
             return exists && chunkObject.HasTerrain;
         }
-        private bool HasMesh(int3 id)
+        private bool HasMesh(int2 id)
         {
             bool exists = _WorldManager.TryGetChunkObject(id, out ChunkObject chunkObject);
             return exists && chunkObject.HasMesh;

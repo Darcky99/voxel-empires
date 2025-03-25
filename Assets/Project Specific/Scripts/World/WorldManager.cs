@@ -19,15 +19,15 @@ namespace World
 
         public event EventHandler<WorldState> StateChanged;
 
-        public Dictionary<int3, ChunkObject> LoadedChunks => _LoadedChunks;
+        public Dictionary<int2, ChunkObject> LoadedChunks => _LoadedChunks;
         public WorldState CurrentState => _fsm.State;
 
         private StateMachine<WorldState, WorldTrigger> _fsm;
-        private Dictionary<int3, ChunkObject> _LoadedChunks;
+        private Dictionary<int2, ChunkObject> _LoadedChunks;
 
         public void Initialize()
         {
-            _LoadedChunks = new Dictionary<int3, ChunkObject>();
+            _LoadedChunks = new Dictionary<int2, ChunkObject>();
 
             _fsm = new StateMachine<WorldState, WorldTrigger>(WorldState.Idle);
 
@@ -51,18 +51,18 @@ namespace World
             StateChanged?.Invoke(this, transition.Destination);
         }
 
-        private ChunkObject CreateChunkObject(int3 chunkID)
+        private ChunkObject CreateChunkObject(int2 chunkID)
         {
             ChunkObject chunkObject = ChunkObjectPool.s_Instance.DeQueue();
             chunkObject.Initialize(chunkID);
             _LoadedChunks.Add(chunkID, chunkObject);
             return chunkObject;
         }
-        public bool TryGetChunkObject(int3 chunkID, out ChunkObject chunk)
+        public bool TryGetChunkObject(int2 chunkID, out ChunkObject chunk)
         {
-            return _LoadedChunks.TryGetValue(chunkID, out chunk); ;
+            return _LoadedChunks.TryGetValue(chunkID, out chunk);
         }
-        public ChunkObject[] GetChunksObjects(NativeList<int3> chunkIDs)
+        public ChunkObject[] GetChunksObjects(NativeList<int2> chunkIDs)
         {
             ChunkObject[] chunks = new ChunkObject[chunkIDs.Length];
             for (int i = 0; i < chunkIDs.Length; i++)
@@ -72,7 +72,7 @@ namespace World
             return chunks;
         }
 
-        public async UniTask LoadAll(NativeList<int3> toLoad)
+        public async UniTask LoadAll(NativeList<int2> toLoad)
         {
             int totalCount = toLoad.Length;
             NativeArray<JobHandle> jobHandles = new NativeArray<JobHandle>(totalCount, Allocator.Persistent);
@@ -94,7 +94,7 @@ namespace World
             jobHandles.Dispose();
             terrainJobs.Dispose();
         }
-        public async UniTask DrawAll(NativeList<int3> toDraw)
+        public async UniTask DrawAll(NativeList<int2> toDraw)
         {
             int totalCount = toDraw.Length;
             ChunkObject[] chunks = GetChunksObjects(toDraw);
@@ -102,12 +102,12 @@ namespace World
             NativeArray<IChunkMesh> meshJobs = new NativeArray<IChunkMesh>(totalCount, Allocator.Persistent);
             for (int i = 0; i < totalCount; i++)
             {
-                int3 chunkID = toDraw[i];
+                int2 chunkID = toDraw[i];
                 TryGetChunkObject(chunkID, out ChunkObject chunkObj);
-                TryGetChunkObject(chunkID.Move(1, 0, 0), out ChunkObject rightChunkObj);
-                TryGetChunkObject(chunkID.Move(-1, 0, 0), out ChunkObject leftChunkObj);
-                TryGetChunkObject(chunkID.Move(0, 0, 1), out ChunkObject frontChunkObj);
-                TryGetChunkObject(chunkID.Move(0, 0, -1), out ChunkObject backChunkObj);
+                TryGetChunkObject(chunkID.Move(1, 0), out ChunkObject rightChunkObj);
+                TryGetChunkObject(chunkID.Move(-1, 0), out ChunkObject leftChunkObj);
+                TryGetChunkObject(chunkID.Move(0, 1), out ChunkObject frontChunkObj);
+                TryGetChunkObject(chunkID.Move(0, -1), out ChunkObject backChunkObj);
                 meshJobs[i] = new IChunkMesh(chunkID, chunkObj.Chunk.VoxelMap.FlatMap,
                     rightChunkObj.Chunk.VoxelMap.FlatMap,
                     leftChunkObj.Chunk.VoxelMap.FlatMap,

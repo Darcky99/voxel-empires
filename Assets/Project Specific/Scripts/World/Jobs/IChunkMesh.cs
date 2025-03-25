@@ -1,19 +1,17 @@
-using System;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.UIElements;
 using VoxelUtils;
 
 [BurstCompile]
 public struct IChunkMesh : IJob
 {
-    public IChunkMesh(int3 id, NativeArray<byte> centralChunk, NativeArray<byte> rightChunk, NativeArray<byte> leftChunk, NativeArray<byte> frontChunk, NativeArray<byte> backChunk)
+    public IChunkMesh(int2 id, NativeArray<byte> centralChunk, NativeArray<byte> rightChunk, NativeArray<byte> leftChunk, NativeArray<byte> frontChunk, NativeArray<byte> backChunk)
     {
         _VoxelsConfig = new NativeArray<VoxelConfig>(GameConfig.Instance.VoxelConfiguration.GetVoxelsData(), Allocator.Persistent);
-        _ID = new int3(id.y, id.y, id.z);
+        _ID = id;
 
         Vertices = new NativeList<Vector3>(Allocator.Persistent);
         Triangles = new NativeList<int>(Allocator.Persistent);
@@ -26,6 +24,10 @@ public struct IChunkMesh : IJob
         _Left_Chunk = new NativeArray<byte>(leftChunk, Allocator.Persistent);
         _Front_Chunk = new NativeArray<byte>(frontChunk, Allocator.Persistent);
         _Back_Chunk = new NativeArray<byte>(backChunk, Allocator.Persistent);
+
+        d = new NativeArray<int>(3, Allocator.TempJob);
+        l = new NativeArray<int>(3, Allocator.TempJob);
+        v = new NativeArray<int>(3, Allocator.TempJob);
     }
 
     private NativeArray<VoxelConfig> _VoxelsConfig;
@@ -34,7 +36,7 @@ public struct IChunkMesh : IJob
     public NativeList<int> Triangles { get; private set; }
     public NativeList<Vector3> UVs { get; private set; }
 
-    private readonly int3 _ID;
+    private readonly int2 _ID;
     private readonly NativeArray<byte> _Central_Chunk;
 
     private readonly NativeArray<byte> _Right_Chunk;
@@ -44,96 +46,116 @@ public struct IChunkMesh : IJob
 
     private readonly NativeHashMap<int3, FacesDrawn> _DrawnFaces;
 
+    private NativeArray<int> d;
+    private NativeArray<int> l;
+    private NativeArray<int> v;
+
+    private byte TerrainHeight => 128;
+
     public void Execute()
     {
         if (_Central_Chunk.Length == 1)
+        {
             return;
-
-        NativeArray<int> d = new NativeArray<int>(3, Allocator.Temp);
-        NativeArray<int> l = new NativeArray<int>(3, Allocator.Temp);
-        NativeArray<int> v = new NativeArray<int>(3, Allocator.Temp);
+        }
         int a, b;
         l[0] = Voxels.s_ChunkSize;
-        l[1] = Voxels.s_ChunkHeight;
+        l[1] = 1;
         l[2] = Voxels.s_ChunkSize;
         for (int p = 0; p <= 2; p++)
         {
             a = (p + 1) % 3;
             b = (p + 2) % 3;
-
             for (d[p] = 0; d[p] < l[p]; d[p]++)
             {
                 for (d[a] = 0; d[a] < l[a]; d[a]++)
+                {
                     for (d[b] = 0; d[b] < l[b]; d[b]++)
                     {
-                        int3 abs_position = new int3(d[0], d[1], d[2]);
-                        byte blockID = getValue(abs_position);
-                        if (blockID == 0)
-                            continue;
-
-                        for (int i = -1; i <= 1; i += 2)
-                        {
-                            int faceIndex = getFaceIndex(p, i);
-                            if (!isDrawFace(blockID, abs_position, faceIndex) || (_ID.y == 0 && abs_position.y == 0 && faceIndex == 1))
-                                continue;
-
-                            v[p] = d[p];
-                            v[a] = d[a];
-                            v[b] = d[b];
-                            int3 min_limit = new int3(v[0], v[1], v[2]);
-                            int2 a_limits = new int2(d[a], d[a]);
-                            for (int al = v[a] + 1; al < l[a]; al++)
-                            {
-                                v[a] = al;
-                                if (isDrawFace(blockID, new int3(v[0], v[1], v[2]), faceIndex))
-                                    a_limits.y = al;
-                                else break;
-                            }
-                            int2 b_limits = new int2(d[b], d[b]);
-                            v[a] = a_limits.y;
-                            for (int bl = d[b] + 1; bl < l[b]; bl++)
-                            {
-                                v[b] = bl;
-                                int3 greater_b = new int3(v[0], v[1], v[2]);
-                                if (canDrawFace(blockID, min_limit, greater_b, faceIndex))
-                                    b_limits.y = bl;
-                                else break;
-                            }
-                            v[a] = a_limits.y;
-                            v[b] = b_limits.y;
-                            int3 max_limit = new int3(v[0], v[1], v[2]);
-
-                            float3 meshCenter = getMeshCenter(min_limit, max_limit);
-                            float2 meshSize = new float2(a_limits.y - a_limits.x + 1, b_limits.y - b_limits.x + 1);
-
-                            int vertexIndex = Vertices.Length;
-                            NativeArray<float3> fv = Voxels.GetFaceVertices(faceIndex);
-                            foreach (float3 vertex in fv)
-                            {
-                                float3 global_vertex = vertex;
-                                global_vertex[a] *= meshSize.x;
-                                global_vertex[b] *= meshSize.y;
-                                global_vertex += meshCenter;
-                                Vertices.Add(global_vertex);
-                            }
-                            Triangles.AddRange(new NativeArray<int>(Voxels.GetFaceTriangles(vertexIndex), Allocator.Temp));
-                            NativeArray<Vector3> uvs = Voxels.GetUVs();
-                            foreach (Vector3 uv in uvs)
-                            {
-                                Vector3 u = uv;
-                                u[a == 2 ? a - 1 - b : a] *= meshSize.x;
-                                u[b == 2 ? b - 1 - a : b] *= meshSize.y;
-                                u.z = _VoxelsConfig[blockID - 1].TextureIndex(faceIndex);
-                                UVs.Add(u);
-                            }
-                            setAsDrawn(min_limit, max_limit, faceIndex);
-                        }
+                        d[1] = GetHeightMapValue(d[0], d[2]);
+                        int3 pab = new int3(p, a, b);
+                        RunDownwards(pab);
+                        d[1] = l[1];
                     }
+                }
             }
         }
     }
 
-    private int getFaceIndex(int p, int i)
+    private void RunDownwards(int3 pab)
+    {
+        for (; d[1] >= 0; d[1]--)
+        {
+            int3 position = new int3(d[0], d[1], d[2]);
+            byte voxelID = GetVoxelIDByHeight(position.y);
+            DrawGreedyQuad(position, pab, voxelID, GetFaceIndex(pab.x, -1));
+            DrawGreedyQuad(position, pab, voxelID, GetFaceIndex(pab.x, 1));
+        }
+    }
+    private void DrawGreedyQuad(int3 position, int3 pab, byte voxelID, int faceIndex)
+    {
+        int p = pab.x, a = pab.y, b = pab.z;
+        if (!IsDrawFace(voxelID, position, faceIndex) || (position.y == 0 && faceIndex == 1))
+        {
+            return;
+        }
+        v[p] = d[p];
+        v[a] = d[a];
+        v[b] = d[b];
+        int3 min_limit = new int3(v[0], v[1], v[2]);
+        int2 a_limits = new int2(d[a], d[a]);
+        for (int al = v[a] + 1; al < l[a]; al++)
+        {
+            v[a] = al;
+            if (IsDrawFace(voxelID, new int3(v[0], v[1], v[2]), faceIndex))
+            {
+                a_limits.y = al;
+            }
+            else break;
+        }
+        int2 b_limits = new int2(d[b], d[b]);
+        v[a] = a_limits.y;
+        for (int bl = d[b] + 1; bl < l[b]; bl++)
+        {
+            v[b] = bl;
+            int3 greater_b = new int3(v[0], v[1], v[2]);
+            if (CanDrawFaceInArea(voxelID, min_limit, greater_b, faceIndex))
+            {
+                b_limits.y = bl;
+            }
+            else break;
+        }
+        v[a] = a_limits.y;
+        v[b] = b_limits.y;
+        int3 max_limit = new int3(v[0], v[1], v[2]);
+
+        float3 meshCenter = GetMeshCenter(min_limit, max_limit);
+        float2 meshSize = new float2(a_limits.y - a_limits.x + 1, b_limits.y - b_limits.x + 1);
+
+        int vertexIndex = Vertices.Length;
+        NativeArray<float3> fv = Voxels.GetFaceVertices(faceIndex);
+        foreach (float3 vertex in fv)
+        {
+            float3 global_vertex = vertex;
+            global_vertex[a] *= meshSize.x;
+            global_vertex[b] *= meshSize.y;
+            global_vertex += meshCenter;
+            Vertices.Add(global_vertex);
+        }
+        Triangles.AddRange(new NativeArray<int>(Voxels.GetFaceTriangles(vertexIndex), Allocator.Temp));
+        NativeArray<Vector3> uvs = Voxels.GetUVs();
+        foreach (Vector3 uv in uvs)
+        {
+            Vector3 u = uv;
+            u[a == 2 ? a - 1 - b : a] *= meshSize.x;
+            u[b == 2 ? b - 1 - a : b] *= meshSize.y;
+            u.z = _VoxelsConfig[voxelID - 1].TextureIndex(faceIndex);
+            UVs.Add(u);
+        }
+        SetAsDrawn(min_limit, max_limit, faceIndex);
+    }
+
+    private int GetFaceIndex(int p, int i)
     {
         switch (p, i)
         {
@@ -147,18 +169,24 @@ public struct IChunkMesh : IJob
         }
     }
 
-    private byte getValue(int x, int y, int z)
+    private byte GetVoxelIDByHeight(int h)
     {
-        if (y < 0 || y >= Voxels.s_ChunkHeight)
+        if (h < 0 || h >= TerrainHeight)
+        {
             return 0;
+        }
+        return Voxels.GetVoxelIDByHeight(h);
+    }
+    private byte GetHeightMapValue(int x, int z)
+    {
         NativeArray<byte> targetChunk = _Central_Chunk;
         targetChunk = x < 0 ? _Left_Chunk : x == Voxels.s_ChunkSize ? _Right_Chunk : targetChunk;
         targetChunk = z < 0 ? _Back_Chunk : z == Voxels.s_ChunkSize ? _Front_Chunk : targetChunk;
-        return targetChunk.Length == 1 ? (byte)0 : targetChunk[Voxels.Index(x, y, z)];
+        byte h = targetChunk[Voxels.Index(x, 0, z)];
+        return h;
     }
-    private byte getValue(int3 xyz) => getValue(xyz.x, xyz.y, xyz.z);
 
-    private void setAsDrawn(int3 xyz, int faceIndex)
+    private void SetAsDrawn(int3 xyz, int faceIndex)
     {
         bool keyExists = _DrawnFaces.ContainsKey(xyz);
 
@@ -168,7 +196,7 @@ public struct IChunkMesh : IJob
             _DrawnFaces.Remove(xyz);
         _DrawnFaces.Add(xyz, faces);
     }
-    private void setAsDrawn(int3 min, int3 max, int faceIndex)
+    private void SetAsDrawn(int3 min, int3 max, int faceIndex)
     {
         int3 position = min;
         for (int y = min.y; y <= max.y; y++)
@@ -178,41 +206,59 @@ public struct IChunkMesh : IJob
                     position.x = x;
                     position.y = y;
                     position.z = z;
-                    setAsDrawn(position, faceIndex);
+                    SetAsDrawn(position, faceIndex);
                 }
     }
 
-    private bool isFaceDrawn(int3 xyz, int faceIndex)
+    private bool IsFaceDrawn(int3 xyz, int faceIndex)
     {
         bool isInDictionary = _DrawnFaces.ContainsKey(xyz);
         return !isInDictionary ? false : _DrawnFaces[xyz].IsFaceDrawn(faceIndex);
     }
 
-    private bool isDrawFace(byte value, int3 xyz, int faceIndex)
+    private bool IsDrawFace(byte voxelID, int3 xyz, int faceIndex)
     {
-        int3 direction = Voxels.GetCheckDirection(faceIndex);
-        return getValue(xyz) == value && getValue(xyz + direction) == 0 && !isFaceDrawn(xyz, faceIndex);
+        byte originID = GetVoxelIDByHeight(xyz.y);
+        byte originNaturalHeight = GetHeightMapValue(xyz.x, xyz.z);
+        if (xyz.y > originNaturalHeight)
+        {
+            return false;
+        }
+        int3 direction = xyz + Voxels.GetDirection(faceIndex);
+        byte directionNaturalHeight = GetHeightMapValue(direction.x, direction.z);
+
+        bool IsSameType = originID == voxelID;
+        bool IsDirectionEmpty = direction.y > directionNaturalHeight; // Here I will need to consider the other axis once I get the block ID by some algorithm..
+        bool IsFaceNotDrawn = !IsFaceDrawn(xyz, faceIndex);
+        return IsSameType && IsDirectionEmpty && IsFaceNotDrawn;
     }
-    private bool canDrawFace(byte value, int3 min, int3 max, int faceIndex)
+    private bool CanDrawFaceInArea(byte voxelID, int3 min, int3 max, int faceIndex)
     {
         if (!(min.x == max.x || min.y == max.y || min.z == max.z))
+        {
             Debug.LogError("At least one axis needs to be flat");
-
+        }
         int3 position = min;
         for (int y = min.y; y <= max.y; y++)
+        {
             for (int z = min.z; z <= max.z; z++)
+            {
                 for (int x = min.x; x <= max.x; x++)
                 {
                     position.x = x;
                     position.y = y;
                     position.z = z;
-                    if (!isDrawFace(value, position, faceIndex))
+                    if (!IsDrawFace(voxelID, position, faceIndex))
+                    {
                         return false;
+                    }
                 }
+            }
+        }
         return true;
     }
 
-    private float3 getMeshCenter(int3 min, int3 max)
+    private float3 GetMeshCenter(int3 min, int3 max)
     {
         int3 one = new int3(1, 1, 1);
         min -= one;
@@ -229,6 +275,9 @@ public struct IChunkMesh : IJob
 
     public void Dispose()
     {
+        d.Dispose();
+        l.Dispose();
+        v.Dispose();
         _Right_Chunk.Dispose();
         _Left_Chunk.Dispose();
         _Front_Chunk.Dispose();

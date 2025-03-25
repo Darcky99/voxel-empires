@@ -23,7 +23,7 @@ namespace World
         [SerializeField] private MeshFilter meshFilter;
         [SerializeField] private MeshCollider meshCollider;
 
-        public void Initialize(int3 chunkID)
+        public void Initialize(int2 chunkID)
         {
             _Chunk = new Chunk(chunkID);
             transform.position = ChunkUtils.ChunkIDToWorldCoordinates(_Chunk.ChunkID);

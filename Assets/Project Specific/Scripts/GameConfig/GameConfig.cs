@@ -82,8 +82,7 @@ public class VoxelConfiguration
 [Serializable]
 public class WorldGenerationConfiguration
 {
-    [field: SerializeField] public int WorldSizeInChunks { get; private set; }
-    [field: SerializeField] public int WorldHeightInChunks { get; private set; }
+    // [field: SerializeField] public int WorldSizeInChunks { get; private set; }
 
     [Title("Noise configuration")]
     [field: SerializeField] public uint Seed { get; private set; }

@@ -28,7 +28,7 @@ public class PlayerCamera : MonoBehaviour
             vertical = -1;
 
         if (direction.magnitude != 0 || vertical != 0)
-            move(direction, vertical);
+            Move(direction, vertical);
 
         if (Input.GetMouseButtonDown(1))
         {
@@ -37,11 +37,11 @@ public class PlayerCamera : MonoBehaviour
         }
         else if (Input.GetMouseButton(1))
         {
-            rotate((Vector2)Input.mousePosition - m_InitialMousePosition);
+            Rotate((Vector2)Input.mousePosition - m_InitialMousePosition);
         }
         else if (Input.GetMouseButtonUp(1))
         {
-            rotate((Vector2)Input.mousePosition - m_InitialMousePosition);
+            Rotate((Vector2)Input.mousePosition - m_InitialMousePosition);
         }
     }
     #endregion
@@ -51,31 +51,29 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] private float m_MovementSpeed = 2.5f;
     [SerializeField] private float m_RotationSensibility = 0.15f;
 
-    private Vector3Int m_CurrentChunkPosition;
+    private Vector2Int m_CurrentChunkPosition;
 
     private Vector3 m_InitialRotation;
     private Vector2 m_InitialMousePosition;
 
 
-    private void move(Vector3 direction, int vertical)
+    private void Move(Vector3 direction, int vertical)
     {
         direction.y = 0;
         direction = direction.normalized;
         direction.y = vertical;
         transform.position += direction * m_MovementSpeed * Time.deltaTime;
-
-        Vector3Int currentChunk = ChunkUtils.WorldCoordinatesToChunkIndex(transform.position);
-
-        if (currentChunk != m_CurrentChunkPosition) {
+        Vector2Int currentChunk = ChunkUtils.WorldCoordinatesToChunkIndex(transform.position);
+        if (currentChunk != m_CurrentChunkPosition)
+        {
             m_CurrentChunkPosition = currentChunk;
             OnCameraMove?.Invoke();
         }
-        
+
     }
-    private void rotate(Vector2 mousePath)
+    private void Rotate(Vector2 mousePath)
     {
         mousePath *= m_RotationSensibility;
-
         Vector3 finalRotation = m_InitialRotation;
         finalRotation.y += mousePath.x;
         finalRotation.x -= mousePath.y;
