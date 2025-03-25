@@ -4,7 +4,7 @@ using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
-using VoxelUtils;
+using VoxelUtilities;
 
 [BurstCompile]
 public struct ITerrainGeneration : IJob
@@ -13,7 +13,8 @@ public struct ITerrainGeneration : IJob
     {
         _ChunkID = chunkID;
 
-        FlatVoxelMap = new NativeArray<byte>(GameConfig.Instance.ChunkConfiguration.ChunkVoxelCount, Allocator.Persistent);
+        HeightMap_Test = new NativeGrid(GameConfig.Instance.ChunkConfiguration.ChunkSize, 1);
+        HeightMap = new NativeArray<byte>(GameConfig.Instance.ChunkConfiguration.ChunkVoxelCount, Allocator.Persistent);
         IsEmpty = true;
 
         _CurveResolution = GameConfig.Instance.WorldConfiguration.CurveResolution;
@@ -26,7 +27,8 @@ public struct ITerrainGeneration : IJob
         _Scale = GameConfig.Instance.WorldConfiguration.Scale;
     }
 
-    public NativeArray<byte> FlatVoxelMap;
+    public NativeGrid HeightMap_Test;
+    public NativeArray<byte> HeightMap;
     public bool IsEmpty;
 
     private int _CurveResolution;
@@ -68,7 +70,7 @@ public struct ITerrainGeneration : IJob
                 float CEP = (c + (e * pv)) / 2f;
                 int terrainHeight = (int)math.floor(CEP * 128);
                 int i = index(voxelLocalPosition);
-                FlatVoxelMap[i] = (byte)terrainHeight;
+                HeightMap[i] = (byte)terrainHeight;
             }
         }
         IsEmpty = false;

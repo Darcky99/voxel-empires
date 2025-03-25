@@ -1,5 +1,5 @@
 using UnityEngine;
-using VoxelUtils;
+using VoxelUtilities;
 using Unity.Jobs;
 using Unity.Collections.NotBurstCompatible;
 using System;
@@ -16,22 +16,22 @@ namespace World
         public Chunk(int2 ID)
         {
             _ChunkID = ID;
-            _VoxelMap = new VoxelMap();
+            _HeightMap = new NativeGrid();
             _ChunkState = eChunkState.Active;
         }
 
         public float2 WorldPosition => _ChunkID * ChunkConfiguration.KeyToWorld;
         public int2 ChunkID => _ChunkID;
         public eChunkState ChunkState => _ChunkState;
-        public VoxelMap VoxelMap => _VoxelMap;
+        public NativeGrid HeightMap => _HeightMap;
 
         private int2 _ChunkID;
-        private VoxelMap _VoxelMap;
+        private NativeGrid _HeightMap;
         private eChunkState _ChunkState;
 
-        public byte GetVoxel(Vector3Int voxelPosition) => _VoxelMap.GetVoxel(voxelPosition);
-        public void SetVoxel(Vector3Int voxelPosition) => _VoxelMap.SetVoxel(voxelPosition.x, voxelPosition.y, voxelPosition.z, 1);
+        public byte GetVoxel(int3 voxelPosition) => _HeightMap.GetValue(voxelPosition);
+        public void SetVoxel(int3 voxelPosition) => _HeightMap.SetValue(voxelPosition.x, voxelPosition.y, voxelPosition.z, 1);
 
-        public void SetVoxelMap(NativeArray<byte> flatVoxelMap) => _VoxelMap.SetFlatMap(flatVoxelMap);
+        public void SetVoxelMap(NativeArray<byte> flatVoxelMap) => _HeightMap.SetNativeArray(flatVoxelMap);
     }
 }

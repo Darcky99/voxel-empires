@@ -5,7 +5,7 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
-using VoxelUtils;
+using VoxelUtilities;
 
 public static class ChunkUtils
 {

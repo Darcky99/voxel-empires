@@ -3,7 +3,7 @@ using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace VoxelUtils
+namespace VoxelUtilities
 {
     public static class Voxels
     {
@@ -144,9 +144,9 @@ namespace VoxelUtils
             return i_uvs;
         }
 
-        //this method should be moved to another class, related with terrain generation algorithms.
         public static byte GetVoxelIDByHeight(int absoluteY)
         {
+            //this method should be moved to another class, related with terrain generation algorithms.
             //Also not the best to draw flat lines across the terrain. It should be according to the terrain shape.
             return absoluteY switch
             {

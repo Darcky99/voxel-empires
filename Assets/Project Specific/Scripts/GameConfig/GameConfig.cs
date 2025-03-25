@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
-using VoxelUtils;
+using VoxelUtilities;
 using Unity.Collections;
 
 [CreateAssetMenu(fileName = "Game Configuration")]
@@ -82,7 +82,7 @@ public class VoxelConfiguration
 [Serializable]
 public class WorldGenerationConfiguration
 {
-    // [field: SerializeField] public int WorldSizeInChunks { get; private set; }
+    [field: SerializeField] public int WorldHeight { get; private set; }
 
     [Title("Noise configuration")]
     [field: SerializeField] public uint Seed { get; private set; }

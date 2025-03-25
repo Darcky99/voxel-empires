@@ -89,7 +89,7 @@ namespace World
             for (int i = 0; i < totalCount; i++)
             {
                 ChunkObject chunkObj = CreateChunkObject(toLoad[i]);
-                chunkObj.SetVoxels(terrainJobs[i].FlatVoxelMap);
+                chunkObj.SetVoxels(terrainJobs[i].HeightMap);
             }
             jobHandles.Dispose();
             terrainJobs.Dispose();
@@ -108,11 +108,11 @@ namespace World
                 TryGetChunkObject(chunkID.Move(-1, 0), out ChunkObject leftChunkObj);
                 TryGetChunkObject(chunkID.Move(0, 1), out ChunkObject frontChunkObj);
                 TryGetChunkObject(chunkID.Move(0, -1), out ChunkObject backChunkObj);
-                meshJobs[i] = new IChunkMesh(chunkID, chunkObj.Chunk.VoxelMap.FlatMap,
-                    rightChunkObj.Chunk.VoxelMap.FlatMap,
-                    leftChunkObj.Chunk.VoxelMap.FlatMap,
-                    frontChunkObj.Chunk.VoxelMap.FlatMap,
-                    backChunkObj.Chunk.VoxelMap.FlatMap);
+                meshJobs[i] = new IChunkMesh(chunkID, chunkObj.Chunk.HeightMap.NativeArray,
+                    rightChunkObj.Chunk.HeightMap.NativeArray,
+                    leftChunkObj.Chunk.HeightMap.NativeArray,
+                    frontChunkObj.Chunk.HeightMap.NativeArray,
+                    backChunkObj.Chunk.HeightMap.NativeArray);
                 JobHandle handler = meshJobs[i].Schedule();
                 jobHandles[i] = handler;
             }

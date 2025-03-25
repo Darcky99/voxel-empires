@@ -3,7 +3,7 @@ using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
-using VoxelUtils;
+using VoxelUtilities;
 
 [BurstCompile]
 public struct IChunkMesh : IJob
@@ -13,13 +13,14 @@ public struct IChunkMesh : IJob
         _VoxelsConfig = new NativeArray<VoxelConfig>(GameConfig.Instance.VoxelConfiguration.GetVoxelsData(), Allocator.Persistent);
         _ID = id;
 
+        _WorldHeight = GameConfig.Instance.WorldConfiguration.WorldHeight;
+
         Vertices = new NativeList<Vector3>(Allocator.Persistent);
         Triangles = new NativeList<int>(Allocator.Persistent);
         UVs = new NativeList<Vector3>(Allocator.Persistent);
 
         _DrawnFaces = new NativeHashMap<int3, FacesDrawn>(6000, Allocator.Persistent);
         _Central_Chunk = new NativeArray<byte>(centralChunk, Allocator.Persistent);
-
         _Right_Chunk = new NativeArray<byte>(rightChunk, Allocator.Persistent);
         _Left_Chunk = new NativeArray<byte>(leftChunk, Allocator.Persistent);
         _Front_Chunk = new NativeArray<byte>(frontChunk, Allocator.Persistent);
@@ -50,7 +51,7 @@ public struct IChunkMesh : IJob
     private NativeArray<int> l;
     private NativeArray<int> v;
 
-    private byte TerrainHeight => 128;
+    private readonly int _WorldHeight;
 
     public void Execute()
     {
@@ -60,10 +61,10 @@ public struct IChunkMesh : IJob
         }
         int a, b;
         l[0] = Voxels.s_ChunkSize;
-        l[1] = 1;
+        l[1] = _WorldHeight;
         l[2] = Voxels.s_ChunkSize;
         for (int p = 0; p <= 2; p++)
-        {
+         {
             a = (p + 1) % 3;
             b = (p + 2) % 3;
             for (d[p] = 0; d[p] < l[p]; d[p]++)
@@ -75,7 +76,7 @@ public struct IChunkMesh : IJob
                         d[1] = GetHeightMapValue(d[0], d[2]);
                         int3 pab = new int3(p, a, b);
                         RunDownwards(pab);
-                        d[1] = l[1];
+                        d[1] = _WorldHeight + 1;
                     }
                 }
             }
@@ -84,8 +85,23 @@ public struct IChunkMesh : IJob
 
     private void RunDownwards(int3 pab)
     {
-        for (; d[1] >= 0; d[1]--)
+        int max_height = d[1];
+        int min_height = 0;
+        for (int minHeight = d[1]; minHeight >= 0; minHeight--)
         {
+            int3 position = new int3(d[0], minHeight, d[2]);
+            if (IsDirectionEmpty(position, GetFaceIndex(pab.x, -1)) || IsDirectionEmpty(position, GetFaceIndex(pab.x, 1)))
+            {
+                min_height = minHeight;
+            }
+            else
+            {
+                break;
+            }
+        }
+        for (int currentHeight = min_height; currentHeight <= max_height; currentHeight++)
+        {
+            d[1] = currentHeight;
             int3 position = new int3(d[0], d[1], d[2]);
             byte voxelID = GetVoxelIDByHeight(position.y);
             DrawGreedyQuad(position, pab, voxelID, GetFaceIndex(pab.x, -1));
@@ -119,6 +135,10 @@ public struct IChunkMesh : IJob
         {
             v[b] = bl;
             int3 greater_b = new int3(v[0], v[1], v[2]);
+            if (faceIndex == 4 || faceIndex == 2)
+            {
+                var penis = 1 + 1;
+            }
             if (CanDrawFaceInArea(voxelID, min_limit, greater_b, faceIndex))
             {
                 b_limits.y = bl;
@@ -171,7 +191,7 @@ public struct IChunkMesh : IJob
 
     private byte GetVoxelIDByHeight(int h)
     {
-        if (h < 0 || h >= TerrainHeight)
+        if (h < 0 || h >= _WorldHeight)
         {
             return 0;
         }
@@ -216,22 +236,30 @@ public struct IChunkMesh : IJob
         return !isInDictionary ? false : _DrawnFaces[xyz].IsFaceDrawn(faceIndex);
     }
 
-    private bool IsDrawFace(byte voxelID, int3 xyz, int faceIndex)
+    private bool IsDirectionEmpty(int3 xyz, int faceIndex)
     {
-        byte originID = GetVoxelIDByHeight(xyz.y);
+        int3 direction = xyz + Voxels.GetDirection(faceIndex);
+        byte directionNaturalHeight = GetHeightMapValue(direction.x, direction.z);
+        return direction.y > directionNaturalHeight;
+    }
+    private bool IsDrawFace(int3 xyz, int faceIndex)
+    {
         byte originNaturalHeight = GetHeightMapValue(xyz.x, xyz.z);
         if (xyz.y > originNaturalHeight)
         {
             return false;
         }
-        int3 direction = xyz + Voxels.GetDirection(faceIndex);
-        byte directionNaturalHeight = GetHeightMapValue(direction.x, direction.z);
-
-        bool IsSameType = originID == voxelID;
-        bool IsDirectionEmpty = direction.y > directionNaturalHeight; // Here I will need to consider the other axis once I get the block ID by some algorithm..
-        bool IsFaceNotDrawn = !IsFaceDrawn(xyz, faceIndex);
-        return IsSameType && IsDirectionEmpty && IsFaceNotDrawn;
+        bool isDirectionEmpty = IsDirectionEmpty(xyz, faceIndex); // Here I will need to consider the other axis once I get the block ID by some algorithm..
+        bool isFaceNotDrawn = !IsFaceDrawn(xyz, faceIndex);
+        return isDirectionEmpty && isFaceNotDrawn;
     }
+    private bool IsDrawFace(byte voxelID, int3 xyz, int faceIndex)
+    {
+        byte originID = GetVoxelIDByHeight(xyz.y);
+        bool IsSameType = originID == voxelID;
+        return IsSameType && IsDrawFace(xyz, faceIndex);
+    }
+
     private bool CanDrawFaceInArea(byte voxelID, int3 min, int3 max, int faceIndex)
     {
         if (!(min.x == max.x || min.y == max.y || min.z == max.z))
@@ -275,9 +303,9 @@ public struct IChunkMesh : IJob
 
     public void Dispose()
     {
-        d.Dispose();
-        l.Dispose();
-        v.Dispose();
+        // d.Dispose();
+        // l.Dispose();
+        // v.Dispose();
         _Right_Chunk.Dispose();
         _Left_Chunk.Dispose();
         _Front_Chunk.Dispose();
