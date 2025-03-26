@@ -8,23 +8,23 @@ using VoxelUtilities;
 [BurstCompile]
 public struct IChunkMesh : IJob
 {
-    public IChunkMesh(int2 id, NativeArray<byte> centralChunk, NativeArray<byte> rightChunk, NativeArray<byte> leftChunk, NativeArray<byte> frontChunk, NativeArray<byte> backChunk)
+    public IChunkMesh(int2 id, NativeGrid<byte> centralChunk, NativeGrid<byte> rightChunk, NativeGrid<byte> leftChunk, NativeGrid<byte> frontChunk, NativeGrid<byte> backChunk)
     {
         _VoxelsConfig = new NativeArray<VoxelConfig>(GameConfig.Instance.VoxelConfiguration.GetVoxelsData(), Allocator.Persistent);
-        _ID = id;
-
         _WorldHeight = GameConfig.Instance.WorldConfiguration.WorldHeight;
+        _ID = id;
 
         Vertices = new NativeList<Vector3>(Allocator.Persistent);
         Triangles = new NativeList<int>(Allocator.Persistent);
         UVs = new NativeList<Vector3>(Allocator.Persistent);
 
         _DrawnFaces = new NativeHashMap<int3, FacesDrawn>(6000, Allocator.Persistent);
-        _Central_Chunk = new NativeArray<byte>(centralChunk, Allocator.Persistent);
-        _Right_Chunk = new NativeArray<byte>(rightChunk, Allocator.Persistent);
-        _Left_Chunk = new NativeArray<byte>(leftChunk, Allocator.Persistent);
-        _Front_Chunk = new NativeArray<byte>(frontChunk, Allocator.Persistent);
-        _Back_Chunk = new NativeArray<byte>(backChunk, Allocator.Persistent);
+
+        _Central_Chunk = new NativeGrid<byte>(centralChunk, Allocator.Persistent);
+        _Right_Chunk = new NativeGrid<byte>(rightChunk, Allocator.Persistent);
+        _Left_Chunk = new NativeGrid<byte>(leftChunk, Allocator.Persistent);
+        _Front_Chunk = new NativeGrid<byte>(frontChunk, Allocator.Persistent);
+        _Back_Chunk = new NativeGrid<byte>(backChunk, Allocator.Persistent);
 
         d = new NativeArray<int>(3, Allocator.TempJob);
         l = new NativeArray<int>(3, Allocator.TempJob);
@@ -38,33 +38,32 @@ public struct IChunkMesh : IJob
     public NativeList<Vector3> UVs { get; private set; }
 
     private readonly int2 _ID;
-    private readonly NativeArray<byte> _Central_Chunk;
+    private readonly NativeGrid<byte> _Central_Chunk;
 
-    private readonly NativeArray<byte> _Right_Chunk;
-    private readonly NativeArray<byte> _Left_Chunk;
-    private readonly NativeArray<byte> _Front_Chunk;
-    private readonly NativeArray<byte> _Back_Chunk;
+    private readonly NativeGrid<byte> _Right_Chunk;
+    private readonly NativeGrid<byte> _Left_Chunk;
+    private readonly NativeGrid<byte> _Front_Chunk;
+    private readonly NativeGrid<byte> _Back_Chunk;
 
     private readonly NativeHashMap<int3, FacesDrawn> _DrawnFaces;
+    private readonly int _WorldHeight;
 
     private NativeArray<int> d;
     private NativeArray<int> l;
     private NativeArray<int> v;
 
-    private readonly int _WorldHeight;
-
     public void Execute()
     {
-        if (_Central_Chunk.Length == 1)
+        if (_Central_Chunk.NativeArray.Length == 1)
         {
             return;
         }
         int a, b;
-        l[0] = Voxels.s_ChunkSize;
-        l[1] = _WorldHeight;
-        l[2] = Voxels.s_ChunkSize;
+        l[0] = _Central_Chunk.Lenght.x;
+        l[1] = _Central_Chunk.Lenght.y;
+        l[2] = _Central_Chunk.Lenght.z;
         for (int p = 0; p <= 2; p++)
-         {
+        {
             a = (p + 1) % 3;
             b = (p + 2) % 3;
             for (d[p] = 0; d[p] < l[p]; d[p]++)
@@ -135,10 +134,6 @@ public struct IChunkMesh : IJob
         {
             v[b] = bl;
             int3 greater_b = new int3(v[0], v[1], v[2]);
-            if (faceIndex == 4 || faceIndex == 2)
-            {
-                var penis = 1 + 1;
-            }
             if (CanDrawFaceInArea(voxelID, min_limit, greater_b, faceIndex))
             {
                 b_limits.y = bl;
@@ -195,14 +190,14 @@ public struct IChunkMesh : IJob
         {
             return 0;
         }
-        return Voxels.GetVoxelIDByHeight(h);
+        return Voxels.GetVoxelIDByHeight(h); //This will come from TerrainGeneration class
     }
     private byte GetHeightMapValue(int x, int z)
     {
-        NativeArray<byte> targetChunk = _Central_Chunk;
-        targetChunk = x < 0 ? _Left_Chunk : x == Voxels.s_ChunkSize ? _Right_Chunk : targetChunk;
-        targetChunk = z < 0 ? _Back_Chunk : z == Voxels.s_ChunkSize ? _Front_Chunk : targetChunk;
-        byte h = targetChunk[Voxels.Index(x, 0, z)];
+        NativeGrid<byte> targetChunk = _Central_Chunk;
+        targetChunk = x < 0 ? _Left_Chunk : x == _Central_Chunk.Lenght.x ? _Right_Chunk : targetChunk;
+        targetChunk = z < 0 ? _Back_Chunk : z == _Central_Chunk.Lenght.z ? _Front_Chunk : targetChunk;
+        byte h = targetChunk.GetValue(x, 0, z);
         return h;
     }
 
@@ -297,15 +292,14 @@ public struct IChunkMesh : IJob
         float x_center = min.x + (x_dif / 2f);
         float y_center = min.y + (y_dif / 2f);
         float z_center = min.z + (z_dif / 2f);
-
         return new float3(x_center * 0.5f, y_center * 0.5f, z_center * 0.5f);
     }
 
     public void Dispose()
     {
-        // d.Dispose();
-        // l.Dispose();
-        // v.Dispose();
+        d.Dispose();
+        l.Dispose();
+        v.Dispose();
         _Right_Chunk.Dispose();
         _Left_Chunk.Dispose();
         _Front_Chunk.Dispose();

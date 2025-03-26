@@ -5,6 +5,7 @@ using World;
 using Unity.Jobs;
 using Unity.Collections.NotBurstCompatible;
 using System;
+using VoxelUtilities;
 
 namespace World
 {
@@ -31,9 +32,9 @@ namespace World
             HasTerrain = false;
             HasMesh = false;
         }
-        public void SetVoxels(NativeArray<byte> voxels)
+        public void SetHeightMap(NativeGrid<byte> heightMap)
         {
-            _Chunk.SetVoxelMap(voxels);
+            _Chunk.SetHeightMap(heightMap);
             HasTerrain = true;
         }
         public void SetMesh(IChunkMesh meshJob)

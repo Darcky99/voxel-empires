@@ -10,6 +10,7 @@ using VoxelUtilities;
 public static class ChunkUtils
 {
     private static GameConfig s_GameConfig => GameConfig.Instance;
+    private static ChunkConfiguration ChunkConfiguration => s_GameConfig.ChunkConfiguration;
 
     public static List<Vector3Int> GetChunksByDistance(Vector3 worldPosition, int distance, Func<Vector3Int, bool> condition)
     {
@@ -92,19 +93,19 @@ public static class ChunkUtils
         //Block size '0.25' should be a constant in GameConfig.
         Vector3 adjustWorldPosition = worldPosition + (Vector3.one * 0.25f);
         Vector2 flatPosition = new Vector2(adjustWorldPosition.x, adjustWorldPosition.z);
-        flatPosition.x /= (s_GameConfig.ChunkConfiguration.ChunkSize / 2);
-        flatPosition.y /= (s_GameConfig.ChunkConfiguration.ChunkSize / 2);
+        flatPosition.x /= (s_GameConfig.ChunkConfiguration.ChunkSize.x / 2);
+        flatPosition.y /= (s_GameConfig.ChunkConfiguration.ChunkSize.z / 2);
         return new Vector2Int(Mathf.FloorToInt(flatPosition.x), Mathf.FloorToInt(flatPosition.y));
     }
     public static int2 WorldCoordinatesToChunkIndex(float3 worldPosition)
     {
         float3 position = worldPosition + (new float3(1, 1, 1) * 0.25f);
-        position.x /= (s_GameConfig.ChunkConfiguration.ChunkSize / 2);
-        position.z /= (s_GameConfig.ChunkConfiguration.ChunkSize / 2);
+        position.x /= (s_GameConfig.ChunkConfiguration.ChunkSize.x / 2);
+        position.z /= (s_GameConfig.ChunkConfiguration.ChunkSize.z / 2);
         int x = (int)math.floor(position.x);
         int z = (int)math.floor(position.z);
         return new int2(x, z);
     }
 
-    public static float3 ChunkIDToWorldCoordinates(int2 chunkID) => new float3(chunkID.x, 0, chunkID.y) * Voxels.s_ChunkSize / 2f;
+    public static float3 ChunkIDToWorldCoordinates(int2 chunkID) => new float3(chunkID.x * ChunkConfiguration.ChunkSize.x, 0 * ChunkConfiguration.ChunkSize.y, chunkID.y * ChunkConfiguration.ChunkSize.z) / 2f;
 }

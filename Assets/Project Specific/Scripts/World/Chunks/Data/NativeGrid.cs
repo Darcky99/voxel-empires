@@ -4,23 +4,27 @@ using UnityEngine;
 
 namespace VoxelUtilities
 {
-    public struct NativeGrid
+    public struct NativeGrid<T> where T : struct
     {
-        public NativeGrid(int size, int height)
+        public NativeGrid(int3 lenght, Allocator allocatorType)
         {
-            _NativeArray = default;
-            _GridSize = size;
-            _GridHeight = height;
+            Lenght = lenght;
+            _NativeArray = new NativeArray<T>(lenght.x * lenght.y * lenght.z, allocatorType);
+        }
+        public NativeGrid(NativeGrid<T> nativeGrid, Allocator allocatorType)
+        {
+            Lenght = nativeGrid.Lenght;
+            _NativeArray = new NativeArray<T>(nativeGrid.NativeArray, allocatorType);
         }
 
-        public NativeArray<byte> NativeArray => _NativeArray;
+        public NativeArray<T> NativeArray => _NativeArray;
+        public int ArraySize => Lenght.x * Lenght.y * Lenght.z;
 
-        private NativeArray<byte> _NativeArray;
+        public readonly int3 Lenght;
 
-        private readonly int _GridSize;
-        private readonly int _GridHeight;
+        private NativeArray<T> _NativeArray;
 
-        public void SetNativeArray(NativeArray<byte> nativeArray)
+        public void SetNativeArray(NativeArray<T> nativeArray)
         {
             if (_NativeArray != null)
             {
@@ -29,33 +33,43 @@ namespace VoxelUtilities
             _NativeArray = nativeArray;
         }
 
-        private int Index(int x, int y, int z)
+        public int Index(int x, int z)
         {
-            return x + (z * _GridSize) + (y * _GridSize * _GridSize);
+            return x + (z * Lenght.x);
         }
-        private bool IsInsideBounds(int x, int y, int z)
+        public int Index(int x, int y, int z)
         {
-            bool inBounds = !(x < 0 || x >= _GridSize || y < 0 || y >= _GridHeight || z < 0 || z >= _GridSize);
-            if (!inBounds)
-            {
-                Debug.LogError($"Index out of bounds: {x}, {y}, {z}");
-            }
-            return inBounds;
+            return Index(x, z) + (y * Lenght.x * Lenght.z);
         }
 
-        public byte GetValue(int x, int y, int z)
+        private (int x, int y, int z) InfiniteBounds(int x, int y, int z)
         {
-            IsInsideBounds(x, y, z);
+            x = x < 0 ? Lenght.x - 1 : x >= Lenght.x ? 0 : x;
+            y = y < 0 ? Lenght.y - 1 : y >= Lenght.y ? 0 : y;
+            z = z < 0 ? Lenght.z - 1 : z >= Lenght.z ? 0 : z;
+            return (x, y, z);
+        }
+
+        public T GetValue(int x, int y, int z)
+        {
+            (x, y, z) = InfiniteBounds(x, y, z);
             return _NativeArray[Index(x, y, z)];
         }
-        public void SetValue(int x, int y, int z, byte value)
+        public void SetValue(int x, int y, int z, T value)
         {
-            IsInsideBounds(x, y, z);
+            (x, y, z) = InfiniteBounds(x, y, z);
             _NativeArray[Index(x, y, z)] = value;
         }
 
+        public T GetValue(int3 xyz) => GetValue(xyz.x, xyz.y, xyz.z);
+        public void SetValue(int3 xyz, T value) => SetValue(xyz.x, xyz.y, xyz.z, value);
 
-        public byte GetValue(int3 xyz) => GetValue(xyz.x, xyz.y, xyz.z);
-        public void SetValue(int3 xyz, byte value) => SetValue(xyz.x, xyz.y, xyz.z, value);
+        public void Dispose()
+        {
+            if (_NativeArray != null)
+            {
+                _NativeArray.Dispose();
+            }
+        }
     }
 }

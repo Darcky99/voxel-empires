@@ -7,43 +7,6 @@ namespace VoxelUtilities
 {
     public static class Voxels
     {
-        private static int s_ChunkSizeMaxIndex => s_ChunkSize - 1;
-        private static int s_ChunkHeightMaxIndex => s_ChunkHeight - 1;
-
-        public static readonly int s_ChunkSize = 32;
-        public static readonly int s_ChunkHeight = 1;
-
-        public static int Index(int x, int y, int z)
-        {
-            if (x < 0 || x >= s_ChunkSize || y < 0 || y >= s_ChunkHeight || z < 0 || z >= s_ChunkSize)
-            {
-                x = x < 0 ? s_ChunkSizeMaxIndex : x >= s_ChunkSize ? 0 : x;
-                y = y < 0 ? s_ChunkHeightMaxIndex : y >= s_ChunkHeight ? 0 : y;
-                z = z < 0 ? s_ChunkSizeMaxIndex : z >= s_ChunkSize ? 0 : z;
-            }
-            return x + (z * s_ChunkSize) + (y * s_ChunkSize * s_ChunkSize);
-        }
-        public static int Index(int x, int z)
-        {
-            if (x < 0 || x >= s_ChunkSize || z < 0 || z >= s_ChunkSize)
-            {
-                x = x < 0 ? s_ChunkSizeMaxIndex : x >= s_ChunkSize ? 0 : x;
-                z = z < 0 ? s_ChunkSizeMaxIndex : z >= s_ChunkSize ? 0 : z;
-            }
-            return x + (z * s_ChunkSize);
-        }
-        public static int3 XYZ(int i)
-        {
-            int squareChunkSize = s_ChunkSize * s_ChunkSize;
-            int3 xyz = new int3();
-            xyz.y = (int)math.floor(i / (float)squareChunkSize);
-            i -= xyz.y * squareChunkSize;
-            xyz.z = (int)math.floor(i / (float)s_ChunkSize);
-            i -= xyz.z * s_ChunkSize;
-            xyz.x = i;
-            return xyz;
-        }
-
         private static float3 GetVoxelVertice(int vertexIndex)
         {
             switch (vertexIndex)

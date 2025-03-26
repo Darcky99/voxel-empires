@@ -9,12 +9,12 @@ using VoxelUtilities;
 [BurstCompile]
 public struct ITerrainGeneration : IJob
 {
-    public ITerrainGeneration(int2 chunkID)
+    public ITerrainGeneration(int2 chunkID, int3 chunkSize)
     {
         _ChunkID = chunkID;
+        _TerrainMaxHeight = (uint)GameConfig.Instance.WorldConfiguration.WorldHeight;
 
-        HeightMap_Test = new NativeGrid(GameConfig.Instance.ChunkConfiguration.ChunkSize, 1);
-        HeightMap = new NativeArray<byte>(GameConfig.Instance.ChunkConfiguration.ChunkVoxelCount, Allocator.Persistent);
+        HeightMap = new NativeGrid<byte>(chunkSize, Allocator.Persistent);
         IsEmpty = true;
 
         _CurveResolution = GameConfig.Instance.WorldConfiguration.CurveResolution;
@@ -27,11 +27,11 @@ public struct ITerrainGeneration : IJob
         _Scale = GameConfig.Instance.WorldConfiguration.Scale;
     }
 
-    public NativeGrid HeightMap_Test;
-    public NativeArray<byte> HeightMap;
+    public NativeGrid<byte> HeightMap;
     public bool IsEmpty;
 
     private int _CurveResolution;
+    private uint _TerrainMaxHeight;
 
     private uint _Seed;
     private float _Scale;
@@ -44,20 +44,16 @@ public struct ITerrainGeneration : IJob
 
     public void Execute()
     {
-        int chunkSize = Voxels.s_ChunkSize;
+        int2 globalChunkPosition = new int2(_ChunkID.x * HeightMap.Lenght.x, _ChunkID.y * HeightMap.Lenght.z);
         float persistance = 1f;
         float lacunarity = 1f;
 
-        int2
-            globalChunkPosition = _ChunkID * chunkSize,
-            voxelLocalPosition = 0;
-
-        for (voxelLocalPosition.x = 0; voxelLocalPosition.x < chunkSize; voxelLocalPosition.x++)
+        for (int x = 0; x < HeightMap.Lenght.x; x++)
         {
-            for (voxelLocalPosition.y = 0; voxelLocalPosition.y < chunkSize; voxelLocalPosition.y++)
+            for (int z = 0; z < HeightMap.Lenght.z; z++)
             {
-                int sampleX = globalChunkPosition.x + voxelLocalPosition.x;
-                int sampleZ = globalChunkPosition.y + voxelLocalPosition.y;
+                int sampleX = globalChunkPosition.x + x;
+                int sampleZ = globalChunkPosition.y + z;
 
                 float continentalness_noice = Noise.Perlin2D(sampleX, sampleZ, _Seed, 0.15f * _Scale, 4, 0.55f * persistance, 1.25f * lacunarity);
                 float erosion_noice = Noise.Perlin2D(sampleX, sampleZ, _Seed, 1 * _Scale, 4, 0.76f * persistance, 2f * lacunarity);
@@ -68,9 +64,8 @@ public struct ITerrainGeneration : IJob
                 float pv = Evaluate(peaksandvalleys_noice, 2);
 
                 float CEP = (c + (e * pv)) / 2f;
-                int terrainHeight = (int)math.floor(CEP * 128);
-                int i = index(voxelLocalPosition);
-                HeightMap[i] = (byte)terrainHeight;
+                int terrainHeight = (int)math.floor(CEP * _TerrainMaxHeight);
+                HeightMap.SetValue(new int3(x, 0, z), (byte)terrainHeight);
             }
         }
         IsEmpty = false;
@@ -82,7 +77,6 @@ public struct ITerrainGeneration : IJob
         PeaksAndValleys.Dispose();
     }
 
-    private int index(int2 position) => Voxels.Index(position.x, position.y);
     private float Evaluate(float time, int curve)
     {
         NativeArray<float> target = default;

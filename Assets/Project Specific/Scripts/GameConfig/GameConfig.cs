@@ -5,6 +5,7 @@ using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using VoxelUtilities;
 using Unity.Collections;
+using Unity.Mathematics;
 
 [CreateAssetMenu(fileName = "Game Configuration")]
 public class GameConfig : ScriptableObjectSingleton<GameConfig>
@@ -48,12 +49,10 @@ public class ChunkConfiguration
     public static readonly float ChunkToWorldDistance = 8f;
     public static readonly float VoxelToWorldDistance = 0.5f;
 
-    public int ChunkVoxelCount => m_ChunkSize * m_ChunkSize * ChunkHeight;
-    public int ChunkSize => m_ChunkSize;
-    public int ChunkHeight => m_ChunkHeight;
+    public int3 ChunkSize => new int3(m_ChunkSize, m_ChunkHeight, m_ChunkSize);
 
-    [SerializeField] private int m_ChunkSize = 16;
-    [SerializeField] private int m_ChunkHeight = 512;
+    [SerializeField] private int m_ChunkSize;
+    [SerializeField] private int m_ChunkHeight;
 }
 
 [Serializable]

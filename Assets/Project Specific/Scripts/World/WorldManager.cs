@@ -79,7 +79,7 @@ namespace World
             NativeArray<ITerrainGeneration> terrainJobs = new NativeArray<ITerrainGeneration>(totalCount, Allocator.Persistent);
             for (int i = 0; i < totalCount; i++)
             {
-                terrainJobs[i] = new ITerrainGeneration(toLoad[i]);
+                terrainJobs[i] = new ITerrainGeneration(toLoad[i], _GameConfig.ChunkConfiguration.ChunkSize);
                 JobHandle handler = terrainJobs[i].Schedule();
                 jobHandles[i] = handler;
             }
@@ -89,7 +89,7 @@ namespace World
             for (int i = 0; i < totalCount; i++)
             {
                 ChunkObject chunkObj = CreateChunkObject(toLoad[i]);
-                chunkObj.SetVoxels(terrainJobs[i].HeightMap);
+                chunkObj.SetHeightMap(terrainJobs[i].HeightMap);
             }
             jobHandles.Dispose();
             terrainJobs.Dispose();
@@ -108,11 +108,11 @@ namespace World
                 TryGetChunkObject(chunkID.Move(-1, 0), out ChunkObject leftChunkObj);
                 TryGetChunkObject(chunkID.Move(0, 1), out ChunkObject frontChunkObj);
                 TryGetChunkObject(chunkID.Move(0, -1), out ChunkObject backChunkObj);
-                meshJobs[i] = new IChunkMesh(chunkID, chunkObj.Chunk.HeightMap.NativeArray,
-                    rightChunkObj.Chunk.HeightMap.NativeArray,
-                    leftChunkObj.Chunk.HeightMap.NativeArray,
-                    frontChunkObj.Chunk.HeightMap.NativeArray,
-                    backChunkObj.Chunk.HeightMap.NativeArray);
+                meshJobs[i] = new IChunkMesh(chunkID, chunkObj.Chunk.HeightMap,
+                    rightChunkObj.Chunk.HeightMap,
+                    leftChunkObj.Chunk.HeightMap,
+                    frontChunkObj.Chunk.HeightMap,
+                    backChunkObj.Chunk.HeightMap);
                 JobHandle handler = meshJobs[i].Schedule();
                 jobHandles[i] = handler;
             }
