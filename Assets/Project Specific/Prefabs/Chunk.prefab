@@ -96,6 +96,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0677eaec8672fcd41aba3b7071c3352e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HasTerrain>k__BackingField: 0
+  <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 8808778173757465436}
   meshCollider: {fileID: 2880266805003410392}
 --- !u!1 &9160094407418228846
@@ -156,6 +158,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

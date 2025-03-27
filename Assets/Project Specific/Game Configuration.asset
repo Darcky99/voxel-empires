@@ -46,10 +46,10 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   <ChunkConfiguration>k__BackingField:
-    m_ChunkSize: 64
+    m_ChunkSize: 32
     m_ChunkHeight: 1
   <GraphicsConfiguration>k__BackingField:
-    m_RenderDistance: 16
+    m_RenderDistance: 32
   <VoxelConfiguration>k__BackingField:
     <Voxels>k__BackingField:
     - {fileID: 11400000, guid: f8d23665b38332f40a8d230749ee657f, type: 2}
@@ -59,7 +59,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: b223f244a073da842a9b8ebc28430cf1, type: 2}
   <WorldConfiguration>k__BackingField:
     <WorldHeight>k__BackingField: 256
-    <Seed>k__BackingField: 184398
+    <Seed>k__BackingField: 194071
     <Scale>k__BackingField: 96
     <CurveResolution>k__BackingField: 1280
     <Continentalness>k__BackingField:

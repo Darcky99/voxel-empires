@@ -43,4 +43,9 @@ public struct GetChunksByRingJob : IJob
             ChunksInRing.Add(pos2);
         }
     }
+
+    public void Dispose()
+    {
+        ChunksInRing.Dispose();
+    }
 }

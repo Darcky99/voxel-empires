@@ -8,11 +8,10 @@ using VoxelUtilities;
 [BurstCompile]
 public struct IChunkMesh : IJob
 {
-    public IChunkMesh(int2 id, NativeGrid<byte> centralChunk, NativeGrid<byte> rightChunk, NativeGrid<byte> leftChunk, NativeGrid<byte> frontChunk, NativeGrid<byte> backChunk)
+    public IChunkMesh(NativeGrid<byte> buildingChunk)
     {
         _VoxelsConfig = new NativeArray<VoxelConfig>(GameConfig.Instance.VoxelConfiguration.GetVoxelsData(), Allocator.Persistent);
         _WorldHeight = GameConfig.Instance.WorldConfiguration.WorldHeight;
-        _ID = id;
 
         Vertices = new NativeList<Vector3>(Allocator.Persistent);
         Triangles = new NativeList<int>(Allocator.Persistent);
@@ -20,15 +19,11 @@ public struct IChunkMesh : IJob
 
         _DrawnFaces = new NativeHashMap<int3, FacesDrawn>(6000, Allocator.Persistent);
 
-        _Central_Chunk = new NativeGrid<byte>(centralChunk, Allocator.Persistent);
-        _Right_Chunk = new NativeGrid<byte>(rightChunk, Allocator.Persistent);
-        _Left_Chunk = new NativeGrid<byte>(leftChunk, Allocator.Persistent);
-        _Front_Chunk = new NativeGrid<byte>(frontChunk, Allocator.Persistent);
-        _Back_Chunk = new NativeGrid<byte>(backChunk, Allocator.Persistent);
+        _BuildingChunk = new NativeGrid<byte>(buildingChunk, Allocator.Persistent);
 
-        d = new NativeArray<int>(3, Allocator.TempJob);
-        l = new NativeArray<int>(3, Allocator.TempJob);
-        v = new NativeArray<int>(3, Allocator.TempJob);
+        d = new NativeArray<int>(3, Allocator.Persistent);
+        l = new NativeArray<int>(3, Allocator.Persistent);
+        v = new NativeArray<int>(3, Allocator.Persistent);
     }
 
     private NativeArray<VoxelConfig> _VoxelsConfig;
@@ -37,13 +32,7 @@ public struct IChunkMesh : IJob
     public NativeList<int> Triangles { get; private set; }
     public NativeList<Vector3> UVs { get; private set; }
 
-    private readonly int2 _ID;
-    private readonly NativeGrid<byte> _Central_Chunk;
-
-    private readonly NativeGrid<byte> _Right_Chunk;
-    private readonly NativeGrid<byte> _Left_Chunk;
-    private readonly NativeGrid<byte> _Front_Chunk;
-    private readonly NativeGrid<byte> _Back_Chunk;
+    private readonly NativeGrid<byte> _BuildingChunk;
 
     private readonly NativeHashMap<int3, FacesDrawn> _DrawnFaces;
     private readonly int _WorldHeight;
@@ -54,14 +43,15 @@ public struct IChunkMesh : IJob
 
     public void Execute()
     {
-        if (_Central_Chunk.NativeArray.Length == 1)
+        int3 real_chunk_size = new int3(_BuildingChunk.Lenght.x - 2, 1, _BuildingChunk.Lenght.x - 2);
+        if (_BuildingChunk.NativeArray.Length == 1)
         {
             return;
         }
         int a, b;
-        l[0] = _Central_Chunk.Lenght.x;
-        l[1] = _Central_Chunk.Lenght.y;
-        l[2] = _Central_Chunk.Lenght.z;
+        l[0] = real_chunk_size.x;
+        l[1] = real_chunk_size.y;
+        l[2] = real_chunk_size.z;
         for (int p = 0; p <= 2; p++)
         {
             a = (p + 1) % 3;
@@ -194,10 +184,10 @@ public struct IChunkMesh : IJob
     }
     private byte GetHeightMapValue(int x, int z)
     {
-        NativeGrid<byte> targetChunk = _Central_Chunk;
-        targetChunk = x < 0 ? _Left_Chunk : x == _Central_Chunk.Lenght.x ? _Right_Chunk : targetChunk;
-        targetChunk = z < 0 ? _Back_Chunk : z == _Central_Chunk.Lenght.z ? _Front_Chunk : targetChunk;
-        byte h = targetChunk.GetValue(x, 0, z);
+        // NativeGrid<byte> targetChunk = _Central_Chunk;
+        // targetChunk = x < 0 ? _Left_Chunk : x == _Central_Chunk.Lenght.x ? _Right_Chunk : targetChunk;
+        // targetChunk = z < 0 ? _Back_Chunk : z == _Central_Chunk.Lenght.z ? _Front_Chunk : targetChunk;
+        byte h = _BuildingChunk.GetValue(x + 1, 0, z + 1);
         return h;
     }
 
@@ -295,21 +285,24 @@ public struct IChunkMesh : IJob
         return new float3(x_center * 0.5f, y_center * 0.5f, z_center * 0.5f);
     }
 
-    public void Dispose()
+    public void TempJobDispose()
     {
         d.Dispose();
         l.Dispose();
         v.Dispose();
-        _Right_Chunk.Dispose();
-        _Left_Chunk.Dispose();
-        _Front_Chunk.Dispose();
-        _Back_Chunk.Dispose();
-        _Central_Chunk.Dispose();
+        // _Right_Chunk.Dispose();
+        // _Left_Chunk.Dispose();
+        // _Front_Chunk.Dispose();
+        // _Back_Chunk.Dispose();
+        _BuildingChunk.Dispose();
+        _DrawnFaces.Dispose();
+        _VoxelsConfig.Dispose();
+    }
+    public void Dispose()
+    {
         Vertices.Dispose();
         Triangles.Dispose();
         UVs.Dispose();
-        _DrawnFaces.Dispose();
-        _VoxelsConfig.Dispose();
     }
 }
 

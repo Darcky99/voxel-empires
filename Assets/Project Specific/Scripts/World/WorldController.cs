@@ -81,11 +81,20 @@ namespace World
             }
         }
 
-        private async UniTask ExpansiveLoading(int2 originChunkID)
+        private async UniTask ExpansiveLoading(int2 origin)
         {
-            for (int i = 0; i < _GameConfig.GraphicsConfiguration.RenderDistance; i++)
+            for (int r = 0; r < _GameConfig.GraphicsConfiguration.RenderDistance; r++)
             {
-                await GenerateRing(originChunkID, i);
+                GetChunksByRingJob chunks_to_draw_Job = new GetChunksByRingJob(origin, r);
+                JobHandle chunks_to_draw_Handler = chunks_to_draw_Job.Schedule();
+                await UniTask.WaitUntil(() => chunks_to_draw_Handler.IsCompleted);
+                chunks_to_draw_Handler.Complete();
+                if (HasMesh(chunks_to_draw_Job.ChunksInRing))
+                {
+                    chunks_to_draw_Job.Dispose();
+                    continue;
+                }
+                await GenerateRing(origin, r);
                 if (_stopExpansiveLoadingFlag)
                 {
                     _stopExpansiveLoadingFlag = false;
@@ -116,7 +125,11 @@ namespace World
             NativeList<int2> draw = RemoveItemsFromList(chunks_to_draw_Job.ChunksInRing, HasMesh);
             await _WorldManager.LoadAll(generateTerrain);
             await _WorldManager.LoadAll(generateAround);
-            await _WorldManager.DrawAll(draw);
+            await _WorldManager.LimitedDrawAll(draw);
+            generateTerrain.Dispose();
+            generateAround.Dispose();
+            draw.Dispose();
+            // await _WorldManager.DrawAll(draw);
         }
         private NativeList<int2> RemoveItemsFromList(NativeList<int2> ids, Func<int2, bool> conditionToRemove)
         {
@@ -141,6 +154,17 @@ namespace World
         {
             bool exists = _WorldManager.TryGetChunkObject(id, out ChunkObject chunkObject);
             return exists && chunkObject.HasMesh;
+        }
+        private bool HasMesh(NativeList<int2> ids)
+        {
+            foreach (int2 id in ids)
+            {
+                if (!HasMesh(id))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }
