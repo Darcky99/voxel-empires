@@ -62,31 +62,6 @@ public static class ChunkUtils
         }
         return chunksInRing;
     }
-    [BurstCompile]
-    public static NativeList<int2> GetChunksByRing(float3 worldPosition, int ring)
-    {
-        int2 chunkID = WorldCoordinatesToChunkIndex(worldPosition);
-        return GetChunksByRing(chunkID, ring);
-    }
-    [BurstCompile]
-    public static NativeList<int2> GetChunksByCircle(float3 worldPosition, int radius)
-    {
-        int2 chunkID = WorldCoordinatesToChunkIndex(worldPosition);
-        NativeList<int2> chunksInCircle = new NativeList<int2>(Allocator.Persistent);
-        for (int ring = 0; ring <= radius; ring++)
-        {
-            NativeList<int2> chunksInRing = GetChunksByRing(chunkID, ring);
-            for (int i = 0; i < chunksInRing.Length; i++)
-            {
-                if (!chunksInCircle.Contains(chunksInRing[i]))
-                {
-                    chunksInCircle.Add(chunksInRing[i]);
-                }
-            }
-            chunksInRing.Dispose();
-        }
-        return chunksInCircle;
-    }
 
     public static Vector2Int WorldCoordinatesToChunkIndex(Vector3 worldPosition)
     {

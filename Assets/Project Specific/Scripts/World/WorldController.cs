@@ -1,6 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
 using Unity.Collections;
+using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 using VE;
@@ -29,7 +30,7 @@ namespace World
 
         private void WorldManager_StateChanged(object sender, WorldState worldState)
         {
-             switch (worldState)
+            switch (worldState)
             {
                 case WorldState.Idle:
                     Idle();
@@ -96,9 +97,23 @@ namespace World
         }
         private async UniTask GenerateRing(int2 origin, int ring)
         {
-            NativeList<int2> generateTerrain = RemoveItemsFromList(ChunkUtils.GetChunksByRing(origin, ring), HasTerrain);
-            NativeList<int2> generateAround = RemoveItemsFromList(ChunkUtils.GetChunksByRing(origin, ring + 1), HasTerrain);
-            NativeList<int2> draw = RemoveItemsFromList(ChunkUtils.GetChunksByRing(origin, ring), HasMesh);
+            GetChunksByRingJob chunks_to_load_Job = new GetChunksByRingJob(origin, ring);
+            JobHandle chunks_to_load_Handler = chunks_to_load_Job.Schedule();
+
+            GetChunksByRingJob chunks_to_preload_Job = new GetChunksByRingJob(origin, ring + 1);
+            JobHandle chunks_to_preload_Handler = chunks_to_preload_Job.Schedule();
+
+            GetChunksByRingJob chunks_to_draw_Job = new GetChunksByRingJob(origin, ring);
+            JobHandle chunks_to_draw_Handler = chunks_to_draw_Job.Schedule();
+
+            await UniTask.WaitUntil(() => chunks_to_load_Handler.IsCompleted && chunks_to_draw_Handler.IsCompleted && chunks_to_preload_Handler.IsCompleted);
+            chunks_to_load_Handler.Complete();
+            chunks_to_draw_Handler.Complete();
+            chunks_to_preload_Handler.Complete();
+
+            NativeList<int2> generateTerrain = RemoveItemsFromList(chunks_to_load_Job.ChunksInRing, HasTerrain);
+            NativeList<int2> generateAround = RemoveItemsFromList(chunks_to_preload_Job.ChunksInRing, HasTerrain);
+            NativeList<int2> draw = RemoveItemsFromList(chunks_to_draw_Job.ChunksInRing, HasMesh);
             await _WorldManager.LoadAll(generateTerrain);
             await _WorldManager.LoadAll(generateAround);
             await _WorldManager.DrawAll(draw);
