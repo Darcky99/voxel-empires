@@ -11,10 +11,18 @@ public class VerticalMovementState_Grounded : StateBase<VerticalMovement_StateMa
     protected override void OnExitState() { }
     protected override void OnUpdateState()
     {
+        if (!StateMachine.VerticalMovement.Gravity)
+        {
+            return;
+        }
         StateMachine.VerticalMovement.CharacterController.Move(Physics.gravity * 0.1f * Time.deltaTime);
     }
     protected override void CheckSwitchState()
     {
+        if (!StateMachine.VerticalMovement.Gravity)
+        {
+            return;
+        }
         if (StateMachine.VerticalMovement.CharacterController.isGrounded == false)
         {
             TransitionToState(eVerticalStates.Falling);

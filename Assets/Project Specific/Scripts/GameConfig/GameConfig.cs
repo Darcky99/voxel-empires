@@ -89,49 +89,7 @@ public class WorldGenerationConfiguration
 
 
     [Title("Height Curves")]
-    [field: SerializeField] public int CurveResolution { get; private set; }
     [field: SerializeField] public AnimationCurve Continentalness { get; private set; }
     [field: SerializeField] public AnimationCurve Erosion { get; private set; }
     [field: SerializeField] public AnimationCurve PeaksAndValleys { get; set; }
-
-    private float[] m_ContinentalnessValues;
-    private float[] m_ErosionValues;
-    private float[] m_PeaksAndValleysValues;
-
-    private float[] curveValues(AnimationCurve curve)
-    {
-        float[] values = new float[CurveResolution + 1];
-
-        values[0] = curve.Evaluate(-1);
-        values[values.Length - 1] = curve.Evaluate(1);
-
-        float tf = 2f / CurveResolution;
-        for (int i = 1; i < values.Length - 1; i++)
-        {
-            float t = -1 + (tf * i);
-            values[i] = curve.Evaluate(t);
-        }
-        return values;
-    }
-    public float[] GetCurveValues(int i)
-    {
-        switch (i)
-        {
-            case 0:
-                if (m_ContinentalnessValues == null || m_ContinentalnessValues.Length != CurveResolution)
-                    m_ContinentalnessValues = curveValues(Continentalness);
-                return m_ContinentalnessValues;
-            case 1:
-                if (m_ErosionValues == null || m_ErosionValues.Length != CurveResolution)
-                    m_ErosionValues = curveValues(Erosion);
-                return m_ErosionValues;
-            case 2:
-                if (m_PeaksAndValleysValues == null || m_PeaksAndValleysValues.Length != CurveResolution)
-                    m_PeaksAndValleysValues = curveValues(PeaksAndValleys);
-                return m_PeaksAndValleysValues;
-            default:
-                Debug.LogError("CHINGUEN TODOS, ASU MADREEE");
-                return null;
-        }
-    }
 }

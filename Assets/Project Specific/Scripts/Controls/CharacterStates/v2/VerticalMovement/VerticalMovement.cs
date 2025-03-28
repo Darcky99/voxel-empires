@@ -5,6 +5,7 @@ using UnityEngine;
 public interface IVerticalMovement
 {
     public CharacterController CharacterController { get; }
+    public bool Gravity { get; }
 }
 public enum eVerticalStates
 {

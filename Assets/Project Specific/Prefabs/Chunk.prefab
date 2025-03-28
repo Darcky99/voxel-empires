@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 363039939384885866}
   - component: {fileID: 4953460876073373235}
-  - component: {fileID: 2880266805003410392}
+  - component: {fileID: 559035201668754273}
   - component: {fileID: 4001090224927273711}
   m_Layer: 0
   m_Name: Chunk
@@ -62,7 +62,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!64 &2880266805003410392
+--- !u!64 &559035201668754273
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -99,7 +99,7 @@ MonoBehaviour:
   <HasTerrain>k__BackingField: 0
   <HasMesh>k__BackingField: 0
   meshFilter: {fileID: 8808778173757465436}
-  meshCollider: {fileID: 2880266805003410392}
+  meshCollider: {fileID: 559035201668754273}
 --- !u!1 &9160094407418228846
 GameObject:
   m_ObjectHideFlags: 0

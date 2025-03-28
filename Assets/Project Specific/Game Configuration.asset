@@ -49,7 +49,7 @@ MonoBehaviour:
     m_ChunkSize: 32
     m_ChunkHeight: 1
   <GraphicsConfiguration>k__BackingField:
-    m_RenderDistance: 32
+    m_RenderDistance: 16
   <VoxelConfiguration>k__BackingField:
     <Voxels>k__BackingField:
     - {fileID: 11400000, guid: f8d23665b38332f40a8d230749ee657f, type: 2}
@@ -58,22 +58,21 @@ MonoBehaviour:
     - {fileID: 11400000, guid: c77defc42f532044a9c5cbd96ce41d7b, type: 2}
     - {fileID: 11400000, guid: b223f244a073da842a9b8ebc28430cf1, type: 2}
   <WorldConfiguration>k__BackingField:
-    <WorldHeight>k__BackingField: 256
-    <Seed>k__BackingField: 194071
-    <Scale>k__BackingField: 96
-    <CurveResolution>k__BackingField: 1280
+    <WorldHeight>k__BackingField: 128
+    <Seed>k__BackingField: 193718
+    <Scale>k__BackingField: 16
     <Continentalness>k__BackingField:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: -1
-        value: 1
-        inSlope: -40.018654
-        outSlope: -40.018654
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0.03425416
+        value: 0.9975565
+        inSlope: -0.51188
+        outSlope: -16.383595
+        tangentMode: 69
+        weightedMode: 3
+        inWeight: 0.33333334
+        outWeight: 1
       - serializedVersion: 3
         time: -0.9417105
         value: 0.04256451

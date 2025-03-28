@@ -50,7 +50,7 @@ public struct IChunkMesh : IJob
         }
         int a, b;
         l[0] = real_chunk_size.x;
-        l[1] = real_chunk_size.y;
+        l[1] = _WorldHeight;
         l[2] = real_chunk_size.z;
         for (int p = 0; p <= 2; p++)
         {
@@ -152,8 +152,10 @@ public struct IChunkMesh : IJob
         foreach (Vector3 uv in uvs)
         {
             Vector3 u = uv;
-            u[a == 2 ? a - 1 - b : a] *= meshSize.x;
-            u[b == 2 ? b - 1 - a : b] *= meshSize.y;
+            int index_a = a == 2 ? a - 1 - b : a;
+            int index_b = b == 2 ? b - 1 - a : b;
+            u[index_a] *= meshSize.x;
+            u[index_b] *= meshSize.y;
             u.z = _VoxelsConfig[voxelID - 1].TextureIndex(faceIndex);
             UVs.Add(u);
         }
@@ -176,17 +178,10 @@ public struct IChunkMesh : IJob
 
     private byte GetVoxelIDByHeight(int h)
     {
-        if (h < 0 || h >= _WorldHeight)
-        {
-            return 0;
-        }
         return Voxels.GetVoxelIDByHeight(h); //This will come from TerrainGeneration class
     }
     private byte GetHeightMapValue(int x, int z)
     {
-        // NativeGrid<byte> targetChunk = _Central_Chunk;
-        // targetChunk = x < 0 ? _Left_Chunk : x == _Central_Chunk.Lenght.x ? _Right_Chunk : targetChunk;
-        // targetChunk = z < 0 ? _Back_Chunk : z == _Central_Chunk.Lenght.z ? _Front_Chunk : targetChunk;
         byte h = _BuildingChunk.GetValue(x + 1, 0, z + 1);
         return h;
     }

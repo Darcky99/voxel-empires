@@ -17,11 +17,9 @@ public struct ITerrainGeneration : IJob
         HeightMap = new NativeGrid<byte>(chunkSize, Allocator.Persistent);
         IsEmpty = true;
 
-        _CurveResolution = GameConfig.Instance.WorldConfiguration.CurveResolution;
-
-        Continentalness = new NativeArray<float>(GameConfig.Instance.WorldConfiguration.GetCurveValues(0), Allocator.Persistent);
-        Erosion = new NativeArray<float>(GameConfig.Instance.WorldConfiguration.GetCurveValues(1), Allocator.Persistent);
-        PeaksAndValleys = new NativeArray<float>(GameConfig.Instance.WorldConfiguration.GetCurveValues(2), Allocator.Persistent);
+        Continentalness = new BurstAnimationCurve(GameConfig.Instance.WorldConfiguration.Continentalness.keys);
+        Erosion = new BurstAnimationCurve(GameConfig.Instance.WorldConfiguration.Erosion.keys);
+        PeaksAndValleys = new BurstAnimationCurve(GameConfig.Instance.WorldConfiguration.PeaksAndValleys.keys);
 
         _Seed = GameConfig.Instance.WorldConfiguration.Seed;
         _Scale = GameConfig.Instance.WorldConfiguration.Scale;
@@ -30,15 +28,14 @@ public struct ITerrainGeneration : IJob
     public NativeGrid<byte> HeightMap;
     public bool IsEmpty;
 
-    private int _CurveResolution;
     private uint _TerrainMaxHeight;
 
     private uint _Seed;
     private float _Scale;
 
-    private NativeArray<float> Continentalness;
-    private NativeArray<float> Erosion;
-    private NativeArray<float> PeaksAndValleys;
+    private BurstAnimationCurve Continentalness;
+    private BurstAnimationCurve Erosion;
+    private BurstAnimationCurve PeaksAndValleys;
 
     private readonly int2 _ChunkID;
 
@@ -54,18 +51,22 @@ public struct ITerrainGeneration : IJob
             {
                 int sampleX = globalChunkPosition.x + x;
                 int sampleZ = globalChunkPosition.y + z;
-
                 float continentalness_noice = Noise.Perlin2D(sampleX, sampleZ, _Seed, 0.15f * _Scale, 4, 0.55f * persistance, 1.25f * lacunarity);
                 float erosion_noice = Noise.Perlin2D(sampleX, sampleZ, _Seed, 1 * _Scale, 4, 0.76f * persistance, 2f * lacunarity);
                 float peaksandvalleys_noice = Noise.Perlin2D(sampleX, sampleZ, _Seed, 0.5f * _Scale, 3, 0.95f * persistance, 3.1f * lacunarity);
                 peaksandvalleys_noice = math.abs(peaksandvalleys_noice);
-                float c = Evaluate(continentalness_noice, 0);
-                float e = Evaluate(erosion_noice, 1);
-                float pv = Evaluate(peaksandvalleys_noice, 2);
-
-                float CEP = (c + (e * pv)) / 2f;
-                int terrainHeight = (int)math.floor(CEP * _TerrainMaxHeight);
-                HeightMap.SetValue(new int3(x, 0, z), (byte)terrainHeight);
+                float c = Continentalness.Evaluate(continentalness_noice);
+                float e = Erosion.Evaluate(erosion_noice);
+                float pv = PeaksAndValleys.Evaluate(peaksandvalleys_noice);
+                float cepv = (c + (e * pv)) / 2f;
+                cepv = (cepv + 1) / 2f;
+                byte terrainHeight = (byte)math.round(cepv * _TerrainMaxHeight);
+                if (terrainHeight > _TerrainMaxHeight || terrainHeight < 0)
+                {
+                    var sum = 5 + 5;
+                    c = Continentalness.Evaluate(continentalness_noice);
+                }
+                HeightMap.SetValue(new int3(x, 0, z), terrainHeight);
             }
         }
         IsEmpty = false;
@@ -75,41 +76,5 @@ public struct ITerrainGeneration : IJob
         Continentalness.Dispose();
         Erosion.Dispose();
         PeaksAndValleys.Dispose();
-    }
-
-    private float Evaluate(float time, int curve)
-    {
-        NativeArray<float> target = default;
-        switch (curve)
-        {
-            case 0:
-                target = Continentalness;
-                break;
-            case 1:
-                target = Erosion;
-                break;
-            case 2:
-                target = PeaksAndValleys;
-                break;
-            default:
-                Debug.LogError("Not valid");
-                target = Continentalness;
-                break;
-        }
-
-        int closestIndex = 0;
-        double closestDistance = 2f;
-        double resolution = 2f / _CurveResolution;
-        for (int i = 0; i < target.Length; i++)
-        {
-            double ct = -1 + (resolution * i);
-            double d = math.abs(time - ct);
-            if (d < closestDistance)
-            {
-                closestIndex = i;
-                closestDistance = d;
-            }
-        }
-        return target[closestIndex];
     }
 }

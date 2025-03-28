@@ -14,4 +14,5 @@ public class VerticalMovement_StateMachine : StateMachineBase<VerticalMovement_S
     }
 
     public IVerticalMovement VerticalMovement;
+
 }
