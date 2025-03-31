@@ -54,8 +54,8 @@ public class texturegen : MonoBehaviour
         {
             for (int y = 0; y < m_TextureSize.y; y++)
             {
-                int xPos = x; //Mathf.FloorToInt((x - halfWidth) / scale) + m_Offset.x;
-                int yPos = y; //Mathf.FloorToInt((y - halfHeight) / scale) + m_Offset.y;
+                int xPos = x;
+                int yPos = y;
                 float c_noice = Noise.Perlin2D(xPos, yPos, seed, c_scale * scale, c_octaves, c_persistance * persistance, c_lacunarity * lacunarity);
                 float e_noice = Noise.Perlin2D(xPos, yPos, seed, e_scale * scale, e_octaves, e_persistance * persistance, e_lacunarity * lacunarity);
                 float pv_noice = Noise.Perlin2D(xPos, yPos, seed, pv_scale * scale, pv_octaves, pv_persistance * persistance, pv_lacunarity * lacunarity);
@@ -67,12 +67,6 @@ public class texturegen : MonoBehaviour
                 float pv = GameConfig.Instance.WorldConfiguration.PeaksAndValleys.Evaluate(pv_noice);
 
                 float cepv = (c + (e * pv)) / 2f;
-
-                // Normalize values from -1 to 1 into 0 to 1
-                // c = (c + 1) / 2f;
-                // e = (e + 1) / 2f;
-                // pv = (pv + 1) / 2f;
-                // cepv = (cepv + 1) / 2f;
 
                 texture_a.SetPixel(x, y, new Color(c, c, c, 1));
                 texture_b.SetPixel(x, y, new Color(e, e, e, 1));

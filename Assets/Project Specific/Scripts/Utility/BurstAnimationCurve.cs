@@ -51,7 +51,6 @@ namespace Unity.Mathematics
         {
             return (time - a) / (b - a);
         }
-
         private float HermiteInterpolate(float p0, float p1, float m0, float m1, float t)
         {
             float t2 = t * t;
@@ -63,21 +62,7 @@ namespace Unity.Mathematics
             float result = (h00 * p0) + (h10 * m0) + (h01 * p1) + (h11 * m1);
             return result;
         }
-        private float HermiteInterpolate(float p0, float p1, float m0, float m1, float w0, float w1, float t)
-        {
-            // Apply weights to tangents
-            m0 *= w0;
-            m1 *= w1;
 
-            float t2 = t * t;
-            float t3 = t2 * t;
-            float h00 = 2 * t3 - 3 * t2 + 1;
-            float h10 = t3 - 2 * t2 + t;
-            float h01 = -2 * t3 + 3 * t2;
-            float h11 = t3 - t2;
-
-            return h00 * p0 + h10 * m0 + h01 * p1 + h11 * m1;
-        }
         public void Dispose()
         {
             if (_KeyFrames.IsCreated)

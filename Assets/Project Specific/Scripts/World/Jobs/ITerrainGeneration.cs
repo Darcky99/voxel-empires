@@ -61,11 +61,6 @@ public struct ITerrainGeneration : IJob
                 float cepv = (c + (e * pv)) / 2f;
                 cepv = (cepv + 1) / 2f;
                 byte terrainHeight = (byte)math.round(cepv * _TerrainMaxHeight);
-                if (terrainHeight > _TerrainMaxHeight || terrainHeight < 0)
-                {
-                    var sum = 5 + 5;
-                    c = Continentalness.Evaluate(continentalness_noice);
-                }
                 HeightMap.SetValue(new int3(x, 0, z), terrainHeight);
             }
         }
