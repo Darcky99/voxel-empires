@@ -285,10 +285,6 @@ public struct IChunkMesh : IJob
         d.Dispose();
         l.Dispose();
         v.Dispose();
-        // _Right_Chunk.Dispose();
-        // _Left_Chunk.Dispose();
-        // _Front_Chunk.Dispose();
-        // _Back_Chunk.Dispose();
         _BuildingChunk.Dispose();
         _DrawnFaces.Dispose();
         _VoxelsConfig.Dispose();

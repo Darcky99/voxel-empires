@@ -59,7 +59,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: b223f244a073da842a9b8ebc28430cf1, type: 2}
   <WorldConfiguration>k__BackingField:
     <WorldHeight>k__BackingField: 128
-    <Seed>k__BackingField: 193718
+    <Seed>k__BackingField: 189453
     <Scale>k__BackingField: 16
     <Continentalness>k__BackingField:
       serializedVersion: 2

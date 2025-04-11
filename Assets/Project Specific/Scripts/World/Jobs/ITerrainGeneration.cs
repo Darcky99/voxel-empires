@@ -1,9 +1,7 @@
-using System;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
-using UnityEngine;
 using VoxelUtilities;
 
 [BurstCompile]
@@ -44,7 +42,6 @@ public struct ITerrainGeneration : IJob
         int2 globalChunkPosition = new int2(_ChunkID.x * HeightMap.Lenght.x, _ChunkID.y * HeightMap.Lenght.z);
         float persistance = 1f;
         float lacunarity = 1f;
-
         for (int x = 0; x < HeightMap.Lenght.x; x++)
         {
             for (int z = 0; z < HeightMap.Lenght.z; z++)
