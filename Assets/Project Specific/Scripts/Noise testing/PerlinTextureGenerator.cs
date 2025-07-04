@@ -19,6 +19,7 @@ namespace VE.PerlinTexture
         [field: SerializeField, Range(0.00000001f, 100)] public float Scale { get; private set; }
 
         [Title("Noise parameters")]
+        [SerializeField] private BiomeParameters[] _Biomes;
         [SerializeField] private NoiseParameters[] _NoiseParameters;
 
         public Vector2Int TextureSize => _TextureSize;

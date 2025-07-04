@@ -1,9 +1,13 @@
+using System;
 using UnityEngine;
-using VE.PerlinTexture;
 
-public class BiomeParameters
+namespace VE.PerlinTexture
 {
-    [SerializeField] private NoiseParameters[] _NoiseParameters;
-
-    [SerializeField] private ePerlinCombineStyle _PerlinCombineStyle;
+    [Serializable]
+    public class BiomeParameters
+    {
+        [SerializeField] private Color _BiomeID;
+        [SerializeField] private ePerlinCombineStyle _PerlinCombineStyle;
+        [SerializeField] private NoiseParameters[] _NoiseParameters;
+    }
 }

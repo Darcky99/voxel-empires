@@ -1,3 +1,4 @@
+using ProceduralNoiseProject;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
@@ -19,6 +20,8 @@ namespace VE.PerlinTexture
             _Continentalness = new BurstNoiseParameters(noiseParameters[0]);
             _Erosion = new BurstNoiseParameters(noiseParameters[1]);
             _PeaksAndValleys = new BurstNoiseParameters(noiseParameters[2]);
+
+            _PerlinNoise = new PerlinNoise((int)jobParameters.Seed, 50, Allocator.Persistent);
         }
 
         private TextureJobParameters _JobParameters;
@@ -31,33 +34,37 @@ namespace VE.PerlinTexture
         public NativeArray<Color> PeaksAndValleys_TextureData;
         public NativeArray<Color> Result_TextureData;
 
+        private PerlinNoise _PerlinNoise;
+
         public void Execute()
         {
-            // Here you could read _JobParameters.CombineStyle and based on that operate.
-            // 
-
             uint seed = _JobParameters.Seed;
             float scale = _JobParameters.Scale;
             for (int x = 0; x < _JobParameters.TextureSize.x; x++)
             {
                 for (int y = 0; y < _JobParameters.TextureSize.y; y++)
                 {
-                    // 1. Noise generation
-                    int arrayIndex = x + (y * _JobParameters.TextureSize.x);
-                    float c_noice = Noise.Perlin2D(x, y, seed, _Continentalness.Scale * scale, _Continentalness.Octaves, _Continentalness.Persistance, _Continentalness.Lacunarity);
-                    float e_noice = Noise.Perlin2D(x, y, seed, _Erosion.Scale * scale, _Erosion.Octaves, _Erosion.Persistance, _Erosion.Lacunarity);
-                    float pv_noice = Noise.Perlin2D(x, y, seed, _PeaksAndValleys.Scale * scale, _PeaksAndValleys.Octaves, _PeaksAndValleys.Persistance, _PeaksAndValleys.Lacunarity);
-                    pv_noice = math.abs(pv_noice);
+                    // I need a biome map, which on each position tells how close it is to the biome center...
+                    // based on the biome, use one or another noise parameters.
+                    // but it's not that simple. I need to take in account biomes around. So I can lerp between values.
+                    // I might need a struct container of all posible biome parameters.
 
-                    float c = _Continentalness.Curve.Evaluate(c_noice);
-                    float e = _Erosion.Curve.Evaluate(e_noice);
-                    float pv = _PeaksAndValleys.Curve.Evaluate(pv_noice);
+                    // So, the biome map is a pregenerated colored texuture. 
 
-                    // 2. Noise combination
-                    // float cepv = ((c + pv) * e) / 2f;
+                    // 1. Generate noise
+                    // float c = _Continentalness.GetNoise(_PerlinNoise, x, y, seed, scale);
+                    // float e = _Erosion.GetNoise(_PerlinNoise, x, y, seed, scale);
+                    // float pv = _PeaksAndValleys.GetNoise(_PerlinNoise, x, y, seed, scale);
+
+                     float c = _PerlinNoise.Sample2D(x, y);
+                    float e = _Erosion.GetNoise(_PerlinNoise, x, y, seed, scale);
+                    float pv = _PeaksAndValleys.GetNoise(_PerlinNoise, x, y, seed, scale);
+
+                    // 2. Noise merging.
                     float cepv = (c + (pv * e)) / 2f;
 
-                    // 3. 
+                    // 3. Assign to textures.
+                    int arrayIndex = x + (y * _JobParameters.TextureSize.x);
                     Continentalness_TextureData[arrayIndex] = new Color(c, c, c, 1);
                     Erosion_TextureData[arrayIndex] = new Color(e, e, e, 1);
                     PeaksAndValleys_TextureData[arrayIndex] = new Color(pv, pv, pv, 1);
@@ -75,6 +82,7 @@ namespace VE.PerlinTexture
             Erosion_TextureData.Dispose();
             PeaksAndValleys_TextureData.Dispose();
             Result_TextureData.Dispose();
+            _PerlinNoise.Dispose();
         }
     }
 }

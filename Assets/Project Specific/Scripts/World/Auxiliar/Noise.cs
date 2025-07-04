@@ -1,11 +1,12 @@
+using ProceduralNoiseProject;
+using Unity.Collections;
 using Unity.Mathematics;
+using UnityEngine;
 
 public static class Noise
 {
-    public static float Perlin2D(int x, int y, uint seed, float scale, int octaves, float persistance, float lacunarity)
+    public static float Perlin2D(PerlinNoise noise, int x, int y, uint seed, float scale, int octaves, float persistance, float lacunarity)
     {
-        FastNoiseLite noise = new FastNoiseLite((int)seed);
-        noise.SetNoiseType(FastNoiseLite.NoiseType.Perlin);
         if (scale <= 0)
         {
             scale = 0.0000001f;
@@ -17,12 +18,18 @@ public static class Noise
         {
             float sampleX = x / scale * frequensy;
             float sampleY = y / scale * frequensy;
-
-            float perlinNoise = noise.GetNoise(sampleX, sampleY);
+            float perlinNoise = noise.Sample2D(sampleX, sampleY);
             noiseValue += perlinNoise * amplitude;
             amplitude *= persistance;
             frequensy *= lacunarity;
         }
         return noiseValue;
+    }
+
+    public static float Voronoid2D(int x, int y, uint seed, float scale, int octaves, float persistance, float lacunarity)
+    {
+        // FastNoiseLite noise = new FastNoiseLite((int)seed);
+        // noise.SetNoiseType(FastNoiseLite.NoiseType.)
+        return 0;
     }
 }

@@ -48,17 +48,17 @@ public struct ITerrainGeneration : IJob
             {
                 int sampleX = globalChunkPosition.x + x;
                 int sampleZ = globalChunkPosition.y + z;
-                float continentalness_noice = Noise.Perlin2D(sampleX, sampleZ, _Seed, 0.15f * _Scale, 4, 0.55f * persistance, 1.25f * lacunarity);
-                float erosion_noice = Noise.Perlin2D(sampleX, sampleZ, _Seed, 1 * _Scale, 4, 0.76f * persistance, 2f * lacunarity);
-                float peaksandvalleys_noice = Noise.Perlin2D(sampleX, sampleZ, _Seed, 0.5f * _Scale, 3, 0.95f * persistance, 3.1f * lacunarity);
-                peaksandvalleys_noice = math.abs(peaksandvalleys_noice);
-                float c = Continentalness.Evaluate(continentalness_noice);
-                float e = Erosion.Evaluate(erosion_noice);
-                float pv = PeaksAndValleys.Evaluate(peaksandvalleys_noice);
-                float cepv = (c + (e * pv)) / 2f;
-                cepv = (cepv + 1) / 2f;
-                byte terrainHeight = (byte)math.round(cepv * _TerrainMaxHeight);
-                HeightMap.SetValue(new int3(x, 0, z), terrainHeight);
+                // float continentalness_noice = Noise.Perlin2D(sampleX, sampleZ, _Seed, 0.15f * _Scale, 4, 0.55f * persistance, 1.25f * lacunarity);
+                // float erosion_noice = Noise.Perlin2D(sampleX, sampleZ, _Seed, 1 * _Scale, 4, 0.76f * persistance, 2f * lacunarity);
+                // float peaksandvalleys_noice = Noise.Perlin2D(sampleX, sampleZ, _Seed, 0.5f * _Scale, 3, 0.95f * persistance, 3.1f * lacunarity);
+                // peaksandvalleys_noice = math.abs(peaksandvalleys_noice);
+                // float c = Continentalness.Evaluate(continentalness_noice);
+                // float e = Erosion.Evaluate(erosion_noice);
+                // float pv = PeaksAndValleys.Evaluate(peaksandvalleys_noice);
+                // float cepv = (c + (e * pv)) / 2f;
+                // cepv = (cepv + 1) / 2f;
+                // byte terrainHeight = (byte)math.round(cepv * _TerrainMaxHeight);
+                // HeightMap.SetValue(new int3(x, 0, z), terrainHeight);
             }
         }
         IsEmpty = false;
