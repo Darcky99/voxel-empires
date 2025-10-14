@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Unity.Collections;
 using Unity.Jobs;
@@ -10,8 +11,8 @@ namespace VE.World
 {
     public class WorldController : MonoBehaviour
     {
-        public GameManager _GameManager => GameManager.Instance;
-        public GameConfig _GameConfig => GameConfig.Instance;
+        public GameManager GameManager => GameManager.Instance;
+        public GameConfig GameConfig => GameConfig.Instance;
 
         private int2 _drawOrigin;
         private bool _stopExpansiveLoadingFlag = false;
@@ -21,10 +22,12 @@ namespace VE.World
 
         private void OnEnable()
         {
+            GameManager.StateChanged += GameManager_StateChanged;
             _worldManager.StateChanged += WorldManager_StateChanged;
         }
         private void OnDisable()
         {
+            GameManager.StateChanged += GameManager_StateChanged;
             _worldManager.StateChanged -= WorldManager_StateChanged;
         }
         private void FixedUpdate()
@@ -32,6 +35,10 @@ namespace VE.World
             TryLoadingStart();
         }
 
+        private void GameManager_StateChanged(object sender, GamaStateChangeEventArgs args)
+        {
+            _worldManager.Initialize();
+        }
         private void WorldManager_StateChanged(object sender, WorldState worldState)
         {
             switch (worldState)
@@ -54,7 +61,7 @@ namespace VE.World
         }
         private void Generating()
         {
-            _ = ExpansiveLoading(_drawOrigin);
+            _ = ExpansiveLoading(_drawOrigin, destroyCancellationToken);
         }
         private void Cancel()
         {
@@ -80,9 +87,9 @@ namespace VE.World
             }
         }
 
-        private async UniTask ExpansiveLoading(int2 origin)
+        private async UniTask ExpansiveLoading(int2 origin, CancellationToken cancellationToken)
         {
-            for (int r = 0; r < _GameConfig.GraphicsConfiguration.RenderDistance; r++)
+            for (int r = 0; r < GameConfig.GraphicsConfiguration.RenderDistance; r++)
             {
                 GetChunksByRingJob chunks_to_draw_Job = new GetChunksByRingJob(origin, r);
                 JobHandle chunks_to_draw_Handler = chunks_to_draw_Job.Schedule();
@@ -93,7 +100,7 @@ namespace VE.World
                     chunks_to_draw_Job.Dispose();
                     continue;
                 }
-                await GenerateRing(origin, r);
+                await GenerateRing(origin, r, cancellationToken);
                 if (_stopExpansiveLoadingFlag)
                 {
                     _stopExpansiveLoadingFlag = false;
@@ -103,7 +110,7 @@ namespace VE.World
             }
             _worldManager.SetState(WorldTrigger.GenerationFinished);
         }
-        private async UniTask GenerateRing(int2 origin, int ring)
+        private async UniTask GenerateRing(int2 origin, int ring, CancellationToken cancellationToken)
         {
             GetChunksByRingJob chunks_to_load_Job = new GetChunksByRingJob(origin, ring);
             JobHandle chunks_to_load_Handler = chunks_to_load_Job.Schedule();
@@ -122,13 +129,28 @@ namespace VE.World
             NativeList<int2> generateTerrain = RemoveItemsFromList(chunks_to_load_Job.ChunksInRing, HasTerrain);
             NativeList<int2> generateAround = RemoveItemsFromList(chunks_to_preload_Job.ChunksInRing, HasTerrain);
             NativeList<int2> draw = RemoveItemsFromList(chunks_to_draw_Job.ChunksInRing, HasMesh);
-            await _worldManager.LoadAll(generateTerrain);
-            await _worldManager.LoadAll(generateAround);
-            await _worldManager.LimitedDrawAll(draw);
-            generateTerrain.Dispose();
-            generateAround.Dispose();
-            draw.Dispose();
-            // await _WorldManager.DrawAll(draw);
+
+            Action disposeLists = () =>
+            {
+                generateTerrain.Dispose();
+                generateAround.Dispose();
+                draw.Dispose();
+            };
+
+            await _worldManager.LoadAll(generateTerrain, cancellationToken);
+            if (cancellationToken.IsCancellationRequested)
+            {
+                disposeLists();
+                return;
+            }
+            await _worldManager.LoadAll(generateAround, cancellationToken);
+            if (cancellationToken.IsCancellationRequested)
+            {
+                disposeLists();
+                return;
+            }
+            await _worldManager.LimitedDrawAll(draw, cancellationToken);
+            disposeLists();
         }
         private NativeList<int2> RemoveItemsFromList(NativeList<int2> ids, Func<int2, bool> conditionToRemove)
         {

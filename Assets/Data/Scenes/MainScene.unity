@@ -25373,8 +25373,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa75a20c7f11f4c4884027531f2042f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _WorldManager: {fileID: 1073185057}
-  _CenterTransform: {fileID: 565326796}
+  _worldManager: {fileID: 1073185057}
+  _centerTransform: {fileID: 565326796}
 --- !u!1 &1078791208
 GameObject:
   m_ObjectHideFlags: 0
@@ -29111,7 +29111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e30e0e80569e904599850a961d657bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _worldManager: {fileID: 1073185057}
+  _gameManager: {fileID: 1202807241}
 --- !u!114 &1202807241
 MonoBehaviour:
   m_ObjectHideFlags: 0

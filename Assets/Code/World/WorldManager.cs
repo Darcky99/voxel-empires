@@ -8,6 +8,7 @@ using Cysharp.Threading.Tasks;
 using Unity.Collections;
 using VE.VoxelUtilities;
 using VE.VoxelUtilities.Pooling;
+using System.Threading;
 
 namespace VE.World
 {
@@ -24,21 +25,7 @@ namespace VE.World
         private StateMachine<WorldState, WorldTrigger> _fsm;
         private Dictionary<int2, ChunkObject> _LoadedChunks;
 
-        private void OnEnable()
-        {
-            GameManager.StateChanged += GameManager_StateChanged;
-        }
-        private void OnDisable()
-        {
-            GameManager.StateChanged -= GameManager_StateChanged;
-        }
-
-        private void GameManager_StateChanged(object sender, GamaStateChangeEventArgs args)
-        {
-            Initialize();
-        }
-
-        private void Initialize()
+        public void Initialize()
         {
             _LoadedChunks = new Dictionary<int2, ChunkObject>();
 
@@ -71,6 +58,23 @@ namespace VE.World
             _LoadedChunks.Add(chunkID, chunkObject);
             return chunkObject;
         }
+        private (IChunkMesh, JobHandle) ScheduleDraw(int2 chunkID)
+        {
+            float get_chunks_from_dictionary_time = Time.realtimeSinceStartup;
+            NativeGrid<byte> builderHeightMap = JobHeightMap(chunkID);
+            float get_chunks_result_time = Time.realtimeSinceStartup - get_chunks_from_dictionary_time;
+            float time_previous_job_creation = Time.realtimeSinceStartup;
+            IChunkMesh meshJob = new IChunkMesh(builderHeightMap);
+            JobHandle handler = meshJob.Schedule();
+            float job_creation_time = Time.realtimeSinceStartup - time_previous_job_creation;
+            // Debug.Log($"Individual schedules:\nGet neighbor: {get_chunks_result_time}\nJob creation and schedule: {job_creation_time}");
+            return (meshJob, handler);
+        }
+
+        public void SetState(WorldTrigger trigger)
+        {
+            _fsm.Fire(trigger);
+        }
         public bool TryGetChunkObject(int2 chunkID, out ChunkObject chunk)
         {
             return _LoadedChunks.TryGetValue(chunkID, out chunk);
@@ -84,7 +88,6 @@ namespace VE.World
             }
             return chunks;
         }
-
         public NativeGrid<byte> JobHeightMap(int2 chunkID)
         {
             int3 size = GameConfig.ChunkConfiguration.ChunkSize;
@@ -110,8 +113,8 @@ namespace VE.World
             }
             return result;
         }
-
-        public async UniTask LoadAll(NativeList<int2> toLoad)
+        
+        public async UniTask LoadAll(NativeList<int2> toLoad, CancellationToken cancellationToken)
         {
             int totalCount = toLoad.Length;
             NativeArray<JobHandle> jobHandles = new NativeArray<JobHandle>(totalCount, Allocator.Persistent);
@@ -123,52 +126,34 @@ namespace VE.World
                 jobHandles[i] = handler;
             }
             JobHandle combinedHandle = JobHandle.CombineDependencies(jobHandles);
-            await UniTask.WaitUntil(() => combinedHandle.IsCompleted);
+            await UniTask.WaitUntil(() => combinedHandle.IsCompleted, cancellationToken: cancellationToken);
             combinedHandle.Complete();
             for (int i = 0; i < totalCount; i++)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
                 ChunkObject chunkObj = CreateChunkObject(toLoad[i]);
                 chunkObj.SetHeightMap(terrainJobs[i].HeightMap);
             }
             jobHandles.Dispose();
             terrainJobs.Dispose();
         }
-
-        private (IChunkMesh, JobHandle) ScheduleDraw(int2 chunkID)
-        {
-            float get_chunks_from_dictionary_time = Time.realtimeSinceStartup;
-
-            NativeGrid<byte> builderHeightMap = JobHeightMap(chunkID);
-
-            float get_chunks_result_time = Time.realtimeSinceStartup - get_chunks_from_dictionary_time;
-            float time_previous_job_creation = Time.realtimeSinceStartup;
-
-            IChunkMesh meshJob = new IChunkMesh(builderHeightMap);
-            JobHandle handler = meshJob.Schedule();
-
-            float job_creation_time = Time.realtimeSinceStartup - time_previous_job_creation;
-
-            // Debug.Log($"Individual schedules:\nGet neighbor: {get_chunks_result_time}\nJob creation and schedule: {job_creation_time}");
-
-            return (meshJob, handler);
-        }
-
-        public async UniTask DrawAll(NativeList<int2> toDraw)
+        public async UniTask DrawAll(NativeList<int2> toDraw, CancellationToken cancellationToken)
         {
             int totalCount = toDraw.Length;
             ChunkObject[] chunks = GetChunksObjects(toDraw);
             NativeArray<JobHandle> jobHandles = new NativeArray<JobHandle>(totalCount, Allocator.Persistent);
             NativeArray<IChunkMesh> meshJobs = new NativeArray<IChunkMesh>(totalCount, Allocator.Persistent);
-
             float time_previous_job_cretion = Time.realtimeSinceStartup;
-
             for (int i = 0; i < totalCount; i++)
             {
                 (meshJobs[i], jobHandles[i]) = ScheduleDraw(toDraw[i]);
             }
             JobHandle combinedHandle = JobHandle.CombineDependencies(jobHandles);
             JobHandle.ScheduleBatchedJobs();
-            await UniTask.WaitUntil(() => combinedHandle.IsCompleted);
+            await UniTask.WaitUntil(() => combinedHandle.IsCompleted, cancellationToken: cancellationToken);
             combinedHandle.Complete();
             foreach (IChunkMesh meshJob in meshJobs)
             {
@@ -179,23 +164,24 @@ namespace VE.World
 
             for (int i = 0; i < totalCount; i++)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
                 chunks[i].SetMesh(meshJobs[i]);
             }
             Debug.Log("Mesh setting time: " + (Time.realtimeSinceStartup - time_previous_to_mesh_setting));
             jobHandles.Dispose();
             meshJobs.Dispose();
         }
-
-        public async UniTask LimitedDrawAll(NativeList<int2> toDraw)
+        public async UniTask LimitedDrawAll(NativeList<int2> toDraw, CancellationToken cancellationToken)
         {
             int totalCount = toDraw.Length;
             int sectionLenght = 8;
             ChunkObject[] chunks = GetChunksObjects(toDraw);
             NativeArray<JobHandle> jobHandles = new NativeArray<JobHandle>(sectionLenght, Allocator.Persistent);
             NativeArray<IChunkMesh> meshJobs = new NativeArray<IChunkMesh>(sectionLenght, Allocator.Persistent);
-
             float time_previous_job_cretion = Time.realtimeSinceStartup; //
-
             for (int section = 0; section <= (totalCount / sectionLenght); section++)
             {
                 int sectionAddition = section * sectionLenght;
@@ -208,17 +194,13 @@ namespace VE.World
                     }
                     (meshJobs[i], jobHandles[i]) = ScheduleDraw(toDraw[absI]);
                 }
-
-                float result_job_scheduling_time = Time.realtimeSinceStartup - time_previous_job_cretion; //
-                float time_previous_wait_completition = Time.realtimeSinceStartup; //
-
+                float result_job_scheduling_time = Time.realtimeSinceStartup - time_previous_job_cretion;
+                float time_previous_wait_completition = Time.realtimeSinceStartup;
                 JobHandle combinedHandle = JobHandle.CombineDependencies(jobHandles);
-                await UniTask.WaitUntil(() => combinedHandle.IsCompleted);
+                await UniTask.WaitUntil(() => combinedHandle.IsCompleted, cancellationToken: cancellationToken);
                 combinedHandle.Complete();
-
-                float result_job_wait_time = Time.realtimeSinceStartup - time_previous_wait_completition; //
-                float time_previous_to_mesh_setting = Time.realtimeSinceStartup; //
-
+                float result_job_wait_time = Time.realtimeSinceStartup - time_previous_wait_completition;
+                float time_previous_to_mesh_setting = Time.realtimeSinceStartup;
                 for (int i = 0; i < sectionLenght; i++)
                 {
                     int absI = i + sectionAddition;
@@ -229,15 +211,14 @@ namespace VE.World
                     meshJobs[i].TempJobDispose();
                     chunks[i + sectionAddition].SetMesh(meshJobs[i]);
                 }
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
                 // Debug.Log($"Job scheduling total time:{result_job_scheduling_time} \nJob wait time: {result_job_wait_time}\nMesh setting time: {Time.realtimeSinceStartup - time_previous_to_mesh_setting}"); //
             }
             jobHandles.Dispose();
             meshJobs.Dispose();
-        }
-
-        public void SetState(WorldTrigger trigger)
-        {
-            _fsm.Fire(trigger);
         }
     }
 }
