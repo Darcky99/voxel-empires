@@ -1,3 +1,4 @@
+using Test.Noise;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
@@ -9,8 +10,8 @@ public struct ITerrainGeneration : IJob
 {
     public ITerrainGeneration(int2 chunkID, int3 chunkSize)
     {
-        _ChunkID = chunkID;
-        _TerrainMaxHeight = (uint)GameConfig.Instance.WorldConfiguration.WorldHeight;
+        _chunkID = chunkID;
+        _terrainMaxHeight = (uint)GameConfig.Instance.WorldConfiguration.WorldHeight;
 
         HeightMap = new NativeGrid<byte>(chunkSize, Allocator.Persistent);
         IsEmpty = true;
@@ -19,27 +20,27 @@ public struct ITerrainGeneration : IJob
         Erosion = new BurstAnimationCurve(GameConfig.Instance.WorldConfiguration.Erosion.keys);
         PeaksAndValleys = new BurstAnimationCurve(GameConfig.Instance.WorldConfiguration.PeaksAndValleys.keys);
 
-        _Seed = GameConfig.Instance.WorldConfiguration.Seed;
-        _Scale = GameConfig.Instance.WorldConfiguration.Scale;
+        _seed = GameConfig.Instance.WorldConfiguration.Seed;
+        _scale = GameConfig.Instance.WorldConfiguration.Scale;
     }
 
     public NativeGrid<byte> HeightMap;
     public bool IsEmpty;
 
-    private uint _TerrainMaxHeight;
-
-    private uint _Seed;
-    private float _Scale;
+    private uint _terrainMaxHeight;
+    private int _seed;
+    private float _scale;
 
     private BurstAnimationCurve Continentalness;
     private BurstAnimationCurve Erosion;
     private BurstAnimationCurve PeaksAndValleys;
 
-    private readonly int2 _ChunkID;
+    private readonly int2 _chunkID;
 
     public void Execute()
     {
-        int2 globalChunkPosition = new int2(_ChunkID.x * HeightMap.Lenght.x, _ChunkID.y * HeightMap.Lenght.z);
+        
+        int2 globalChunkPosition = new int2(_chunkID.x * HeightMap.Lenght.x, _chunkID.y * HeightMap.Lenght.z);
         float persistance = 1f;
         float lacunarity = 1f;
         for (int x = 0; x < HeightMap.Lenght.x; x++)
@@ -48,16 +49,16 @@ public struct ITerrainGeneration : IJob
             {
                 int sampleX = globalChunkPosition.x + x;
                 int sampleZ = globalChunkPosition.y + z;
-                // float continentalness_noice = Noise.Perlin2D(sampleX, sampleZ, _Seed, 0.15f * _Scale, 4, 0.55f * persistance, 1.25f * lacunarity);
-                // float erosion_noice = Noise.Perlin2D(sampleX, sampleZ, _Seed, 1 * _Scale, 4, 0.76f * persistance, 2f * lacunarity);
-                // float peaksandvalleys_noice = Noise.Perlin2D(sampleX, sampleZ, _Seed, 0.5f * _Scale, 3, 0.95f * persistance, 3.1f * lacunarity);
+                // float continentalness_noice = Noise.Perlin2D(sampleX, sampleZ, _seed, 0.15f * _scale, 4, 0.55f * persistance, 1.25f * lacunarity);
+                // float erosion_noice = Noise.Perlin2D(sampleX, sampleZ, _seed, 1 * _scale, 4, 0.76f * persistance, 2f * lacunarity);
+                // float peaksandvalleys_noice = Noise.Perlin2D(sampleX, sampleZ, _seed, 0.5f * _scale, 3, 0.95f * persistance, 3.1f * lacunarity);
                 // peaksandvalleys_noice = math.abs(peaksandvalleys_noice);
                 // float c = Continentalness.Evaluate(continentalness_noice);
                 // float e = Erosion.Evaluate(erosion_noice);
                 // float pv = PeaksAndValleys.Evaluate(peaksandvalleys_noice);
                 // float cepv = (c + (e * pv)) / 2f;
                 // cepv = (cepv + 1) / 2f;
-                // byte terrainHeight = (byte)math.round(cepv * _TerrainMaxHeight);
+                // byte terrainHeight = (byte)math.round(cepv * _terrainMaxHeight);
                 // HeightMap.SetValue(new int3(x, 0, z), terrainHeight);
             }
         }

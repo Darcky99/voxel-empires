@@ -19,15 +19,15 @@ namespace VE.World
 
         public event EventHandler<WorldState> StateChanged;
 
-        public Dictionary<int2, ChunkObject> LoadedChunks => _LoadedChunks;
+        public Dictionary<int2, ChunkObject> LoadedChunks => _loadedChunks;
         public WorldState CurrentState => _fsm.State;
 
         private StateMachine<WorldState, WorldTrigger> _fsm;
-        private Dictionary<int2, ChunkObject> _LoadedChunks;
+        private Dictionary<int2, ChunkObject> _loadedChunks;
 
         public void Initialize()
         {
-            _LoadedChunks = new Dictionary<int2, ChunkObject>();
+            _loadedChunks = new Dictionary<int2, ChunkObject>();
 
             _fsm = new StateMachine<WorldState, WorldTrigger>(WorldState.Idle);
 
@@ -55,7 +55,7 @@ namespace VE.World
         {
             ChunkObject chunkObject = ChunkObjectPool.s_Instance.DeQueue();
             chunkObject.Initialize(chunkID);
-            _LoadedChunks.Add(chunkID, chunkObject);
+            _loadedChunks.Add(chunkID, chunkObject);
             return chunkObject;
         }
         private (IChunkMesh, JobHandle) ScheduleDraw(int2 chunkID)
@@ -77,7 +77,7 @@ namespace VE.World
         }
         public bool TryGetChunkObject(int2 chunkID, out ChunkObject chunk)
         {
-            return _LoadedChunks.TryGetValue(chunkID, out chunk);
+            return _loadedChunks.TryGetValue(chunkID, out chunk);
         }
         public ChunkObject[] GetChunksObjects(NativeList<int2> chunkIDs)
         {

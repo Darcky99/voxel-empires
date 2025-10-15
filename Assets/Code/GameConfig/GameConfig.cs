@@ -80,7 +80,7 @@ public class WorldGenerationConfiguration
     [field: SerializeField] public int WorldHeight { get; private set; }
 
     [Title("Noise configuration")]
-    [field: SerializeField] public uint Seed { get; private set; }
+    [field: SerializeField] public int Seed { get; private set; }
     [field: SerializeField] public float Scale { get; private set; }
 
 

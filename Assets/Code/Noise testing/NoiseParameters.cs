@@ -1,5 +1,5 @@
 using System;
-using ProceduralNoiseProject;
+using Test.Noise;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -33,7 +33,7 @@ namespace VE.PerlinTexture
         public eNoiseRangeMode NoiseRange { get; private set; }
         public BurstAnimationCurve Curve { get; private set; }
 
-        public float GetNoise(PerlinNoise perlin, int x, int y, uint seed, float scale)
+        public float GetNoise(ProceduralNoiseProject.PerlinNoise perlin, int x, int y, uint seed, float scale)
         {
             float noise = Noise.Perlin2D(perlin, x, y, seed, Scale * scale, Octaves, Persistance, Lacunarity);
             noise = NoiseRange switch

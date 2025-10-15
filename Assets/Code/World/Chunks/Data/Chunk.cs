@@ -7,23 +7,23 @@ namespace VE.World
     {
         public Chunk(int2 ID)
         {
-            _ChunkID = ID;
-            _HeightMap = default;
-            _ChunkState = eChunkState.Active;
+            _chunkID = ID;
+            _heightMap = default;
+            _chunkState = eChunkState.Active;
         }
 
-        public float2 WorldPosition => _ChunkID * ChunkConfiguration.KeyToWorld;
-        public int2 ChunkID => _ChunkID;
-        public eChunkState ChunkState => _ChunkState;
-        public NativeGrid<byte> HeightMap => _HeightMap;
+        public float2 WorldPosition => _chunkID * ChunkConfiguration.KeyToWorld;
+        public int2 ChunkID => _chunkID;
+        public eChunkState ChunkState => _chunkState;
+        public NativeGrid<byte> HeightMap => _heightMap;
 
-        private int2 _ChunkID;
-        private NativeGrid<byte> _HeightMap;
-        private eChunkState _ChunkState;
+        private int2 _chunkID;
+        private NativeGrid<byte> _heightMap;
+        private eChunkState _chunkState;
 
-        public byte GetVoxel(int3 voxelPosition) => _HeightMap.GetValue(voxelPosition);
-        public void SetVoxel(int3 voxelPosition) => _HeightMap.SetValue(voxelPosition.x, voxelPosition.y, voxelPosition.z, 1);
+        public byte GetVoxel(int3 voxelPosition) => _heightMap.GetValue(voxelPosition);
+        public void SetVoxel(int3 voxelPosition) => _heightMap.SetValue(voxelPosition.x, voxelPosition.y, voxelPosition.z, 1);
 
-        public void SetHeightMap(NativeGrid<byte> heightMap) => _HeightMap = heightMap;
+        public void SetHeightMap(NativeGrid<byte> heightMap) => _heightMap = heightMap;
     }
 }

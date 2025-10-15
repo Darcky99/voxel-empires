@@ -101,7 +101,7 @@ namespace VE.World
                     continue;
                 }
                 await GenerateRing(origin, r, cancellationToken);
-                if (_stopExpansiveLoadingFlag)
+                if (_stopExpansiveLoadingFlag || cancellationToken.IsCancellationRequested)
                 {
                     _stopExpansiveLoadingFlag = false;
                     _worldManager.SetState(WorldTrigger.Generate);
