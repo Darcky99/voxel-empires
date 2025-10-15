@@ -16,7 +16,7 @@ namespace VE.PerlinTexture
         [Title("General values")]
         [SerializeField] private Vector2Int _TextureSize;
         [field: SerializeField, Range(100000, 999999)] public uint Seed { get; private set; }
-        [field: SerializeField, Range(0.00000001f, 100)] public float Scale { get; private set; }
+        [field: SerializeField] public float Scale { get; private set; }
 
         [Title("Noise parameters")]
         [SerializeField] private BiomeParameters[] _Biomes;
@@ -25,10 +25,15 @@ namespace VE.PerlinTexture
         public Vector2Int TextureSize => _TextureSize;
         public PerlinTextureJob TextureResult { get; private set; }
 
+        private void Start()
+        {
+            CreateTextures();
+        }
+
         private IEnumerator GenerateTextures()
         {
             TextureJobParameters textureJobParameters = new TextureJobParameters(this);
-            PerlinTextureJob perlinTextureJob = new PerlinTextureJob(textureJobParameters, _NoiseParameters);
+            PerlinTextureJob perlinTextureJob = new PerlinTextureJob(textureJobParameters, _Biomes[0].NoiseParameters);
             JobHandle jobHandle = perlinTextureJob.Schedule();
             yield return new WaitUntil(() => jobHandle.IsCompleted);
             jobHandle.Complete();

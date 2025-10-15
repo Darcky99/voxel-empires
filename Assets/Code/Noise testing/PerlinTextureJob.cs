@@ -21,7 +21,7 @@ namespace VE.PerlinTexture
             _Erosion = new BurstNoiseParameters(noiseParameters[1]);
             _PeaksAndValleys = new BurstNoiseParameters(noiseParameters[2]);
 
-            _PerlinNoise = new PerlinNoise((int)jobParameters.Seed, 50, Allocator.Persistent);
+            _PerlinNoise = new PerlinNoise((int)jobParameters.Seed, 1, Allocator.Persistent);
         }
 
         private TextureJobParameters _JobParameters;
@@ -52,13 +52,13 @@ namespace VE.PerlinTexture
                     // So, the biome map is a pregenerated colored texuture. 
 
                     // 1. Generate noise
-                    // float c = _Continentalness.GetNoise(_PerlinNoise, x, y, seed, scale);
-                    // float e = _Erosion.GetNoise(_PerlinNoise, x, y, seed, scale);
-                    // float pv = _PeaksAndValleys.GetNoise(_PerlinNoise, x, y, seed, scale);
-
-                     float c = _PerlinNoise.Sample2D(x, y);
+                    float c = _Continentalness.GetNoise(_PerlinNoise, x, y, seed, scale);
                     float e = _Erosion.GetNoise(_PerlinNoise, x, y, seed, scale);
                     float pv = _PeaksAndValleys.GetNoise(_PerlinNoise, x, y, seed, scale);
+
+                    // float c = _PerlinNoise.Sample2D(x, y);
+                    // float e = _Erosion.GetNoise(_PerlinNoise, x, y, seed, scale);
+                    // float pv = _PeaksAndValleys.GetNoise(_PerlinNoise, x, y, seed, scale);
 
                     // 2. Noise merging.
                     float cepv = (c + (pv * e)) / 2f;
