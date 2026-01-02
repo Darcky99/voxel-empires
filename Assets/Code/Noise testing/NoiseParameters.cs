@@ -1,5 +1,5 @@
 using System;
-using Test.Noise;
+using VE.CustomNoise;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -35,7 +35,7 @@ namespace VE.PerlinTexture
 
         public float GetNoise(ProceduralNoiseProject.PerlinNoise perlin, int x, int y, uint seed, float scale)
         {
-            float noise = Noise.Perlin2D(perlin, x, y, seed, Scale * scale, Octaves, Persistance, Lacunarity);
+            float noise = Noise.Perlin2D(perlin, x, y, Scale * scale, Octaves, Persistance, Lacunarity);
             noise = NoiseRange switch
             {
                 eNoiseRangeMode.Regular => noise,

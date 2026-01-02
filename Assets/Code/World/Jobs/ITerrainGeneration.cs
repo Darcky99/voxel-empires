@@ -1,4 +1,4 @@
-using Test.Noise;
+using VE.CustomNoise;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
@@ -22,8 +22,10 @@ public struct ITerrainGeneration : IJob
 
         _seed = GameConfig.Instance.WorldConfiguration.Seed;
         _scale = GameConfig.Instance.WorldConfiguration.Scale;
+        _perlinNoise = new ProceduralNoiseProject.PerlinNoise(_seed, 1, Allocator.Persistent);
     }
 
+    private ProceduralNoiseProject.PerlinNoise _perlinNoise;
     public NativeGrid<byte> HeightMap;
     public bool IsEmpty;
 
@@ -39,7 +41,7 @@ public struct ITerrainGeneration : IJob
 
     public void Execute()
     {
-        
+
         int2 globalChunkPosition = new int2(_chunkID.x * HeightMap.Lenght.x, _chunkID.y * HeightMap.Lenght.z);
         float persistance = 1f;
         float lacunarity = 1f;
@@ -49,17 +51,18 @@ public struct ITerrainGeneration : IJob
             {
                 int sampleX = globalChunkPosition.x + x;
                 int sampleZ = globalChunkPosition.y + z;
-                // float continentalness_noice = Noise.Perlin2D(sampleX, sampleZ, _seed, 0.15f * _scale, 4, 0.55f * persistance, 1.25f * lacunarity);
-                // float erosion_noice = Noise.Perlin2D(sampleX, sampleZ, _seed, 1 * _scale, 4, 0.76f * persistance, 2f * lacunarity);
-                // float peaksandvalleys_noice = Noise.Perlin2D(sampleX, sampleZ, _seed, 0.5f * _scale, 3, 0.95f * persistance, 3.1f * lacunarity);
-                // peaksandvalleys_noice = math.abs(peaksandvalleys_noice);
-                // float c = Continentalness.Evaluate(continentalness_noice);
-                // float e = Erosion.Evaluate(erosion_noice);
-                // float pv = PeaksAndValleys.Evaluate(peaksandvalleys_noice);
-                // float cepv = (c + (e * pv)) / 2f;
-                // cepv = (cepv + 1) / 2f;
-                // byte terrainHeight = (byte)math.round(cepv * _terrainMaxHeight);
-                // HeightMap.SetValue(new int3(x, 0, z), terrainHeight);
+
+                float continentalness_noice = Noise.Perlin2D(_perlinNoise, sampleX, sampleZ, 0.15f * _scale, 4, 0.55f * persistance, 1.25f * lacunarity);
+                float erosion_noice = Noise.Perlin2D(_perlinNoise, sampleX, sampleZ, 1 * _scale, 4, 0.76f * persistance, 2f * lacunarity);
+                float peaksandvalleys_noice = Noise.Perlin2D(_perlinNoise, sampleX, sampleZ, 0.5f * _scale, 3, 0.95f * persistance, 3.1f * lacunarity);
+                peaksandvalleys_noice = math.abs(peaksandvalleys_noice);
+                float c = Continentalness.Evaluate(continentalness_noice);
+                float e = Erosion.Evaluate(erosion_noice);
+                float pv = PeaksAndValleys.Evaluate(peaksandvalleys_noice);
+                float cepv = (c + (e * pv)) / 2f;
+                cepv = (cepv + 1) / 2f;
+                byte terrainHeight = (byte)math.round(cepv * _terrainMaxHeight);
+                HeightMap.SetValue(new int3(x, 0, z), terrainHeight);
             }
         }
         IsEmpty = false;

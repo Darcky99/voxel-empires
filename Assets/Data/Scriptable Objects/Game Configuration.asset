@@ -46,7 +46,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   <ChunkConfiguration>k__BackingField:
-    m_ChunkSize: 32
+    m_ChunkSize: 64
     m_ChunkHeight: 1
   <GraphicsConfiguration>k__BackingField:
     m_RenderDistance: 16
@@ -60,7 +60,7 @@ MonoBehaviour:
   <WorldConfiguration>k__BackingField:
     <WorldHeight>k__BackingField: 128
     <Seed>k__BackingField: 189453
-    <Scale>k__BackingField: 16
+    <Scale>k__BackingField: 1600
     <Continentalness>k__BackingField:
       serializedVersion: 2
       m_Curve:

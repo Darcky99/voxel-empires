@@ -1,10 +1,10 @@
 using ProceduralNoiseProject;
 
-namespace Test.Noise
+namespace VE.CustomNoise
 {
     public static class Noise
     {
-        public static float Perlin2D(PerlinNoise noise, int x, int y, uint seed, float scale, int octaves, float persistance, float lacunarity)
+        public static float Perlin2D(PerlinNoise noise, int x, int y, float scale, int octaves, float persistance, float lacunarity)
         {
             if (scale <= 0)
             {
