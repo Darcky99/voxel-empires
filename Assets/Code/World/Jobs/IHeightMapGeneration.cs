@@ -6,9 +6,9 @@ using Unity.Mathematics;
 using VE.VoxelUtilities;
 
 [BurstCompile]
-public struct ITerrainGeneration : IJob
+public struct IHeightMapGeneration : IJob
 {
-    public ITerrainGeneration(int2 chunkID, int3 chunkSize)
+    public IHeightMapGeneration(int2 chunkID, int3 chunkSize)
     {
         _chunkID = chunkID;
         _terrainMaxHeight = (uint)GameConfig.Instance.WorldConfiguration.WorldHeight;
