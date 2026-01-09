@@ -107,20 +107,6 @@ namespace VE.VoxelUtilities
             return i_uvs;
         }
 
-        public static byte GetVoxelIDByHeight(int absoluteY)
-        {
-            //this method should be moved to another class, related with terrain generation algorithms.
-            //Also not the best to draw flat lines across the terrain. It should be according to the terrain shape.
-            byte id = absoluteY switch
-            {
-                >= 115 => 3,
-                >= 85 => 2,
-                >= 45 => 4,
-                >= 15 => 5,
-                _ => 1
-            };
-            int result = (int)id - 1;
-            return (byte)result;
-        }
+        
     }
 }

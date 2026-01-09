@@ -72,27 +72,16 @@ public struct IChunkMesh : IJob
         }
     }
 
+
     private void RunDownwards(int3 pab)
     {
         int max_height = d[1];
-        int min_height = 0;
-        for (int minHeight = d[1]; minHeight >= 0; minHeight--)
-        {
-            int3 position = new int3(d[0], minHeight, d[2]);
-            if (IsDirectionEmpty(position, GetFaceIndex(pab.x, -1)) || IsDirectionEmpty(position, GetFaceIndex(pab.x, 1)))
-            {
-                min_height = minHeight;
-            }
-            else
-            {
-                break;
-            }
-        }
+        int min_height = FindMinimumDrawHeight(pab, max_height);
         for (int currentHeight = min_height; currentHeight <= max_height; currentHeight++)
         {
             d[1] = currentHeight;
             int3 position = new int3(d[0], d[1], d[2]);
-            byte voxelID = GetVoxelIDByHeight(position.y);
+            byte voxelID = GetVoxelIDByHeight(max_height, currentHeight/* position.y */);
             DrawGreedyQuad(position, pab, voxelID, GetFaceIndex(pab.x, -1));
             DrawGreedyQuad(position, pab, voxelID, GetFaceIndex(pab.x, 1));
         }
@@ -156,7 +145,7 @@ public struct IChunkMesh : IJob
             int index_b = b == 2 ? b - 1 - a : b;
             u[index_a] *= meshSize.x;
             u[index_b] *= meshSize.y;
-            u.z = _VoxelsConfig[voxelID - 1].TextureIndex(faceIndex);
+            u.z = _VoxelsConfig[voxelID/*  - 1 */].TextureIndex(faceIndex);
             UVs.Add(u);
         }
         SetAsDrawn(min_limit, max_limit, faceIndex);
@@ -176,9 +165,26 @@ public struct IChunkMesh : IJob
         }
     }
 
-    private byte GetVoxelIDByHeight(int h)
+    private int FindMinimumDrawHeight(int3 pab, int naturalHeight)
     {
-        return Voxels.GetVoxelIDByHeight(h); //This will come from TerrainGeneration class
+        int minimum_drawn_height = naturalHeight;
+        for (int currentHeight = d[1]; currentHeight >= 0; currentHeight--)
+        {
+            int3 position = new int3(d[0], currentHeight, d[2]);
+            if (IsDirectionEmpty(position, GetFaceIndex(pab.x, -1)) || IsDirectionEmpty(position, GetFaceIndex(pab.x, 1)))
+            {
+                minimum_drawn_height = currentHeight;
+            }
+            else
+            {
+                break;
+            }
+        }
+        return minimum_drawn_height;
+    }
+    private byte GetVoxelIDByHeight(int nh, int h)
+    {
+        return VE.World.Terrain.GetVoxelIDByHeight(nh, h);
     }
     private byte GetHeightMapValue(int x, int z)
     {
@@ -229,13 +235,14 @@ public struct IChunkMesh : IJob
         {
             return false;
         }
-        bool isDirectionEmpty = IsDirectionEmpty(xyz, faceIndex); // Here I will need to consider the other axis once I get the block ID by some algorithm..
+        bool isDirectionEmpty = IsDirectionEmpty(xyz, faceIndex);
         bool isFaceNotDrawn = !IsFaceDrawn(xyz, faceIndex);
         return isDirectionEmpty && isFaceNotDrawn;
     }
     private bool IsDrawFace(byte voxelID, int3 xyz, int faceIndex)
     {
-        byte originID = GetVoxelIDByHeight(xyz.y);
+        int natural_height = GetHeightMapValue(xyz.x, xyz.z);
+        byte originID = GetVoxelIDByHeight(natural_height, xyz.y);
         bool IsSameType = originID == voxelID;
         return IsSameType && IsDrawFace(xyz, faceIndex);
     }
