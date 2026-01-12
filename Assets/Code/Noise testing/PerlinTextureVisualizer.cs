@@ -1,5 +1,5 @@
 using UnityEngine;
-using VE.PerlinTexture;
+using VoxelEmpires.PerlinTexture;
 using System;
 using Unity.Collections;
 

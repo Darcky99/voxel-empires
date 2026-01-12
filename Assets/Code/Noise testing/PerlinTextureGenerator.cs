@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace VE.PerlinTexture
+namespace VoxelEmpires.PerlinTexture
 {
     public class PerlinTextureGenerator : MonoBehaviour
     {

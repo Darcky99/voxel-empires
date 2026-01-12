@@ -5,7 +5,7 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace VE.PerlinTexture
+namespace VoxelEmpires.PerlinTexture
 {
     [BurstCompile]
     public struct PerlinTextureJob : IJob

@@ -38,7 +38,6 @@ public struct VoxelConfig
     public int LeftFace { get; private set; }
     public int FrontFace { get; private set; }
     public int BackFace { get; private set; }
-    //Sometimes I have internal faces... 7th value?
 
     public int TextureIndex(int faceIndex)
     {

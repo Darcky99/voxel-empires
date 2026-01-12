@@ -1,4 +1,4 @@
-namespace VE
+namespace VoxelEmpires
 {
     public enum GameState
     {

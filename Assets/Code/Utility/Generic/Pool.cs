@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace VE.VoxelUtilities.Pooling
+namespace VoxelEmpires.VoxelUtilities.Pooling
 {
     public class Pool<T> : MonoBehaviour where T : MonoBehaviour
     {

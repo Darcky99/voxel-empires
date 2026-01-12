@@ -1,10 +1,10 @@
 using UnityEngine;
-using VE.World;
+using VoxelEmpires.World;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace VE.VoxelUtilities.Pooling
+namespace VoxelEmpires.VoxelUtilities.Pooling
 {
     public class ChunkObjectPool : Pool<ChunkObject>
     {

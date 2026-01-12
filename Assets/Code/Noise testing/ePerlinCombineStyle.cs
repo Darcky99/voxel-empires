@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace VE.PerlinTexture
+namespace VoxelEmpires.PerlinTexture
 {
     /// <summary>
     /// This selects the formula to combine noises together.

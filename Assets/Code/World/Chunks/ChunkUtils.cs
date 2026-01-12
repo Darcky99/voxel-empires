@@ -4,8 +4,9 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
+using VoxelEmpires.Configuration;
 
-namespace VE.VoxelUtilities
+namespace VoxelEmpires.VoxelUtilities
 {
     public static class ChunkUtils
     {
@@ -63,9 +64,13 @@ namespace VE.VoxelUtilities
             return chunksInRing;
         }
 
+        /// <summary>
+        /// //Block size '0.25' (which is contained within this method) should be a constant in GameConfig.
+        /// </summary>
+        /// <param name="worldPosition"></param>
+        /// <returns></returns>
         public static Vector2Int WorldCoordinatesToChunkIndex(Vector3 worldPosition)
         {
-            //Block size '0.25' should be a constant in GameConfig.
             Vector3 adjustWorldPosition = worldPosition + (Vector3.one * 0.25f);
             Vector2 flatPosition = new Vector2(adjustWorldPosition.x, adjustWorldPosition.z);
             flatPosition.x /= (s_GameConfig.ChunkConfiguration.ChunkSize.x / 2);
@@ -82,6 +87,9 @@ namespace VE.VoxelUtilities
             return new int2(x, z);
         }
 
-        public static float3 ChunkIDToWorldCoordinates(int2 chunkID) => new float3(chunkID.x * ChunkConfiguration.ChunkSize.x, 0 * ChunkConfiguration.ChunkSize.y, chunkID.y * ChunkConfiguration.ChunkSize.z) / 2f;
+        public static float3 ChunkIDToWorldCoordinates(int2 chunkID)
+        {
+            return new float3(chunkID.x * ChunkConfiguration.ChunkSize.x, 0 * ChunkConfiguration.ChunkSize.y, chunkID.y * ChunkConfiguration.ChunkSize.z) / 2f;
+        }
     }
 }

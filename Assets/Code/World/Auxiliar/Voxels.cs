@@ -3,7 +3,7 @@ using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace VE.VoxelUtilities
+namespace VoxelEmpires.VoxelUtilities
 {
     public static class Voxels
     {

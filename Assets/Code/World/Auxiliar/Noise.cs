@@ -1,6 +1,6 @@
 using ProceduralNoiseProject;
 
-namespace VE.CustomNoise
+namespace VoxelEmpires.CustomNoise
 {
     public static class Noise
     {

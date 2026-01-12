@@ -1,6 +1,6 @@
 using Unity.Jobs;
 using UnityEngine;
-using VE.PerlinTexture;
+using VoxelEmpires.PerlinTexture;
 
 public class ColoredVoronoiTexture : IJob
 {

@@ -1,6 +1,12 @@
 using UnityEngine;
 
-public class GameConfigReference : MonoBehaviour
+namespace VoxelEmpires.Configuration
 {
-    [SerializeField] private GameConfig _GameConfigReference;
+    /// <summary>
+    /// This should be deleted and referenced from a GameController
+    /// </summary>
+    public class GameConfigReference : MonoBehaviour
+    {
+        [SerializeField] private GameConfig _GameConfigReference;
+    }
 }

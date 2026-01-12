@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using System;
+using VoxelEmpires.Configuration;
 
 public class CameraController : Singleton<CameraController>
 {

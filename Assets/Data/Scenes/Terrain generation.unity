@@ -50338,6 +50338,16 @@ PrefabInstance:
       propertyPath: <Camera>k__BackingField
       value: 
       objectReference: {fileID: 307742922}
+    - target: {fileID: 124696484294012699, guid: 67983555096470242b243df8287fdcc1,
+        type: 3}
+      propertyPath: <Gravity>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 124696484294012699, guid: 67983555096470242b243df8287fdcc1,
+        type: 3}
+      propertyPath: <GroundSpeed>k__BackingField
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 432429379876644329, guid: 67983555096470242b243df8287fdcc1,
         type: 3}
       propertyPath: m_Name

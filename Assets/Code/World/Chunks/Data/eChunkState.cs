@@ -1,4 +1,4 @@
-namespace VE.World
+namespace VoxelEmpires.World
 {
     public enum eChunkState
     {

@@ -5,14 +5,21 @@ using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
-using VE.VoxelUtilities;
+using VoxelEmpires.VoxelUtilities;
+using VoxelEmpires.Configuration;
 
-namespace VE.World
+namespace VoxelEmpires.World
 {
     public class WorldController : MonoBehaviour
     {
-        public GameManager GameManager => GameManager.Instance;
-        public GameConfig GameConfig => GameConfig.Instance;
+        public GameManager GameManager
+        {
+            get => GameManager.Instance;
+        }
+        public GameConfig GameConfig
+        {
+            get => GameConfig.Instance;
+        }
 
         private int2 _drawOrigin;
         private bool _stopExpansiveLoadingFlag = false;
@@ -20,6 +27,10 @@ namespace VE.World
         [SerializeField] private WorldManager _worldManager;
         [SerializeField] private Transform _centerTransform;
 
+        private void Awake()
+        {
+            Terrain.GetVoxelIDByHeight(0,0);
+        }
         private void OnEnable()
         {
             GameManager.StateChanged += GameManager_StateChanged;

@@ -1,9 +1,9 @@
 using UnityEngine;
 using Unity.Mathematics;
 using Unity.Collections.NotBurstCompatible;
-using VE.VoxelUtilities;
+using VoxelEmpires.VoxelUtilities;
 
-namespace VE.World
+namespace VoxelEmpires.World
 {
     public class ChunkObject : MonoBehaviour
     {

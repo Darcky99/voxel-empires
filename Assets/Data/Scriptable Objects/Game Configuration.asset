@@ -46,7 +46,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   <ChunkConfiguration>k__BackingField:
-    m_ChunkSize: 64
+    m_ChunkSize: 32
     m_ChunkHeight: 1
   <GraphicsConfiguration>k__BackingField:
     m_RenderDistance: 16
@@ -59,8 +59,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: b223f244a073da842a9b8ebc28430cf1, type: 2}
   <WorldConfiguration>k__BackingField:
     <WorldHeight>k__BackingField: 128
-    <Seed>k__BackingField: 189453
-    <Scale>k__BackingField: 1600
+    <Seed>k__BackingField: 187478
+    <Scale>k__BackingField: 1500
     <Continentalness>k__BackingField:
       serializedVersion: 2
       m_Curve:
@@ -295,3 +295,21 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
+  <TerrainConfiguration>k__BackingField:
+    <VoxelsByHeight>k__BackingField:
+    - AbsoluteY: 85
+      Width: 1
+      Voxel: {fileID: 11400000, guid: 05983e296e003504ba9f43ee25f56642, type: 2}
+      Filler: {fileID: 11400000, guid: dc0fd598c51556b4bb7f35edac0a330e, type: 2}
+    - AbsoluteY: 45
+      Width: 1
+      Voxel: {fileID: 11400000, guid: c77defc42f532044a9c5cbd96ce41d7b, type: 2}
+      Filler: {fileID: 0}
+    - AbsoluteY: 15
+      Width: 1
+      Voxel: {fileID: 11400000, guid: b223f244a073da842a9b8ebc28430cf1, type: 2}
+      Filler: {fileID: 0}
+    - AbsoluteY: 0
+      Width: 1
+      Voxel: {fileID: 11400000, guid: f8d23665b38332f40a8d230749ee657f, type: 2}
+      Filler: {fileID: 0}

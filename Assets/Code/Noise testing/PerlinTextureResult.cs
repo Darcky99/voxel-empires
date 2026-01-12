@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace VE.PerlinTexture
+namespace VoxelEmpires.PerlinTexture
 {
     public interface PerlinTextureResult
     {

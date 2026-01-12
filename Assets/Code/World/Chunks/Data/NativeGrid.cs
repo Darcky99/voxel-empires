@@ -1,7 +1,7 @@
 using Unity.Collections;
 using Unity.Mathematics;
 
-namespace VE.VoxelUtilities
+namespace VoxelEmpires.VoxelUtilities
 {
     public struct NativeGrid<T> where T : struct
     {

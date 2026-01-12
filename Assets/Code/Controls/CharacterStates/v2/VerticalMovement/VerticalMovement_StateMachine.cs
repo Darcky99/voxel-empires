@@ -1,18 +1,21 @@
 using Utilities.StateMachine;
 
-public class VerticalMovement_StateMachine : StateMachineBase<VerticalMovement_StateMachine, eVerticalStates>
+namespace VoxelEmpires.Player
 {
-    public VerticalMovement_StateMachine(IVerticalMovement iVerticalMovement)
+    public class VerticalMovement_StateMachine : StateMachineBase<VerticalMovement_StateMachine, eVerticalStates>
     {
-        VerticalMovement = iVerticalMovement;
+        public VerticalMovement_StateMachine(IVerticalMovement iVerticalMovement)
+        {
+            VerticalMovement = iVerticalMovement;
 
-        SetStates(
-            new VerticalMovementState_Grounded(this),
-            new VerticalMovementState_Falling(this),
-            new VerticalMovementState_Jumping(this)
-            );
+            SetStates(
+                new VerticalMovementState_Grounded(this),
+                new VerticalMovementState_Falling(this),
+                new VerticalMovementState_Jumping(this)
+                );
+        }
+
+        public IVerticalMovement VerticalMovement;
+
     }
-
-    public IVerticalMovement VerticalMovement;
-
 }

@@ -1,7 +1,7 @@
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace VE.PerlinTexture
+namespace VoxelEmpires.PerlinTexture
 {
     public struct TextureJobParameters
     {

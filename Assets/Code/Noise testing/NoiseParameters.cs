@@ -1,9 +1,9 @@
 using System;
-using VE.CustomNoise;
+using VoxelEmpires.CustomNoise;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace VE.PerlinTexture
+namespace VoxelEmpires.PerlinTexture
 {
     [Serializable]
     public class NoiseParameters

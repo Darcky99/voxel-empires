@@ -1,6 +1,6 @@
 using System;
 
-namespace VE
+namespace VoxelEmpires
 {
     public class GamaStateChangeEventArgs : EventArgs
     {

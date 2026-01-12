@@ -4,7 +4,7 @@ using UnityEngine;
 using Stateless;
 using System;
 
-namespace VE
+namespace VoxelEmpires
 {
     public class GameManager : Singleton<GameManager>
     {

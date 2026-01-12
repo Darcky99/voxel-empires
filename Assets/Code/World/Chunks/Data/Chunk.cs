@@ -1,7 +1,8 @@
 using Unity.Mathematics;
-using VE.VoxelUtilities;
+using VoxelEmpires.VoxelUtilities;
+using VoxelEmpires.Configuration;
 
-namespace VE.World
+namespace VoxelEmpires.World
 {
     public struct Chunk
     {

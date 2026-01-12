@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace VE.PerlinTexture
+namespace VoxelEmpires.PerlinTexture
 {
     [Serializable]
     public class BiomeParameters
